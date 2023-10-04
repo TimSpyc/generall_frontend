@@ -7,7 +7,6 @@ function App() {
   return (
     <div className="App">
       <div>
-        <h1>React + TypeScript</h1>
         <GeneralFrontendAsset
           name="test"
           api_data={{
@@ -15,18 +14,6 @@ function App() {
             test1: { text: "Found this second!!!" },
           }}
           size={["1x1"]}
-          elements={[
-            {
-              view: "detail",
-              jsx: <TestElement link_to_data={"test"}></TestElement>,
-              element_id: "test",
-            },
-            {
-              view: "detail",
-              jsx: <TestElement link_to_data={"test1"}></TestElement>,
-              element_id: "test1",
-            },
-          ]}
           view_config={[
             {
               element_id: "test",
@@ -53,7 +40,12 @@ function App() {
               view: "detail",
             },
           ]}
-        />
+        >
+          <TestElement api="https://httpbin.org/get"/>
+          <TestElement api="https://httpbin.org/get"/>
+          <TestElement api="https://httpbin.org/get"/>
+          <TestElement api="https://httpbin.org/get"/>
+        </GeneralFrontendAsset>
       </div>
     </div>
   );

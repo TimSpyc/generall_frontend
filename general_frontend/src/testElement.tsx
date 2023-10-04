@@ -1,38 +1,35 @@
 import React from "react";
+import { GeneralAssetDataContext } from "./context/generalAssetContext"
+import { GeneralAssetDataContextType, IGeneralAssetData } from './@types/generalAssetData';
 
 interface IBaseElementProps {
   mode?: "show" | "edit";
 }
 
 interface IDataProps {
+  api?: never;
   data: any;
-  setData: (data: object) => void;
-  link_to_data?: never;
 }
 
 interface ILinkToProps {
-  link_to_data: string;
+  api: string;
   data?: never;
-  setData?: never;
 }
 
 type IElementProps = (IDataProps | ILinkToProps) & IBaseElementProps;
 
 export default function TestElement(props: IElementProps): JSX.Element {
-  const { data, setData, mode } = props;
+  const { mode, api } = props;
+  const { dataset, updateData, saveData } = React.useContext(GeneralAssetDataContext) as GeneralAssetDataContextType;
+
+  console.log(dataset)
+  console.log(api)
+
   return (
     <>
-      {mode === "show" ? (
-        <p>{data?.text}</p>
-      ) : (
-        mode === "edit" && (
-          <input
-            type="text"
-            value={data?.text}
-            onChange={(e) => setData && setData({ text: e.target.value })}
-          ></input>
-        )
-      )}
+      <button onClick={() => saveData({title:"test", description: "test", id: 1, status: true})}>
+        Add new
+      </button>
     </>
   );
 }
