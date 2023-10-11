@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { PropsWithChildren } from 'react';
-import { GeneralAssetDataContextType, IGeneralAssetData } from '../@types/generalAssetData';
+import { GeneralAssetDataContextType, IGeneralAssetData, TMode, TGridSize, TView } from '../@types/generalAssetData';
 
 export const GeneralAssetDataContext = React.createContext<GeneralAssetDataContextType | null>(null);
 
 const GeneralAssetDataProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const [dataset, setData] = React.useState<IGeneralAssetData[]>([]);
+    const [currentMode, setCurrentMode] = React.useState<TMode[]>([]);
+    const [currentSize, setCurrentSize] = React.useState<TGridSize[]>([]);
+    const [currentView, setCurrentView] = React.useState<TView[]>([]);
 
     const saveData = (data: IGeneralAssetData) => {
         const newData: IGeneralAssetData = {
@@ -21,14 +24,29 @@ const GeneralAssetDataProvider: React.FC<PropsWithChildren> = ({ children }) => 
     const updateData = (id: number) => {
         dataset.filter((data: IGeneralAssetData) => {
             if (data.id === id) {
-            data.status = true;
-            setData([...dataset]);
+                data.status = true;
+                setData([...dataset]);
             }
         });
     };
 
+    const updateCurrentMode = (data:any) => {
+        setCurrentMode(data)
+        console.log(data)
+    }
+
+    const updateCurrentSize = (data:any) => {
+        setCurrentSize(data)
+        console.log(data)
+    }
+
+    const updateCurrentView = (data:any) => {
+        setCurrentView(data)
+        console.log(data)
+    }
+    
     return (
-        <GeneralAssetDataContext.Provider value={{ dataset, saveData, updateData }}>
+        <GeneralAssetDataContext.Provider value={{ dataset, saveData, updateData, updateCurrentMode, updateCurrentSize, updateCurrentView, currentMode, currentSize, currentView }}>
             {children}
         </GeneralAssetDataContext.Provider>
     );
