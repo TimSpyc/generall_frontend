@@ -1,4 +1,3 @@
-import React from "react";
 import "./App.css";
 import GeneralFrontendAsset from "./base_components";
 import GeneralAssetDataProvider, {GeneralAssetDataContext} from "./context/generalAssetContext"

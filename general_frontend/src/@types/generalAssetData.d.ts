@@ -3,9 +3,6 @@ export interface IGeneralAssetData {
     title: string;
     description: string;
     status: boolean;
-    updateCurrentMode?: any;
-    updateCurrentView?: any;
-    updateCurrentSize?: any;
 }
 
 export interface IFilter {
