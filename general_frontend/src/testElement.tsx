@@ -16,6 +16,8 @@ interface IDataProps {
 interface ILinkToProps {
   api: string;
   data?: never;
+  min: any;
+  max: any;
 }
 
 type IElementProps = (IDataProps | ILinkToProps) & IBaseElementProps;

@@ -10,24 +10,19 @@ const GeneralAssetDataProvider: React.FC<PropsWithChildren> = ({ children }) => 
     const [currentSize, setCurrentSize] = React.useState<TGridSize[]>([]);
     const [currentView, setCurrentView] = React.useState<TView[]>([]);
 
-    const saveData = (data: IGeneralAssetData) => {
-        const newData: IGeneralAssetData = {
+    const saveData = (form: IGeneralAssetData) => {
+        const formData: IGeneralAssetData = {
             id: Math.random(),
-            title: data.title,
-            description: data.description,
+            title: form.title,
+            description: form.description,
             status: false,
         };
 
-        setData([...dataset, newData]);
+        setData([...dataset, formData]);
     };
 
     const updateData = (id: number) => {
-        dataset.filter((data: IGeneralAssetData) => {
-            if (data.id === id) {
-                data.status = true;
-                setData([...dataset]);
-            }
-        });
+        //
     };
 
     const updateCurrentMode = (data:any) => {

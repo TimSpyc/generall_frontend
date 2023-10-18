@@ -17,3 +17,19 @@ code {
   padding: 10px;
   margin: 10px;
 }
+
+.width-1 {
+  width: 50%;
+}
+
+.width-2 {
+  width: 100%;
+}
+
+.height-1 {
+  height: auto;
+}
+
+.height-2 {
+  height: 600px;
+}

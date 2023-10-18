@@ -9,15 +9,51 @@ function App() {
       <div>
         <GeneralAssetDataProvider>
           <GeneralFrontendAsset name="test">
-            <TestElement api="https://cat-fact.herokuapp.com/facts?1"/>
-            <TestElement api="https://cat-fact.herokuapp.com/facts?2"/>
+            <TestElement 
+              min={{width: 1, height: 1}} 
+              max={{width: 2, height: 3}} 
+              api="https://cat-fact.herokuapp.com/facts?1"
+            />
+            <TestElement 
+              min={{width: 1, height: 1}} 
+              max={{width: 2, height: 3}} 
+              api="https://cat-fact.herokuapp.com/facts?1"
+            />
+            <TestElement 
+              min={{width: 1, height: 1}} 
+              max={{width: 2, height: 3}} 
+              api="https://cat-fact.herokuapp.com/facts?1"
+            />
           </GeneralFrontendAsset>
         </GeneralAssetDataProvider>
 
         <GeneralAssetDataProvider>
           <GeneralFrontendAsset name="test">
-            <TestElement api="https://cat-fact.herokuapp.com/facts?3"/>
-            <TestElement api="https://cat-fact.herokuapp.com/facts?4"/>
+            <TestElement 
+              min={{width: 1, height: 1}} 
+              max={{width: 2, height: 3}} 
+              api="https://cat-fact.herokuapp.com/facts?2"
+            />
+          </GeneralFrontendAsset>
+        </GeneralAssetDataProvider>
+
+        <GeneralAssetDataProvider>
+          <GeneralFrontendAsset name="test">
+            <TestElement 
+              min={{width: 1, height: 1}} 
+              max={{width: 2, height: 3}} 
+              api="https://cat-fact.herokuapp.com/facts?3"
+            />
+          </GeneralFrontendAsset>
+        </GeneralAssetDataProvider>
+
+        <GeneralAssetDataProvider>
+          <GeneralFrontendAsset name="test">
+            <TestElement 
+              min={{width: 1, height: 1}} 
+              max={{width: 2, height: 3}} 
+              api="https://cat-fact.herokuapp.com/facts?4"
+            />
           </GeneralFrontendAsset>
         </GeneralAssetDataProvider>
       </div>

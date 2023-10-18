@@ -10,7 +10,6 @@ export interface IFilter {
     jsx: JSX.Element;
 }
 
-
 export interface IButton {
     [key: string]: {
         handleClick: (event: React.MouseEvent<HTMLButtonElement>) => void;

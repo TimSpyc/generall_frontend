@@ -6,8 +6,8 @@ export default function GeneralFrontendAsset({children, name}: IGeneralFrontendA
   const { dataset, updateData, saveData, updateCurrentSize, updateCurrentView, updateCurrentMode, currentSize, currentView, currentMode } = React.useContext(GeneralAssetDataContext) as GeneralAssetDataContextType;
 
   return (
-    <>
-      <div className={`width-${currentSize.width} height-${currentSize.height}`}>
+    <div className={`element width-${currentSize.width} height-${currentSize.height}`}>
+      <div>
         <button onClick={() => updateCurrentSize({
           width: 1,
           height: 1
@@ -38,6 +38,6 @@ export default function GeneralFrontendAsset({children, name}: IGeneralFrontendA
 
         {children}
       </div>
-    </>
+    </div>
   );
 }
