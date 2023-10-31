@@ -8,23 +8,29 @@ function App() {
     <div className="App">
       <div>
         <GeneralAssetDataProvider>
-          <GeneralFrontendAsset name="test">
-            <TestElement 
+          <GeneralFrontendAssets name="test">
+            <GeneralFrontendAsset 
+              min={{width: 1, height: 1}} 
+              max={{width: 2, height: 3}} 
+              api="https://cat-fact.herokuapp.com/facts?1"
+            >
+              
+            </GeneralFrontendAsset>
+            <GeneralFrontendAsset
+              key="boms" 
+              view={["edit", "detail"]}
               min={{width: 1, height: 1}} 
               max={{width: 2, height: 3}} 
               api="https://cat-fact.herokuapp.com/facts?1"
             />
-            <TestElement 
+            <GeneralFrontendAsset 
+              key="profile_price"
+              view={['list']}
               min={{width: 1, height: 1}} 
               max={{width: 2, height: 3}} 
               api="https://cat-fact.herokuapp.com/facts?1"
             />
-            <TestElement 
-              min={{width: 1, height: 1}} 
-              max={{width: 2, height: 3}} 
-              api="https://cat-fact.herokuapp.com/facts?1"
-            />
-          </GeneralFrontendAsset>
+          </GeneralFrontendAssets>
         </GeneralAssetDataProvider>
 
         <GeneralAssetDataProvider>
