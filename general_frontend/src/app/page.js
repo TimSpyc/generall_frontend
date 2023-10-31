@@ -1,50 +1,69 @@
 'use client'
 
-import GeneralAsset from "./assets/general-asset"
+import GridLayout from "./assets/grid-layout"
+import Asset from "./assets/asset"
 import View from "./assets/view"
-import AssetExample from "./assets/asset-example"
-import GeneralPage from "./assets/general-page"
 
-export default function Home() {
+import Input from "./elements/input"
+
+const Home = () => {
   return (
-    <main class="min-h-screen min-w-screen">
-      <GeneralPage>
-        <GeneralAsset
-          sizes={{
-            minWidth: 1,
-            maxWidth: 1,
-            minHeight: 1,
-            maxHeight: 1,
-          }}>
+    <main className="min-h-screen min-w-screen p-12">
+      <GridLayout>
+        <Asset name="test">
           <View
             type={['default']} 
             api={{
               users: {url: "https://dummyjson.com/users"},
               posts: {url: "https://dummyjson.com/posts"}
             }}>
-            <AssetExample 
+            <Input
               link="users" 
               actions={{
                 edit: "edit", 
                 filters: true
-              }}
-              sizes={{
-                minWidth: 1,
-                maxWidth: 1,
-                minHeight: 1,
-                maxHeight: 1,
               }}/>
-            <AssetExample 
+            <Input 
               link="users" 
               actions={{
                 edit: "edit.users", 
                 filters: true
-              }}
-              sizes={{
-                minWidth: 1,
-                maxWidth: 1,
-                minHeight: 1,
-                maxHeight: 1,
+              }}/>
+            <Input 
+              link="users" 
+              actions={{
+                edit: "edit.users", 
+                filters: true
+              }}/>
+            <Input 
+              link="users" 
+              actions={{
+                edit: "edit.users", 
+                filters: true
+              }}/>
+            <Input 
+              link="users" 
+              actions={{
+                edit: "edit.users", 
+                filters: true
+              }}/>
+            <Input 
+              link="users" 
+              actions={{
+                edit: "edit.users", 
+                filters: true
+              }}/>
+            <Input 
+              link="users" 
+              actions={{
+                edit: "edit.users", 
+                filters: true
+              }}/>
+            <Input 
+              link="users" 
+              actions={{
+                edit: "edit.users", 
+                filters: true
               }}/>
           </View>
           <View
@@ -53,7 +72,7 @@ export default function Home() {
               users: {url: "https://dummyjson.com/users"},
               posts: {url: "https://dummyjson.com/posts"}
             }}>
-            <AssetExample link="posts"/>
+            <Input link="posts"/>
           </View>
           <View
             type={['edit']} 
@@ -61,7 +80,7 @@ export default function Home() {
               users: {url: "https://dummyjson.com/users"},
               posts: {url: "https://dummyjson.com/posts"}
             }}>
-            <AssetExample link="posts"/>
+            <Input link="posts"/>
           </View>
           <View
             type={['filters']} 
@@ -69,10 +88,12 @@ export default function Home() {
               users: {url: "https://dummyjson.com/users"},
               posts: {url: "https://dummyjson.com/posts"}
             }}>
-            <AssetExample link="posts"/>
+            <Input link="posts"/>
           </View>
-        </GeneralAsset>
-      </GeneralPage>
+        </Asset>
+      </GridLayout>
     </main>
   )
 }
+
+export default Home
