@@ -9,82 +9,92 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const View = (props) => {
   const {view, setView} = useContext(AssetContext);
-  const {layout, setLayout} = useContext(GridLayoutContext)
+  const {assetName} = useContext(AssetContext);
+  const {currentLayout} = useContext(GridLayoutContext);
+
+  const [currentBreakpoint, setCurrentBreakpoint] = useState('lg')
 
   // TODO: Get Children Size from Asset or Server
-  const childrenSize = [
-    {
-      sizes: [
-        {x: 0, y: 0, w: 3, h: 1},
-        {x: 0, y: 0, w: 3, h: 1},
-        {x: 0, y: 0, w: 3, h: 1}
-      ],
-      minWidth: 1, minHeight: 1
-    },
-    {
-      sizes: [
-        {x: 0, y: 0, w: 3, h: 1},
-        {x: 0, y: 0, w: 3, h: 1},
-        {x: 0, y: 0, w: 3, h: 1}
-      ],
-      minWidth: 2, minHeight: 1
-    },
-    {
-      sizes: [
-        {x: 0, y: 0, w: 3, h: 1},
-        {x: 0, y: 0, w: 3, h: 1},
-        {x: 0, y: 0, w: 3, h: 1}
-      ],
-      minWidth: 3, minHeight: 1
-    },
-    {
-      sizes: [
-        {x: 0, y: 0, w: 3, h: 1},
-        {x: 0, y: 0, w: 3, h: 1},
-        {x: 0, y: 0, w: 3, h: 1}
-      ],
-      minWidth: 1, minHeight: 1
-    },
-    {
-      sizes: [
-        {x: 0, y: 0, w: 3, h: 1},
-        {x: 0, y: 0, w: 3, h: 1},
-        {x: 0, y: 0, w: 3, h: 1}
-      ],
-      minWidth: 2, minHeight: 1
-    },
-    {
-      sizes: [
-        {x: 0, y: 0, w: 3, h: 1},
-        {x: 0, y: 0, w: 3, h: 1},
-        {x: 0, y: 0, w: 3, h: 1}
-      ],
-      minWidth: 3, minHeight: 1
-    },
-    {
-      sizes: [
-        {x: 0, y: 0, w: 3, h: 1},
-        {x: 0, y: 0, w: 3, h: 1},
-        {x: 0, y: 0, w: 3, h: 1}
-      ],
-      minWidth: 1, minHeight: 1
-    },
-    {
-      sizes: [
-        {x: 0, y: 0, w: 3, h: 1},
-        {x: 0, y: 0, w: 3, h: 1},
-        {x: 0, y: 0, w: 3, h: 1}
-      ],
-      minWidth: 1, minHeight: 1
-    },
-  ]
+  // Make 3 Variations for specific sizes
+  const childrenSize = {
+    default: [
+      {
+        "1x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "1x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "1x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "2x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "2x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "2x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "3x1": {x: 0, y: 0, w: 3, h: 1, visible: false},
+        "3x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "3x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
+      },
+      {
+        "1x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "1x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "1x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "2x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "2x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "2x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "3x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "3x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "3x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
+      },
+      {
+        "1x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "1x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "1x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "2x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "2x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "2x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "3x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "3x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "3x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
+      },
+    ],
+    detail: [
+      {
+        "1x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "1x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "1x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "2x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "2x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "2x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "3x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "3x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "3x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
+      },
+      {
+        "1x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "1x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "1x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "2x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "2x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "2x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "3x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "3x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "3x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
+      },
+      {
+        "1x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "1x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "1x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "2x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "2x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "2x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "3x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "3x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
+        "3x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
+      },
+    ]
+  }
 
   // always cast children to array for filtering and memorize them for better performance
-  const children = React.useMemo(() => {
-		return React.Children.toArray(props.children).map((val, idx) => {
-			return <div key={idx} data-grid={childrenSize[idx].sizes[layout ? layout[0].w : 0]}>{val}</div>;
-		});
-	}, [props.children]);
+  const children = React.Children.toArray(props.children).map((val, idx) => {
+    return <div key={idx} data-grid={childrenSize[view][idx][
+      `${currentLayout.find((layout) => layout.i === assetName).w}x${currentLayout.find((layout) => layout.i === assetName).h}`
+    ]}>{val}</div>;
+  });
 
   const data = {}
 
@@ -102,10 +112,15 @@ const View = (props) => {
 
   fetchRequests()
 
+  const updateLayout = (event) => {
+    // TODO: send new Data to Server
+    console.log(event, view)
+  }
+
   return (
     <ViewContext.Provider value={{view, setView, data, fetchRequest}}>
       <div className="w-full h-full">
-        <div className='flex flex-row justify-between w-full items-center mb-2 absolute -top-6 right-0'>
+        <div className='flex flex-row justify-between w-full items-center mb-2 absolute -top-10 right-0'>
           <small className="text-gray-500">
               View: {view}
           </small>
@@ -128,17 +143,19 @@ const View = (props) => {
           <ResponsiveGridLayout 
             className="layout"
             breakpoints={{ lg: 1200, md: 996, sm: 768 }}
-				    cols={{
-              lg: layout ? layout[0].w * 4 : 4, 
-              md: layout ? layout[0].w * 2 : 2, 
-              sm: layout ? layout[0].w * 1 : 1 
-            }} 
+				    cols={{lg: 12, md: 6, sm: 3}}
             rowHeight={50}
-            isDraggable={false}
-            isResizable={false}
-            margin={[0,0]}>
+            isDraggable={true}
+            isResizable={true}
+            margin={[0,0]}
+            onBreakpointChange={setCurrentBreakpoint}
+            onLayoutChange={updateLayout}>
             {children.filter((child, index) => {
-              return (childrenSize[index].minWidth <= (layout ? layout[0].w : 3)) && (childrenSize[index].minHeight <= (layout ? layout[0].h : 1))
+              return (
+                childrenSize[view][index][
+                  `${currentLayout.find((layout) => layout.i === assetName).w}x${currentLayout.find((layout) => layout.i === assetName).h}`
+                ].visible
+              )
             })}
           </ResponsiveGridLayout>
         </div>

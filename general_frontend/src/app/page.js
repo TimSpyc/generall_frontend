@@ -10,7 +10,7 @@ const Home = () => {
   return (
     <main className="min-h-screen min-w-screen p-12">
       <GridLayout>
-        <Asset name="test">
+        <Asset name="custom-asset-test">
           <View
             type={['default']} 
             api={{
@@ -21,36 +21,6 @@ const Home = () => {
               link="users" 
               actions={{
                 edit: "edit", 
-                filters: true
-              }}/>
-            <Input 
-              link="users" 
-              actions={{
-                edit: "edit.users", 
-                filters: true
-              }}/>
-            <Input 
-              link="users" 
-              actions={{
-                edit: "edit.users", 
-                filters: true
-              }}/>
-            <Input 
-              link="users" 
-              actions={{
-                edit: "edit.users", 
-                filters: true
-              }}/>
-            <Input 
-              link="users" 
-              actions={{
-                edit: "edit.users", 
-                filters: true
-              }}/>
-            <Input 
-              link="users" 
-              actions={{
-                edit: "edit.users", 
                 filters: true
               }}/>
             <Input 
