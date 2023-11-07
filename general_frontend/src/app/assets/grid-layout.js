@@ -35,7 +35,6 @@ const GridLayout = (props) => {
 
 	const updateGridEditable = (event) => {
 		setIsDraggable(event)
-		setIsResizeable(event)
 	}
 
 	return (

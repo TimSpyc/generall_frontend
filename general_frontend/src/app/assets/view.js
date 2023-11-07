@@ -231,11 +231,8 @@ const View = (props) => {
   }
 
   const updateIsDraggable = () => {
+    updateGridEditable(!isDraggable)
     setIsDraggable(!isDraggable)
-
-    if(isDraggable) {
-      updateGridEditable(false)
-    }
   }
 
   const updateIsResizeable = () => {
