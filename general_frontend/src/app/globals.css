@@ -28,3 +28,7 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.react-resizable-handle.react-resizable-handle-se {
+  z-index: 50;
+}

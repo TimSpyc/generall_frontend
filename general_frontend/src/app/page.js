@@ -19,18 +19,21 @@ const Home = () => {
             }}>
             <Input
               link="users" 
+              placeholder="test 1"
               actions={{
                 edit: "edit", 
                 filters: true
               }}/>
             <Input 
               link="users" 
+              placeholder="test 2"
               actions={{
-                edit: "edit.users", 
+                edit: "edit", 
                 filters: true
               }}/>
             <Input 
               link="users" 
+              placeholder="test 3"
               actions={{
                 edit: "edit.users", 
                 filters: true

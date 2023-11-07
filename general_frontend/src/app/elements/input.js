@@ -23,7 +23,7 @@ const Input = (props) => {
         }
 
         {data[props.link].isLoading === false &&
-          <input type="text" className="border border-black px-2 py-1 w-full h-full" placeholder="example"/>
+          <input type="text" className="border border-black px-2 py-1 w-full h-full" placeholder={props.placeholder}/>
         }
     </div>
   )
