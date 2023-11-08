@@ -24,14 +24,16 @@ const View = (props) => {
 
   // always cast children to array for filtering and memorize them for better performance
   const children = React.Children.toArray(props.children).map((child, idx) => {
+    // TODO: Cleanup unused Components in Sizes
+
     // push empty view to childrenSize if not existent
     if(childrenSize[view] === undefined) {
-      childrenSize[view] = []
+      childrenSize[view] = {}
     }
 
     // push all sizes to view if not existent
-    if(childrenSize[view][idx] === undefined) {
-      childrenSize[view].push({
+    if(childrenSize[view].hasOwnProperty(child.props.name) === false) {
+      childrenSize[view][child.props.name] = {
         "1x1": {x: 0, y: 0, w: 1, h: 1, visible: false},
         "1x2": {x: 0, y: 0, w: 1, h: 1, visible: false},
         "1x3": {x: 0, y: 0, w: 1, h: 1, visible: false},
@@ -41,14 +43,14 @@ const View = (props) => {
         "3x1": {x: 0, y: 0, w: 1, h: 1, visible: false},
         "3x2": {x: 0, y: 0, w: 1, h: 1, visible: false},
         "3x3": {x: 0, y: 0, w: 1, h: 1, visible: false},
-      })
+      }
     }
 
     // prepare all elements to be visible in the grid
     return (
-      <div key={idx} data-grid={childrenSize[view][idx][`${parentLayout.w}x${parentLayout.h}`]}>
+      <div key={child.props.name} data-grid={childrenSize[view][child.props.name][`${parentLayout.w}x${parentLayout.h}`]}>
       <div className='relative w-full h-full'>
-        <div onClick={() => removeChild(idx, child[`${parentLayout.w}x${parentLayout.h}`])} className='absolute top-1 right-1 bg-black text-white px-1 cursor-pointer'>x</div>
+        <div onClick={() => removeChild(child.props.name, child[`${parentLayout.w}x${parentLayout.h}`])} className='absolute top-1 right-1 bg-black text-white px-1 cursor-pointer'>x</div>
           {child}
         </div>
       </div>
@@ -74,10 +76,10 @@ const View = (props) => {
   const updateLayout = (event) => {
     setChildrenSize((currentState) => {
       event.forEach((element, idx) => {
-        currentState[view][idx][`${parentLayout.w}x${parentLayout.h}`].w = element.w
-        currentState[view][idx][`${parentLayout.w}x${parentLayout.h}`].h = element.h
-        currentState[view][idx][`${parentLayout.w}x${parentLayout.h}`].x = element.x
-        currentState[view][idx][`${parentLayout.w}x${parentLayout.h}`].y = element.y
+        currentState[view][element.i][`${parentLayout.w}x${parentLayout.h}`].w = element.w
+        currentState[view][element.i][`${parentLayout.w}x${parentLayout.h}`].h = element.h
+        currentState[view][element.i][`${parentLayout.w}x${parentLayout.h}`].x = element.x
+        currentState[view][element.i][`${parentLayout.w}x${parentLayout.h}`].y = element.y
       })
 
       localStorage.setItem(assetName, JSON.stringify(currentState))
@@ -118,13 +120,13 @@ const View = (props) => {
           </div>
 
           <div className='w-full h-full overflow-y-auto'>
-            {childrenSize[view].map((view, idx) => {
+            {Object.entries(childrenSize[view]).map(([idx, view]) => {
               let child = view[`${parentLayout.w}x${parentLayout.h}`]
 
               if(child.visible === false) {
                 return ( 
                   <div onClick={() => addChild(idx, child)} className='text-black w-full p-2 border border-black' key={idx}>
-                  item {idx + 1}
+                    {idx}
                   </div>
                 )
               }
@@ -164,7 +166,7 @@ const View = (props) => {
             margin={[0,0]}
             onBreakpointChange={setCurrentBreakpoint}
             onLayoutChange={updateLayout}>
-            {children.filter((child, index) => (childrenSize[view][index][`${parentLayout.w}x${parentLayout.h}`].visible))}
+            {children.filter((child, index) => (childrenSize[view][child.key][`${parentLayout.w}x${parentLayout.h}`].visible))}
           </ResponsiveGridLayout>
         </div>
       </div>

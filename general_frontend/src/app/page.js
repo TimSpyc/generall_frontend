@@ -41,6 +41,14 @@ const Home = () => {
                 edit: "edit.users", 
                 filters: true
               }}/>
+            <Input 
+              name="user.test.10"
+              link="users" 
+              placeholder="test 3"
+              actions={{
+                edit: "edit.users", 
+                filters: true
+              }}/>
           </View>
           <View
             type={['detail']} 
