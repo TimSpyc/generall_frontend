@@ -22,11 +22,10 @@ const GridLayout = (props) => {
 	const [isDraggable, setIsDraggable] = useState(true)
 	const [isResizeable, setIsResizeable] = useState(true)
 
-	// always cast children to array for filtering and memorize them for better performance
 	const children = React.useMemo(() => {
-		return React.Children.toArray(props.children).map((val, idx) => {
-			return <div key={val.props.name}>{val}</div>;
-		});
+		return React.Children.toArray(props.children).map((val, idx) => (
+			<div key={val.props.name} data-grid={layouts[currentBreakpoint][idx]}>{val}</div>
+		))
 	}, [props.children]);
 
 	const updateLayout = (event) => {
@@ -34,19 +33,19 @@ const GridLayout = (props) => {
 	}
 
 	const updateGridEditable = (event) => {
-		setIsDraggable(event)
+		setIsDraggable(event ? true : false)
 	}
 
 	return (
 		<GridLayoutContext.Provider value={{layouts, setLayouts, currentLayout, updateGridEditable}}>
 			<ResponsiveGridLayout className="layout"
+				key={JSON.stringify({isDraggable: isDraggable, isResizeable: isResizeable})}
 				breakpoints={{ lg: 1200, md: 996, sm: 768 }}
 				cols={{ lg: 3, md: 2, sm: 1 }}
 				rowHeight={600}
 				isDraggable={isDraggable}
 				isResizable={isResizeable}
 				margin={[0,0]}
-				layouts={layouts}
 				measureBeforeMount={false}
 				onBreakpointChange={setCurrentBreakpoint}
 				onLayoutChange={updateLayout}>

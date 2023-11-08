@@ -1,8 +1,6 @@
 import React, { createContext, useState, useContext } from 'react';
-import { GridLayoutContext } from './grid-layout';
 
 const Asset = (props) => {
-  // contexts of Asset
   const [view, setView] = useState('default');
   const [assetName, setAssetName] = useState(props.name)
 

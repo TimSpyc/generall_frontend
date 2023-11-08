@@ -10,172 +10,51 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 const View = (props) => {
   const {view, setView} = useContext(AssetContext);
   const {assetName} = useContext(AssetContext);
+  
   const {currentLayout, updateGridEditable} = useContext(GridLayoutContext);
-
-  const [isDraggable, setIsDraggable] = useState(false)
-  const [isResizable, setIsResizable] = useState(false)
-
-  const [currentBreakpoint, setCurrentBreakpoint] = useState('lg')
   const parentLayout = currentLayout.find((layout) => layout.i === assetName)
 
+  const [isDraggable, setIsDraggable] = useState(true)
+  const [isResizable, setIsResizable] = useState(true)
+
+  const [currentBreakpoint, setCurrentBreakpoint] = useState('lg')
+
   const [childrenSize, setChildrenSize] = useState(() => {
-    if(localStorage.getItem(assetName)) {
-      return JSON.parse(localStorage.getItem(assetName))
-    }
-    else {
-      return {
-        default: [
-          {
-            "1x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "1x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "1x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-          },
-          {
-            "1x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "1x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "1x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-          },
-          {
-            "1x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "1x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "1x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-          },
-        ],
-        detail: [
-          {
-            "1x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "1x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "1x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-          },
-          {
-            "1x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "1x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "1x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-          },
-          {
-            "1x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "1x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "1x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-          },
-        ],
-        edit: [
-          {
-            "1x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "1x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "1x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-          },
-          {
-            "1x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "1x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "1x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-          },
-          {
-            "1x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "1x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "1x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-          },
-        ],
-        filters: [
-          {
-            "1x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "1x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "1x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-          },
-          {
-            "1x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "1x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "1x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-          },
-          {
-            "1x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "1x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "1x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "2x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x1": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x2": {x: 0, y: 0, w: 3, h: 1, visible: true},
-            "3x3": {x: 0, y: 0, w: 3, h: 1, visible: true},
-          },
-        ],
-      }
-    }
+    return (localStorage.getItem(assetName))
+      ? JSON.parse(localStorage.getItem(assetName))
+      : {}
   })
 
   // always cast children to array for filtering and memorize them for better performance
-  const children = React.Children.toArray(props.children).map((val, idx) => {
-    return <div key={idx} data-grid={childrenSize[view][idx][`${parentLayout.w}x${parentLayout.h}`]}>
+  const children = React.Children.toArray(props.children).map((child, idx) => {
+    // push empty view to childrenSize if not existent
+    if(childrenSize[view] === undefined) {
+      childrenSize[view] = []
+    }
+
+    // push all sizes to view if not existent
+    if(childrenSize[view][idx] === undefined) {
+      childrenSize[view].push({
+        "1x1": {x: 0, y: 0, w: 1, h: 1, visible: false},
+        "1x2": {x: 0, y: 0, w: 1, h: 1, visible: false},
+        "1x3": {x: 0, y: 0, w: 1, h: 1, visible: false},
+        "2x1": {x: 0, y: 0, w: 1, h: 1, visible: false},
+        "2x2": {x: 0, y: 0, w: 1, h: 1, visible: false},
+        "2x3": {x: 0, y: 0, w: 1, h: 1, visible: false},
+        "3x1": {x: 0, y: 0, w: 1, h: 1, visible: false},
+        "3x2": {x: 0, y: 0, w: 1, h: 1, visible: false},
+        "3x3": {x: 0, y: 0, w: 1, h: 1, visible: false},
+      })
+    }
+
+    return (
+      <div key={idx} data-grid={childrenSize[view][idx][`${parentLayout.w}x${parentLayout.h}`]}>
       <div className='relative w-full h-full'>
-        <div onClick={() => removeChild(idx, val[`${parentLayout.w}x${parentLayout.h}`])} className='absolute top-1 right-1 bg-black text-white px-1'>x</div>
-          {val}
+        <div onClick={() => removeChild(idx, child[`${parentLayout.w}x${parentLayout.h}`])} className='absolute top-1 right-1 bg-black text-white px-1 cursor-pointer'>x</div>
+          {child}
         </div>
-      </div>;
+      </div>
+    );
   });
 
   const data = {}
@@ -208,7 +87,7 @@ const View = (props) => {
     })
   }
 
-  const removeChild = (idx, child) => {
+  const removeChild = (idx) => {
     setChildrenSize((currentState) => {
       currentState[view][idx][`${parentLayout.w}x${parentLayout.h}`]['visible'] = false
 
@@ -217,7 +96,7 @@ const View = (props) => {
     })
   }
 
-  const addChild = (idx, child) => {
+  const addChild = (idx) => {
     setChildrenSize((currentState) => {
       currentState[view][idx][`${parentLayout.w}x${parentLayout.h}`]['visible'] = true
 
@@ -231,7 +110,7 @@ const View = (props) => {
   }
 
   const updateIsDraggable = () => {
-    updateGridEditable(!isDraggable)
+    updateGridEditable(isDraggable)
     setIsDraggable(!isDraggable)
   }
 
@@ -250,8 +129,9 @@ const View = (props) => {
           </div>
 
           <div className='w-full h-full overflow-y-auto'>
-            {childrenSize[view].map((val, idx) => {
-              let child = val[`${parentLayout.w}x${parentLayout.h}`]
+            {childrenSize[view].map((view, idx) => {
+              let child = view[`${parentLayout.w}x${parentLayout.h}`]
+              
               if(child.visible === false) {
                 return ( 
                   <div onClick={() => addChild(idx, child)} className='text-black w-full p-2 border border-black' key={idx}>
@@ -267,13 +147,13 @@ const View = (props) => {
               View: {view}
           </small>
           <div className="flex flex-row gap-2">
-            <button className="text-xs border border-yellow-400 rounded-md px-2 py-1" onClick={() => exportLayout()}>
+            <button className={`text-xs border border-yellow-400 rounded-md px-2 py-1`} onClick={exportLayout}>
               Export Layout
             </button>
             <button className={`text-xs border border-yellow-400 rounded-md px-2 py-1 ${(isDraggable ? 'bg-yellow-400' : '')}`} onClick={() => updateIsDraggable()}>
               Draggable
             </button>
-            <button className={`text-xs border border-yellow-400 rounded-md px-2 py-1" ${(isResizable ? 'bg-yellow-400' : '')}`} onClick={() => updateIsResizeable()}>
+            <button className={`text-xs border border-yellow-400 rounded-md px-2 py-1 ${(isResizable ? 'bg-yellow-400' : '')}`} onClick={() => updateIsResizeable()}>
               Resizable
             </button>
             <button className={`text-xs border border-yellow-400 rounded-md px-2 py-1`} onClick={() => setView("default")}>
@@ -301,11 +181,7 @@ const View = (props) => {
             margin={[0,0]}
             onBreakpointChange={setCurrentBreakpoint}
             onLayoutChange={updateLayout}>
-            {children.filter((child, index) => {
-              return (
-                childrenSize[view][index][`${parentLayout.w}x${parentLayout.h}`].visible
-              )
-            })}
+            {children.filter((child, index) => (childrenSize[view][index][`${parentLayout.w}x${parentLayout.h}`].visible))}
           </ResponsiveGridLayout>
         </div>
       </div>
