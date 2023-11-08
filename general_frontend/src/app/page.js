@@ -18,6 +18,7 @@ const Home = () => {
               posts: {url: "https://dummyjson.com/posts"}
             }}>
             <Input
+              name="user.test.1"
               link="users" 
               placeholder="test 1"
               actions={{
@@ -25,6 +26,7 @@ const Home = () => {
                 filters: true
               }}/>
             <Input 
+              name="user.test.2"
               link="users" 
               placeholder="test 2"
               actions={{
@@ -32,13 +34,7 @@ const Home = () => {
                 filters: true
               }}/>
             <Input 
-              link="users" 
-              placeholder="test 3"
-              actions={{
-                edit: "edit.users", 
-                filters: true
-              }}/>
-            <Input 
+              name="user.test.3"
               link="users" 
               placeholder="test 3"
               actions={{
@@ -52,7 +48,7 @@ const Home = () => {
               users: {url: "https://dummyjson.com/users"},
               posts: {url: "https://dummyjson.com/posts"}
             }}>
-            <Input link="posts"/>
+            <Input link="posts" name="user.test.1"/>
           </View>
           <View
             type={['edit']} 
@@ -60,7 +56,7 @@ const Home = () => {
               users: {url: "https://dummyjson.com/users"},
               posts: {url: "https://dummyjson.com/posts"}
             }}>
-            <Input link="posts"/>
+            <Input link="posts" name="user.test.1"/>
           </View>
           <View
             type={['filters']} 
@@ -68,7 +64,7 @@ const Home = () => {
               users: {url: "https://dummyjson.com/users"},
               posts: {url: "https://dummyjson.com/posts"}
             }}>
-            <Input link="posts"/>
+            <Input link="posts" name="user.test.1"/>
           </View>
         </Asset>
       </GridLayout>

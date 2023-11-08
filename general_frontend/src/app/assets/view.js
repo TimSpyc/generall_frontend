@@ -11,11 +11,8 @@ const View = (props) => {
   const {view, setView} = useContext(AssetContext);
   const {assetName} = useContext(AssetContext);
   
-  const {currentLayout, updateGridEditable} = useContext(GridLayoutContext);
+  const {currentLayout, updateGridEditable, isViewDraggable, isViewResizable} = useContext(GridLayoutContext);
   const parentLayout = currentLayout.find((layout) => layout.i === assetName)
-
-  const [isDraggable, setIsDraggable] = useState(true)
-  const [isResizable, setIsResizable] = useState(true)
 
   const [currentBreakpoint, setCurrentBreakpoint] = useState('lg')
 
@@ -47,6 +44,7 @@ const View = (props) => {
       })
     }
 
+    // prepare all elements to be visible in the grid
     return (
       <div key={idx} data-grid={childrenSize[view][idx][`${parentLayout.w}x${parentLayout.h}`]}>
       <div className='relative w-full h-full'>
@@ -109,15 +107,6 @@ const View = (props) => {
     console.debug(childrenSize)
   }
 
-  const updateIsDraggable = () => {
-    updateGridEditable(isDraggable)
-    setIsDraggable(!isDraggable)
-  }
-
-  const updateIsResizeable = () => {
-    setIsResizable(!isResizable)
-  }
-
   return (
     <ViewContext.Provider value={{view, setView, data, fetchRequest}}>
       <div className="w-full h-full">
@@ -131,7 +120,7 @@ const View = (props) => {
           <div className='w-full h-full overflow-y-auto'>
             {childrenSize[view].map((view, idx) => {
               let child = view[`${parentLayout.w}x${parentLayout.h}`]
-              
+
               if(child.visible === false) {
                 return ( 
                   <div onClick={() => addChild(idx, child)} className='text-black w-full p-2 border border-black' key={idx}>
@@ -142,19 +131,13 @@ const View = (props) => {
             })}
           </div>
         </div>
-        <div className='flex flex-row justify-between w-full items-center mb-2 absolute -top-10 right-0'>
+        <div className='flex flex-row justify-end items-center mb-2 absolute -top-10 right-0 gap-2'>
           <small className="text-gray-500">
               View: {view}
           </small>
           <div className="flex flex-row gap-2">
             <button className={`text-xs border border-yellow-400 rounded-md px-2 py-1`} onClick={exportLayout}>
               Export Layout
-            </button>
-            <button className={`text-xs border border-yellow-400 rounded-md px-2 py-1 ${(isDraggable ? 'bg-yellow-400' : '')}`} onClick={() => updateIsDraggable()}>
-              Draggable
-            </button>
-            <button className={`text-xs border border-yellow-400 rounded-md px-2 py-1 ${(isResizable ? 'bg-yellow-400' : '')}`} onClick={() => updateIsResizeable()}>
-              Resizable
             </button>
             <button className={`text-xs border border-yellow-400 rounded-md px-2 py-1`} onClick={() => setView("default")}>
               Default
@@ -176,8 +159,8 @@ const View = (props) => {
             breakpoints={{ lg: 1200, md: 996, sm: 768 }}
 				    cols={{lg: 36, md: 24, sm: 12}}
             rowHeight={50}
-            isDraggable={isDraggable}
-            isResizable={isResizable}
+            isDraggable={isViewDraggable}
+            isResizable={isViewResizable}
             margin={[0,0]}
             onBreakpointChange={setCurrentBreakpoint}
             onLayoutChange={updateLayout}>
