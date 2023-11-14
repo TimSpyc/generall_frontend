@@ -9,7 +9,7 @@ import Input from "./elements/input"
 const Home = () => {
   return (
     <main className="min-h-screen min-w-screen p-12">
-      <GridLayout>
+      <GridLayout name="testing">
         <Asset name="custom-asset-test">
           <View
             type={['default']} 

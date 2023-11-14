@@ -2,17 +2,7 @@ import { useContext, useState, forwardRef, useImperativeHandle } from "react";
 import { ViewContext } from "../assets/view";
 
 const Input = (props) => {
-  const {setView, resetToDefault, data, fetchRequest} = useContext(ViewContext);
-
-  const navigate = (direction) => {
-    let next = props?.actions?.hasOwnProperty(direction)
-      ? direction =! true
-        ? props.actions[direction]
-        : direction
-      : direction
-    
-    setView(next)
-  }
+  const {setView, resetToDefault, data, fetchRequest, handleActions} = useContext(ViewContext);
 
   return (
     <div className="w-full h-full">

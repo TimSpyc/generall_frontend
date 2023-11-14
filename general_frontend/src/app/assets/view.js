@@ -48,7 +48,13 @@ const View = (props) => {
 
     // prepare all elements to be visible in the grid
     return (
-      <div key={child.props.name} data-grid={childrenSize[view][child.props.name][`${parentLayout.w}x${parentLayout.h}`]}>
+      <div key={child.props.name} 
+        name={child.props.name} 
+        link={child.props.link} 
+        placeholder={child.props.placeholder} 
+        actions={child.props.actions} 
+        data-grid={childrenSize[view][child.props.name][`${parentLayout.w}x${parentLayout.h}`]}
+      >
       <div className='relative w-full h-full'>
         <div onClick={() => removeChild(child.props.name, child[`${parentLayout.w}x${parentLayout.h}`])} className='absolute top-1 right-1 bg-black text-white px-1 cursor-pointer'>x</div>
           {child}
@@ -56,6 +62,14 @@ const View = (props) => {
       </div>
     );
   });
+
+  const collectActions = () => {
+    children.filter((child, index) => {
+      if(childrenSize[view][child.key][`${parentLayout.w}x${parentLayout.h}`].visible) {
+        console.log(child.props.actions)
+      }
+    })
+  }
 
   const data = {}
 
@@ -72,6 +86,8 @@ const View = (props) => {
   }
 
   fetchRequests()
+
+  collectActions()
 
   const updateLayout = (event) => {
     setChildrenSize((currentState) => {
@@ -105,12 +121,24 @@ const View = (props) => {
     })
   }
 
-  const exportLayout = () => {
-    console.debug(childrenSize)
+  const performAction = () => {}
+
+  const handleActions = (action, event) => {
+    // Check for Filter
+    // Check for Edit etc
+    
+    if(action.startsWith('view.')) {
+      setView(action.replace('view.', ''))
+    }
+    else if(action.startsWith('action.')) {
+      performAction(action.replace('action.', ''))
+    }
   }
 
+  const exportLayout = () => console.debug(childrenSize)
+
   return (
-    <ViewContext.Provider value={{view, setView, data, fetchRequest}}>
+    <ViewContext.Provider value={{view, setView, data, fetchRequest, handleActions}}>
       <div className="w-full h-full">
         <div className="absolute z-40 top-0 bottom-0 right-0 w-[200px] border border-white rounded-md bg-white">
           <div className='p-2'>

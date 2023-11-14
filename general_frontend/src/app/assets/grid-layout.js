@@ -5,8 +5,8 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const GridLayout = (props) => {
 	const [layouts, setLayouts] = useState(() => {
-		if(localStorage.getItem('grid')) {
-			return JSON.parse(localStorage.getItem('grid'))
+		if(localStorage.getItem(props.name)) {
+			return JSON.parse(localStorage.getItem(props.name))
 		} 
 		else {
 			let sizes = {sm: {}, md: {}, lg: {}}
@@ -38,8 +38,6 @@ const GridLayout = (props) => {
 				layouts[currentBreakpoint][element.props.name] = {i: element.props.name, x: 0, y: 0, w: 3, h: 1}
 			}
 
-			console.log(layouts[currentBreakpoint][element.props.name])
-
 			return (<div key={element.props.name} data-grid={layouts[currentBreakpoint][element.props.name]}>{element}</div>);
 		})
 	}, [props.children]);
@@ -52,7 +50,7 @@ const GridLayout = (props) => {
 				}
 			})
 
-			localStorage.setItem('grid', JSON.stringify(currentState))
+			localStorage.setItem(props.name, JSON.stringify(currentState))
       		return {...currentState};
 		})
 	}
