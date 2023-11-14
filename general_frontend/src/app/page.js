@@ -3,8 +3,8 @@
 import GridLayout from "./assets/grid-layout"
 import Asset from "./assets/asset"
 import View from "./assets/view"
-
 import Input from "./elements/input"
+import SubmitButton from "./elements/submitbutton"
 
 const Home = () => {
   return (
@@ -14,41 +14,46 @@ const Home = () => {
           <View
             type={['default']} 
             api={{
-              users: {url: "https://dummyjson.com/users"},
+              user: {url: "https://dummyjson.com/user/1"},
               posts: {url: "https://dummyjson.com/posts"}
             }}>
             <Input
-              name="user.test.1"
-              link="users" 
-              placeholder="test 1"
+              name="user.id"
+              link="user" 
+              linkKey="id" 
+              placeholder="User ID"
               actions={{
                 edit: "edit", 
                 filters: true
               }}/>
             <Input 
-              name="user.test.2"
-              link="users" 
-              placeholder="test 2"
+              name="user.firstName"
+              link="user" 
+              linkKey="firstName" 
+              placeholder="First Name"
               actions={{
                 edit: "edit", 
                 filters: true
               }}/>
             <Input 
-              name="user.test.3"
-              link="users" 
-              placeholder="test 3"
+              name="user.lastName"
+              link="user" 
+              linkKey="lastName" 
+              placeholder="Last Name"
               actions={{
                 edit: "edit.users", 
                 filters: true
               }}/>
             <Input 
-              name="user.test.10"
-              link="users" 
-              placeholder="test 3"
+              name="user.university"
+              link="user" 
+              linkKey="university" 
+              placeholder="University"
               actions={{
                 edit: "edit.users", 
                 filters: true
               }}/>
+              <SubmitButton name="submit.user"/>
           </View>
           <View
             type={['detail']} 
@@ -56,7 +61,7 @@ const Home = () => {
               users: {url: "https://dummyjson.com/users"},
               posts: {url: "https://dummyjson.com/posts"}
             }}>
-            <Input link="posts" name="user.test.1"/>
+            <Input link="posts" linkKey="university" name="user.test.1"/>
           </View>
           <View
             type={['edit']} 
@@ -64,7 +69,7 @@ const Home = () => {
               users: {url: "https://dummyjson.com/users"},
               posts: {url: "https://dummyjson.com/posts"}
             }}>
-            <Input link="posts" name="user.test.1"/>
+            <Input link="posts" linkKey="university" name="user.test.1"/>
           </View>
           <View
             type={['filters']} 
@@ -72,48 +77,53 @@ const Home = () => {
               users: {url: "https://dummyjson.com/users"},
               posts: {url: "https://dummyjson.com/posts"}
             }}>
-            <Input link="posts" name="user.test.1"/>
+            <Input link="posts" linkKey="university" name="user.test.1"/>
           </View>
         </Asset>
         <Asset name="custom-asset-test-1">
           <View
             type={['default']} 
             api={{
-              users: {url: "https://dummyjson.com/users"},
+              user: {url: "https://dummyjson.com/user/1"},
               posts: {url: "https://dummyjson.com/posts"}
             }}>
             <Input
-              name="user.test.1"
-              link="users" 
-              placeholder="test 1"
+              name="user.id"
+              link="user" 
+              linkKey="id" 
+              placeholder="User ID"
               actions={{
                 edit: "edit", 
                 filters: true
               }}/>
             <Input 
-              name="user.test.2"
-              link="users" 
-              placeholder="test 2"
+              name="user.firstName"
+              link="user" 
+              linkKey="firstName" 
+              placeholder="First Name"
               actions={{
                 edit: "edit", 
                 filters: true
               }}/>
             <Input 
-              name="user.test.3"
-              link="users" 
-              placeholder="test 3"
+              name="user.lastName"
+              link="user" 
+              linkKey="lastName" 
+              placeholder="Last Name"
               actions={{
                 edit: "edit.users", 
                 filters: true
               }}/>
             <Input 
-              name="user.test.10"
-              link="users" 
-              placeholder="test 3"
+              name="user.university"
+              link="user" 
+              linkKey="university" 
+              placeholder="University"
               actions={{
                 edit: "edit.users", 
                 filters: true
               }}/>
+            <SubmitButton name="submit.user"/>
           </View>
           <View
             type={['detail']} 
@@ -121,7 +131,7 @@ const Home = () => {
               users: {url: "https://dummyjson.com/users"},
               posts: {url: "https://dummyjson.com/posts"}
             }}>
-            <Input link="posts" name="user.test.1"/>
+            <Input link="user" linkKey="university" name="user.test.1"/>
           </View>
           <View
             type={['edit']} 
@@ -129,7 +139,7 @@ const Home = () => {
               users: {url: "https://dummyjson.com/users"},
               posts: {url: "https://dummyjson.com/posts"}
             }}>
-            <Input link="posts" name="user.test.1"/>
+            <Input link="user" linkKey="university" name="user.test.1"/>
           </View>
           <View
             type={['filters']} 
@@ -137,7 +147,7 @@ const Home = () => {
               users: {url: "https://dummyjson.com/users"},
               posts: {url: "https://dummyjson.com/posts"}
             }}>
-            <Input link="posts" name="user.test.1"/>
+            <Input link="user" linkKey="university" name="user.test.1"/>
           </View>
         </Asset>
       </GridLayout>

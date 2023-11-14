@@ -10,13 +10,11 @@ const GridLayout = (props) => {
 		} 
 		else {
 			let sizes = {sm: {}, md: {}, lg: {}}
-
 			React.Children.toArray(props.children).map((val, idx) => {
 				sizes.sm[val.props.name] = {i: val.props.name, x: 0, y: 0, w: 3, h: 1}
 				sizes.md[val.props.name] = {i: val.props.name, x: 0, y: 0, w: 2, h: 1}
 				sizes.lg[val.props.name] = {i: val.props.name, x: 0, y: 0, w: 1, h: 1}
 			})
-
 			return sizes
 		}
 	})
@@ -31,7 +29,6 @@ const GridLayout = (props) => {
 
 	const children = React.useMemo(() => {
 		if(layouts[currentBreakpoint] === undefined) layouts[currentBreakpoint] = {}
-
 		return React.Children.toArray(props.children).map((element, idx) => {
 			if(layouts[currentBreakpoint].hasOwnProperty(element.props.name) === false) {
 				layouts[currentBreakpoint][element.props.name] = {i: element.props.name, x: 0, y: 0, w: 3, h: 1}
@@ -48,7 +45,6 @@ const GridLayout = (props) => {
 					i: element.i, x: element.x, y: element.y, w: element.w, h: element.h
 				}
 			})
-
 			localStorage.setItem(props.name, JSON.stringify(currentState))
       		return {...currentState};
 		})

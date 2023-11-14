@@ -16,7 +16,7 @@ const View = (props) => {
 
   const [currentBreakpoint, setCurrentBreakpoint] = useState('lg')
   const [sidebarOpen, setSidebarOpen] = useState(false)
-
+  const [formData, setFormData] = useState({})
   const [childrenSize, setChildrenSize] = useState(() => {
     return (localStorage.getItem(assetName))
       ? JSON.parse(localStorage.getItem(assetName))
@@ -25,8 +25,6 @@ const View = (props) => {
 
   // always cast children to array for filtering and memorize them for better performance
   const children = React.Children.toArray(props.children).map((child, idx) => {
-    // TODO: Cleanup unused Components in Sizes
-
     // push empty view to childrenSize if not existent
     if(childrenSize[view] === undefined) childrenSize[view] = {}
 
@@ -47,7 +45,8 @@ const View = (props) => {
 
     // prepare all elements to be visible in the grid
     return (
-      <div key={child.props.name} 
+      <div 
+        key={child.props.name} 
         name={child.props.name} 
         link={child.props.link} 
         placeholder={child.props.placeholder} 
@@ -131,6 +130,8 @@ const View = (props) => {
   const handleActions = (action, event) => {
     // Check for Filter
     // Check for Edit etc
+    // TODO: Beispiel für Route wechsel
+    // TODO: Datenfluss noch abbilden
 
     if(action.startsWith('view.')) {
       setView(action.replace('view.', ''))
@@ -142,11 +143,22 @@ const View = (props) => {
 
   const exportLayout = () => console.debug(childrenSize)
 
+  const handleFormData = (key, value) => {
+    setFormData(currentState => {
+      currentState[key] = value;
+      return {...currentState};
+		})
+  }
+
+  const handleFormSubmit = () => {
+    console.log(formData)
+  }
+
   return (
-    <ViewContext.Provider value={{view, setView, data, fetchRequest, handleActions}}>
+    <ViewContext.Provider value={{view, setView, data, fetchRequest, handleActions, handleFormData, handleFormSubmit}}>
       <div className="w-full h-full">
         
-        <div className={`absolute z-40 top-0 bottom-0 right-0 rounded-md bg-white shadow-md border border-black transition-all ease-in-out ${sidebarOpen ? 'hidden w-[0px]' : 'block w-[200px]}'}`}>
+        <div className={`absolute z-40 top-0 bottom-0 right-0 rounded-md bg-white shadow-md border border-black transition-all ease-in-out ${sidebarOpen ? 'block w-[200px]' : 'hidden w-[0px]'}`}>
           <div className='p-2'>
             <p className='text-black'>
               Hidden Items {currentLayout[assetName].w}x{currentLayout[assetName].h}
@@ -167,9 +179,10 @@ const View = (props) => {
             })}
           </div>
         </div>
-        <div className='absolute z-40 bottom-3 right-3 bg-black text-white rounded-md px-2'>
-          <button onClick={() => setSidebarOpen(!sidebarOpen)} className={`transition-all ease-in-out ${sidebarOpen ? 'rotate-180' : ''}`}>
-            ►
+        <div className='absolute z-40 bottom-3 right-3 bg-black text-white rounded-md px-1'>
+          <button onClick={() => setSidebarOpen(!sidebarOpen)} className={`transition-all ease-in-out flex flex-row gap-2 text-xs`}>
+            {children.filter((child, index) => (childrenSize[view][child.key][`${parentLayout.w}x${parentLayout.h}`].visible === false)).length} Elements hidden 
+            <div className={`${sidebarOpen ? 'rotate-180' : ''} transition-all ease-in-out`}>►</div>
           </button>
         </div>
         
