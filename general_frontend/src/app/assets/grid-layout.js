@@ -5,33 +5,56 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const GridLayout = (props) => {
 	const [layouts, setLayouts] = useState(() => {
-		let sizes = {sm: [], md: [], lg: []}
+		if(localStorage.getItem('grid')) {
+			return JSON.parse(localStorage.getItem('grid'))
+		} 
+		else {
+			let sizes = {sm: {}, md: {}, lg: {}}
 
-		React.Children.toArray(props.children).map((val, idx) => {
-			sizes.sm.push({i: val.props.name, x: 0, y: 0, w: 3, h: 1})
-			sizes.md.push({i: val.props.name, x: 0, y: 0, w: 2, h: 1})
-			sizes.lg.push({i: val.props.name, x: 0, y: 0, w: 1, h: 1})
-		})
+			React.Children.toArray(props.children).map((val, idx) => {
+				sizes.sm[val.props.name] = {i: val.props.name, x: 0, y: 0, w: 3, h: 1}
+				sizes.md[val.props.name] = {i: val.props.name, x: 0, y: 0, w: 2, h: 1}
+				sizes.lg[val.props.name] = {i: val.props.name, x: 0, y: 0, w: 1, h: 1}
+			})
 
-		return sizes
+			return sizes
+		}
 	})
 
 	const [currentBreakpoint, setCurrentBreakpoint] = useState('lg')
 	const [currentLayout, setCurrentLayout] = useState(layouts[currentBreakpoint])
-
 	const [isDraggable, setIsDraggable] = useState(true)
 	const [isResizable, setIsResizable] = useState(true)
 	const [isViewDraggable, setIsViewDraggable] = useState(false)
 	const [isViewResizable, setIsViewResizeable] = useState(false)
 
 	const children = React.useMemo(() => {
-		return React.Children.toArray(props.children).map((val, idx) => {
-			return (<div key={val.props.name} data-grid={layouts[currentBreakpoint][idx]}>{val}</div>);
+		if(layouts[currentBreakpoint] === undefined) {
+			layouts[currentBreakpoint] = {}
+		}
+
+		return React.Children.toArray(props.children).map((element, idx) => {
+			if(layouts[currentBreakpoint].hasOwnProperty(element.props.name) === false) {
+				layouts[currentBreakpoint][element.props.name] = {i: element.props.name, x: 0, y: 0, w: 3, h: 1}
+			}
+
+			console.log(layouts[currentBreakpoint][element.props.name])
+
+			return (<div key={element.props.name} data-grid={layouts[currentBreakpoint][element.props.name]}>{element}</div>);
 		})
 	}, [props.children]);
 
 	const updateLayout = (event) => {
-		setCurrentLayout(event)
+		setLayouts(currentState => {
+			event.forEach((element, idx) => {
+				currentState[currentBreakpoint][element.i] = {
+					i: element.i, x: element.x, y: element.y, w: element.w, h: element.h
+				}
+			})
+
+			localStorage.setItem('grid', JSON.stringify(currentState))
+      		return {...currentState};
+		})
 	}
 
 	const updateGridEditable = (event) => {

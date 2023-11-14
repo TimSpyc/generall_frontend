@@ -12,7 +12,7 @@ const View = (props) => {
   const {assetName} = useContext(AssetContext);
   
   const {currentLayout, updateGridEditable, isViewDraggable, isViewResizable} = useContext(GridLayoutContext);
-  const parentLayout = currentLayout.find((layout) => layout.i === assetName)
+  const parentLayout = currentLayout[assetName]
 
   const [currentBreakpoint, setCurrentBreakpoint] = useState('lg')
 
@@ -115,7 +115,7 @@ const View = (props) => {
         <div className="absolute z-40 top-0 bottom-0 right-0 w-[200px] border border-white rounded-md bg-white">
           <div className='p-2'>
             <p className='text-black'>
-              Hidden Items {currentLayout.find((layout) => layout.i === assetName).w}x{currentLayout.find((layout) => layout.i === assetName).h}
+              Hidden Items {currentLayout[assetName].w}x{currentLayout[assetName].h}
             </p>
           </div>
 
