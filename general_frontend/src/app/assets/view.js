@@ -11,10 +11,11 @@ const View = (props) => {
   const {view, setView} = useContext(AssetContext);
   const {assetName} = useContext(AssetContext);
   
-  const {currentLayout, updateGridEditable, isViewDraggable, isViewResizable} = useContext(GridLayoutContext);
+  const {currentLayout, updateGridEditable, isViewDraggable, isViewResizable, currentlyResizing} = useContext(GridLayoutContext);
   const parentLayout = currentLayout[assetName]
 
   const [currentBreakpoint, setCurrentBreakpoint] = useState('lg')
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const [childrenSize, setChildrenSize] = useState(() => {
     return (localStorage.getItem(assetName))
@@ -66,7 +67,7 @@ const View = (props) => {
   const collectActions = () => {
     children.filter((child, index) => {
       if(childrenSize[view][child.key][`${parentLayout.w}x${parentLayout.h}`].visible) {
-        console.log(child.props.actions)
+        
       }
     })
   }
@@ -86,21 +87,23 @@ const View = (props) => {
   }
 
   fetchRequests()
-
   collectActions()
 
   const updateLayout = (event) => {
-    setChildrenSize((currentState) => {
-      event.forEach((element, idx) => {
-        currentState[view][element.i][`${parentLayout.w}x${parentLayout.h}`].w = element.w
-        currentState[view][element.i][`${parentLayout.w}x${parentLayout.h}`].h = element.h
-        currentState[view][element.i][`${parentLayout.w}x${parentLayout.h}`].x = element.x
-        currentState[view][element.i][`${parentLayout.w}x${parentLayout.h}`].y = element.y
-      })
+    // required because otherwhise the grid receives wrong sizes!
+    if(currentlyResizing === false) {
+      setChildrenSize((currentState) => {
+        event.forEach((element, idx) => {
+          currentState[view][element.i][`${parentLayout.w}x${parentLayout.h}`].w = element.w
+          currentState[view][element.i][`${parentLayout.w}x${parentLayout.h}`].h = element.h
+          currentState[view][element.i][`${parentLayout.w}x${parentLayout.h}`].x = element.x
+          currentState[view][element.i][`${parentLayout.w}x${parentLayout.h}`].y = element.y
+        })
 
-      localStorage.setItem(assetName, JSON.stringify(currentState))
-      return {...currentState};
-    })
+        localStorage.setItem(assetName, JSON.stringify(currentState))
+        return {...currentState};
+      })
+    }
   }
 
   const removeChild = (idx) => {
@@ -121,12 +124,18 @@ const View = (props) => {
     })
   }
 
-  const performAction = () => {}
+  const performAction = () => {
+
+  }
+
+  const updateCurrentBreakpoint = (event) => {
+    setCurrentBreakpoint(event)
+  }
 
   const handleActions = (action, event) => {
     // Check for Filter
     // Check for Edit etc
-    
+
     if(action.startsWith('view.')) {
       setView(action.replace('view.', ''))
     }
@@ -140,7 +149,8 @@ const View = (props) => {
   return (
     <ViewContext.Provider value={{view, setView, data, fetchRequest, handleActions}}>
       <div className="w-full h-full">
-        <div className="absolute z-40 top-0 bottom-0 right-0 w-[200px] border border-white rounded-md bg-white">
+        
+        <div className={`absolute z-40 top-0 bottom-0 right-0 rounded-md bg-white shadow-md border border-black transition-all ease-in-out ${sidebarOpen ? 'hidden w-[0px]' : 'block w-[200px]}'}`}>
           <div className='p-2'>
             <p className='text-black'>
               Hidden Items {currentLayout[assetName].w}x{currentLayout[assetName].h}
@@ -153,7 +163,7 @@ const View = (props) => {
 
               if(child.visible === false) {
                 return ( 
-                  <div onClick={() => addChild(idx, child)} className='text-black w-full p-2 border border-black' key={idx}>
+                  <div onClick={() => addChild(idx, child)} className='text-black w-full p-2 first-of-type:border-t border-b border-black' key={idx}>
                     {idx}
                   </div>
                 )
@@ -161,6 +171,12 @@ const View = (props) => {
             })}
           </div>
         </div>
+        <div className='absolute z-40 bottom-3 right-3 bg-black text-white rounded-md px-2'>
+          <button onClick={() => setSidebarOpen(!sidebarOpen)} className={`transition-all ease-in-out ${sidebarOpen ? 'rotate-180' : ''}`}>
+            ►
+          </button>
+        </div>
+        
         <div className='flex flex-row justify-end items-center mb-2 absolute -top-10 right-0 gap-2'>
           <small className="text-gray-500">
               View: {view}
@@ -192,7 +208,7 @@ const View = (props) => {
             isDraggable={isViewDraggable}
             isResizable={isViewResizable}
             margin={[0,0]}
-            onBreakpointChange={setCurrentBreakpoint}
+            onBreakpointChange={updateCurrentBreakpoint}
             onLayoutChange={updateLayout}>
             {children.filter((child, index) => (childrenSize[view][child.key][`${parentLayout.w}x${parentLayout.h}`].visible))}
           </ResponsiveGridLayout>

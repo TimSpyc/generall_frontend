@@ -27,6 +27,7 @@ const GridLayout = (props) => {
 	const [isResizable, setIsResizable] = useState(true)
 	const [isViewDraggable, setIsViewDraggable] = useState(false)
 	const [isViewResizable, setIsViewResizeable] = useState(false)
+	const [currentlyResizing, setCurrentlyResizing] = useState(false)
 
 	const children = React.useMemo(() => {
 		if(layouts[currentBreakpoint] === undefined) {
@@ -69,7 +70,7 @@ const GridLayout = (props) => {
 	return (
 		<>
 			<button className='py-2 px-3 bg-yellow-400 text-white rounded-md mb-2' onClick={() => toggleEdit()}>Toggle Edit</button>
-			<GridLayoutContext.Provider value={{layouts, setLayouts, currentLayout, updateGridEditable, isViewDraggable, isViewResizable}}>
+			<GridLayoutContext.Provider value={{layouts, setLayouts, currentLayout, updateGridEditable, isViewDraggable, isViewResizable, currentlyResizing}}>
 				<ResponsiveGridLayout className="layout"
 					key={[isDraggable, isResizable]}
 					breakpoints={{ lg: 1200, md: 996, sm: 768 }}
@@ -77,6 +78,8 @@ const GridLayout = (props) => {
 					rowHeight={600}
 					isDraggable={isDraggable}
 					isResizable={isResizable}
+					onResizeStart={() => setCurrentlyResizing(true)}
+					onResizeStop={() => setCurrentlyResizing(false)}
 					margin={[0,0]}
 					measureBeforeMount={false}
 					onBreakpointChange={setCurrentBreakpoint}
