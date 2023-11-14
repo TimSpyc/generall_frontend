@@ -30,9 +30,7 @@ const GridLayout = (props) => {
 	const [currentlyResizing, setCurrentlyResizing] = useState(false)
 
 	const children = React.useMemo(() => {
-		if(layouts[currentBreakpoint] === undefined) {
-			layouts[currentBreakpoint] = {}
-		}
+		if(layouts[currentBreakpoint] === undefined) layouts[currentBreakpoint] = {}
 
 		return React.Children.toArray(props.children).map((element, idx) => {
 			if(layouts[currentBreakpoint].hasOwnProperty(element.props.name) === false) {

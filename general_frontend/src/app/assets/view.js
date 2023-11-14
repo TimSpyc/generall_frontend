@@ -28,9 +28,7 @@ const View = (props) => {
     // TODO: Cleanup unused Components in Sizes
 
     // push empty view to childrenSize if not existent
-    if(childrenSize[view] === undefined) {
-      childrenSize[view] = {}
-    }
+    if(childrenSize[view] === undefined) childrenSize[view] = {}
 
     // push all sizes to view if not existent
     if(childrenSize[view].hasOwnProperty(child.props.name) === false) {
@@ -124,9 +122,7 @@ const View = (props) => {
     })
   }
 
-  const performAction = () => {
-
-  }
+  const performAction = () => {}
 
   const updateCurrentBreakpoint = (event) => {
     setCurrentBreakpoint(event)
