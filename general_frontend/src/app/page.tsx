@@ -3,6 +3,7 @@
 import GridLayout from "./assets/grid-layout"
 import Asset from "./assets/asset"
 import View from "./assets/view"
+
 import Input from "./elements/input"
 import SubmitButton from "./elements/submitbutton"
 
@@ -53,7 +54,7 @@ const Home = () => {
                 edit: "edit.users", 
                 filters: true
               }}/>
-              <SubmitButton key="submit.user"/>
+              <SubmitButton name="submit.user"/>
           </View>
           <View
             type={['detail']} 
@@ -123,7 +124,7 @@ const Home = () => {
                 edit: "edit.users", 
                 filters: true
               }}/>
-            <SubmitButton key="submit.user"/>
+            <SubmitButton name="submit.user"/>
           </View>
           <View
             type={['detail']} 

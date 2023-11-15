@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, cloneElement } from 'react';
+import React, { createContext, useState, useContext, cloneElement, ReactElement, ReactPortal, ReactFragment } from 'react';
 import { useAssetContext } from "./asset";
 import { useGridLayoutContext } from './grid-layout';
 import useSWR from 'swr';
@@ -45,7 +45,7 @@ const View = (props: ViewProps) => {
     if(childrenSize[view] === undefined) childrenSize[view] = {}
 
     // prepare the children Sizes for parsing afterwards
-    React.Children.toArray(props.children).map((child:any) => {
+    React.Children.toArray(props.children).map((child: any) => {
       // push all sizes to view if not existent
       if(childrenSize[view].hasOwnProperty(child.props.name) === false) {
         childrenSize[view][child.props.name] = {
@@ -70,7 +70,7 @@ const View = (props: ViewProps) => {
       indizes.push(childrenSize[view][child.props.name][`${parentLayout.w}x${parentLayout.h}`])
     })
 
-    let sortedIndizes:any = sortBy(indizes, ['x', 'y'])
+    let sortedIndizes:any = sortBy(indizes, ['y', 'x'])
 
     return React.Children.toArray(props.children).map((child:any) => {
       // prepare all elements to be visible in the grid
@@ -110,11 +110,11 @@ const View = (props: ViewProps) => {
     return data[key] = useSWR(value.url, fetcher)
   }
 
-  const updateLayout = (event:any) => {
+  const updateLayout = (layouts:any) => {
     // required because otherwhise the grid receives wrong sizes!
     if(currentlyResizing === false) {
       setChildrenSize((currentState:any) => {
-        event.forEach((element:any) => {
+        layouts.forEach((element:any) => {
           currentState[view][element.i][`${parentLayout.w}x${parentLayout.h}`].w = element.w
           currentState[view][element.i][`${parentLayout.w}x${parentLayout.h}`].h = element.h
           currentState[view][element.i][`${parentLayout.w}x${parentLayout.h}`].x = element.x
@@ -147,7 +147,7 @@ const View = (props: ViewProps) => {
 
   const performAction = (action:string) => {}
 
-  const handleActions = (action:string, event:any) => {
+  const handleActions = (action:string, event:Event) => {
     if(action.startsWith('view.')) {
       setView(action.replace('view.', ''))
     }
@@ -155,8 +155,6 @@ const View = (props: ViewProps) => {
       performAction(action.replace('action.', ''))
     }
   }
-
-  const exportLayout = () => console.debug(childrenSize)
 
   const handleFormData = (key:string, value:any) => {
     setFormData((currentState:any) => {

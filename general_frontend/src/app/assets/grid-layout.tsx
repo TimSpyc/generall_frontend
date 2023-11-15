@@ -50,7 +50,7 @@ const GridLayout = (props: GridLayoutProps) => {
 	const [isViewResizable, setIsViewResizeable] = useState<boolean>(false)
 	const [currentlyResizing, setCurrentlyResizing] = useState<boolean>(false)
 
-	const children = React.Children.toArray(props.children).map((element:any, index:any) => {
+	const children = React.Children.toArray(props.children).map((element:any, index:number) => {
 		if(layouts[currentBreakpoint] === undefined) layouts[currentBreakpoint] = {}
 
 		if(layouts[currentBreakpoint].hasOwnProperty(element.props.name) === false) {
@@ -59,15 +59,14 @@ const GridLayout = (props: GridLayoutProps) => {
 
 		return (
 			<div key={element.props.name} data-grid={layouts[currentBreakpoint][element.props.name]}>
-				{index}
 				{cloneElement(element, {index:index})}
 			</div>
 		);
 	});
 
-	const updateLayout = (event:any) => {
+	const updateLayout = (layouts:any) => {
 		setLayouts((currentState:any) => {
-			event.forEach((elementDimension:any) => {
+			layouts.forEach((elementDimension:any) => {
 				currentState[currentBreakpoint][elementDimension.i] = {
 					i: elementDimension.i, x: elementDimension.x, y: elementDimension.y, w: elementDimension.w, h: elementDimension.h
 				}
