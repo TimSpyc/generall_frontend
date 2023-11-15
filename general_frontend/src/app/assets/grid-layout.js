@@ -27,16 +27,15 @@ const GridLayout = (props) => {
 	const [isViewResizable, setIsViewResizeable] = useState(false)
 	const [currentlyResizing, setCurrentlyResizing] = useState(false)
 
-	const children = React.useMemo(() => {
+	const children = React.Children.toArray(props.children).map((element, idx) => {
 		if(layouts[currentBreakpoint] === undefined) layouts[currentBreakpoint] = {}
-		return React.Children.toArray(props.children).map((element, idx) => {
-			if(layouts[currentBreakpoint].hasOwnProperty(element.props.name) === false) {
-				layouts[currentBreakpoint][element.props.name] = {i: element.props.name, x: 0, y: 0, w: 3, h: 1}
-			}
 
-			return (<div key={element.props.name} data-grid={layouts[currentBreakpoint][element.props.name]}>{element}</div>);
-		})
-	}, [props.children]);
+		if(layouts[currentBreakpoint].hasOwnProperty(element.props.name) === false) {
+			layouts[currentBreakpoint][element.props.name] = {i: element.props.name, x: 0, y: 0, w: 3, h: 1}
+		}
+
+		return (<div key={element.props.name} data-grid={layouts[currentBreakpoint][element.props.name]}>{element}</div>);
+	});
 
 	const updateLayout = (event) => {
 		setLayouts(currentState => {
@@ -63,7 +62,7 @@ const GridLayout = (props) => {
 
 	return (
 		<>
-			<button className='py-2 px-3 bg-yellow-400 text-white rounded-md mb-2' onClick={() => toggleEdit()}>Toggle Edit</button>
+			<button className='py-2 px-3 bg-yellow-400 text-white mb-2' onClick={() => toggleEdit()}>Toggle Edit</button>
 			<GridLayoutContext.Provider value={{layouts, setLayouts, currentLayout, updateGridEditable, isViewDraggable, isViewResizable, currentlyResizing}}>
 				<ResponsiveGridLayout className="layout"
 					key={[isDraggable, isResizable]}

@@ -7,14 +7,14 @@ import { Responsive, WidthProvider } from "react-grid-layout";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-const View = (props) => {
+const View = ({children, type, api}) => {
   const {view, setView} = useContext(AssetContext);
   const {assetName} = useContext(AssetContext);
   
-  const {currentLayout, updateGridEditable, isViewDraggable, isViewResizable, currentlyResizing} = useContext(GridLayoutContext);
+  const {currentLayout, isViewDraggable, isViewResizable, currentlyResizing} = useContext(GridLayoutContext);
   const parentLayout = currentLayout[assetName]
 
-  const [currentBreakpoint, setCurrentBreakpoint] = useState('lg')
+  const [currentBreakpoint, setCurrentBreakpoint] = useState()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [formData, setFormData] = useState({})
   const [childrenSize, setChildrenSize] = useState(() => {
@@ -24,7 +24,7 @@ const View = (props) => {
   })
 
   // always cast children to array for filtering and memorize them for better performance
-  const children = React.Children.toArray(props.children).map((child, idx) => {
+  const processedChildren = React.Children.toArray(children).map((child, idx) => {
     // push empty view to childrenSize if not existent
     if(childrenSize[view] === undefined) childrenSize[view] = {}
 
@@ -54,7 +54,7 @@ const View = (props) => {
         data-grid={childrenSize[view][child.props.name][`${parentLayout.w}x${parentLayout.h}`]}
       >
       <div className='relative w-full h-full'>
-        <div onClick={() => removeChild(child.props.name, child[`${parentLayout.w}x${parentLayout.h}`])} className='absolute top-1 right-1 bg-black text-white px-1 cursor-pointer'>x</div>
+        <div onClick={() => removeChild(child.props.name, child[`${parentLayout.w}x${parentLayout.h}`])} className='absolute top-1 right-1 bg-black text-white px-0.5 leading-[initial] cursor-pointer border border-white'>x</div>
           {child}
         </div>
       </div>
@@ -62,7 +62,7 @@ const View = (props) => {
   });
 
   const collectActions = () => {
-    children.filter((child, index) => {
+    processedChildren.filter((child, index) => {
       if(childrenSize[view][child.key][`${parentLayout.w}x${parentLayout.h}`].visible) {
         
       }
@@ -72,7 +72,7 @@ const View = (props) => {
   const data = {}
 
   const fetchRequests = () => {
-    for (const [key, value] of Object.entries(props.api)) {
+    for (const [key, value] of Object.entries(api)) {
       fetchRequest(key, value)
     }
   }
@@ -82,9 +82,6 @@ const View = (props) => {
     // also possible to use data_filtered and make it available in the Content, clear it when Filter is unset
     return data[key] = useSWR(value.url, fetcher)
   }
-
-  fetchRequests()
-  collectActions()
 
   const updateLayout = (event) => {
     // required because otherwhise the grid receives wrong sizes!
@@ -128,11 +125,6 @@ const View = (props) => {
   }
 
   const handleActions = (action, event) => {
-    // Check for Filter
-    // Check for Edit etc
-    // TODO: Beispiel für Route wechsel
-    // TODO: Datenfluss noch abbilden
-
     if(action.startsWith('view.')) {
       setView(action.replace('view.', ''))
     }
@@ -154,11 +146,14 @@ const View = (props) => {
     console.log(formData)
   }
 
+  fetchRequests()
+  collectActions()
+
   return (
     <ViewContext.Provider value={{view, setView, data, fetchRequest, handleActions, handleFormData, handleFormSubmit}}>
       <div className="w-full h-full">
         
-        <div className={`absolute z-40 top-0 bottom-0 right-0 rounded-md bg-white shadow-md border border-black transition-all ease-in-out ${sidebarOpen ? 'block w-[200px]' : 'hidden w-[0px]'}`}>
+        <div className={`absolute z-40 top-0 bottom-0 right-0 bg-white shadow-md border border-black transition-all ease-in-out ${sidebarOpen ? 'block w-[200px]' : 'hidden w-[0px]'}`}>
           <div className='p-2'>
             <p className='text-black'>
               Hidden Items {currentLayout[assetName].w}x{currentLayout[assetName].h}
@@ -179,36 +174,14 @@ const View = (props) => {
             })}
           </div>
         </div>
-        <div className='absolute z-40 bottom-3 right-3 bg-black text-white rounded-md px-1'>
+        <div className='absolute z-40 bottom-3 right-3 bg-black text-white px-1'>
           <button onClick={() => setSidebarOpen(!sidebarOpen)} className={`transition-all ease-in-out flex flex-row gap-2 text-xs`}>
-            {children.filter((child, index) => (childrenSize[view][child.key][`${parentLayout.w}x${parentLayout.h}`].visible === false)).length} Elements hidden 
+            {processedChildren.filter((child, index) => (childrenSize[view][child.key][`${parentLayout.w}x${parentLayout.h}`].visible === false)).length} Elements hidden 
             <div className={`${sidebarOpen ? 'rotate-180' : ''} transition-all ease-in-out`}>►</div>
           </button>
         </div>
-        
-        <div className='flex flex-row justify-end items-center mb-2 absolute -top-10 right-0 gap-2'>
-          <small className="text-gray-500">
-              View: {view}
-          </small>
-          <div className="flex flex-row gap-2">
-            <button className={`text-xs border border-yellow-400 rounded-md px-2 py-1`} onClick={exportLayout}>
-              Export Layout
-            </button>
-            <button className={`text-xs border border-yellow-400 rounded-md px-2 py-1`} onClick={() => setView("default")}>
-              Default
-            </button>
-            <button className={`text-xs border border-yellow-400 rounded-md px-2 py-1`} onClick={() => setView("detail")}>
-              Detail
-            </button>
-            <button className={`text-xs border border-yellow-400 rounded-md px-2 py-1`} onClick={() => setView("edit")}>
-              Edit
-            </button>
-            <button className={`text-xs border border-yellow-400 rounded-md px-2 py-1`} onClick={() => setView("filters")}>
-              Filter
-            </button>
-          </div>
-        </div>
-        <div className="outline outline-green-400 rounded-md relative bg-white/70 w-full h-full max-w-full max-h-full">
+
+        <div className="outline outline-green-400 relative bg-white/70 w-full h-full max-w-full max-h-full">
           <ResponsiveGridLayout 
             className="layout"
             breakpoints={{ lg: 1200, md: 996, sm: 768 }}
@@ -219,7 +192,7 @@ const View = (props) => {
             margin={[0,0]}
             onBreakpointChange={updateCurrentBreakpoint}
             onLayoutChange={updateLayout}>
-            {children.filter((child, index) => (childrenSize[view][child.key][`${parentLayout.w}x${parentLayout.h}`].visible))}
+            {processedChildren.filter((child, index) => (childrenSize[view][child.key][`${parentLayout.w}x${parentLayout.h}`].visible))}
           </ResponsiveGridLayout>
         </div>
       </div>

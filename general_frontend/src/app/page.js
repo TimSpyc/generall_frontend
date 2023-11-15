@@ -14,7 +14,7 @@ const Home = () => {
           <View
             type={['default']} 
             api={{
-              user: {url: "https://dummyjson.com/user/1"},
+              user: {url: "https://dummyjson.com/user/3"},
               posts: {url: "https://dummyjson.com/posts"}
             }}>
             <Input
