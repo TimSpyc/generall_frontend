@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, cloneElement } from 'react';
 import { Responsive, WidthProvider } from "react-grid-layout";
 
 type GridLayoutContextType = {
@@ -11,15 +11,9 @@ type GridLayoutContextType = {
 	currentlyResizing: Boolean
 }
 
-type GridLayoutChildren = {
-	key: string,
-	props: any
-	type: any
-}
-
 type GridLayoutProps = {
 	name: string,
-	children: GridLayoutChildren[],
+	children: JSX.Element[],
 }
 
 type GridLayoutSizes = {
@@ -56,21 +50,26 @@ const GridLayout = (props: GridLayoutProps) => {
 	const [isViewResizable, setIsViewResizeable] = useState<boolean>(false)
 	const [currentlyResizing, setCurrentlyResizing] = useState<boolean>(false)
 
-	const children = React.Children.toArray(props.children).map((element:any) => {
+	const children = React.Children.toArray(props.children).map((element:any, index:any) => {
 		if(layouts[currentBreakpoint] === undefined) layouts[currentBreakpoint] = {}
 
 		if(layouts[currentBreakpoint].hasOwnProperty(element.props.name) === false) {
 			layouts[currentBreakpoint][element.props.name] = {i: element.props.name, x: 0, y: 0, w: 3, h: 1}
 		}
 
-		return (<div key={element.props.name} data-grid={layouts[currentBreakpoint][element.props.name]}>{element}</div>);
+		return (
+			<div key={element.props.name} data-grid={layouts[currentBreakpoint][element.props.name]}>
+				{index}
+				{cloneElement(element, {index:index})}
+			</div>
+		);
 	});
 
 	const updateLayout = (event:any) => {
 		setLayouts((currentState:any) => {
-			event.forEach((element:any) => {
-				currentState[currentBreakpoint][element.i] = {
-					i: element.i, x: element.x, y: element.y, w: element.w, h: element.h
+			event.forEach((elementDimension:any) => {
+				currentState[currentBreakpoint][elementDimension.i] = {
+					i: elementDimension.i, x: elementDimension.x, y: elementDimension.y, w: elementDimension.w, h: elementDimension.h
 				}
 			})
 			localStorage.setItem(props.name, JSON.stringify(currentState))

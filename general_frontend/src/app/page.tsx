@@ -53,7 +53,7 @@ const Home = () => {
                 edit: "edit.users", 
                 filters: true
               }}/>
-              <SubmitButton name="submit.user"/>
+              <SubmitButton key="submit.user"/>
           </View>
           <View
             type={['detail']} 
@@ -123,7 +123,7 @@ const Home = () => {
                 edit: "edit.users", 
                 filters: true
               }}/>
-            <SubmitButton name="submit.user"/>
+            <SubmitButton key="submit.user"/>
           </View>
           <View
             type={['detail']} 

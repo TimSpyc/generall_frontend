@@ -8,16 +8,11 @@ import {sortBy} from "lodash"
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-type ViewChildren = {
-  key: string,
-  children: JSX.Element[],
-  props: any
-  type: any
-}
-
 type ViewProps = {
-  children: ViewChildren[],
+  children: JSX.Element[] | JSX.Element,
   api: object
+  type: string[],
+  index?: number
 }
 
 type ViewContextType = {
@@ -36,7 +31,6 @@ const View = (props: ViewProps) => {
 
   const parentLayout = currentLayout[assetName]
 
-  const [currentBreakpoint, setCurrentBreakpoint] = useState()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [formData, setFormData] = useState({})
   const [childrenSize, setChildrenSize] = useState(() => {
@@ -85,7 +79,7 @@ const View = (props: ViewProps) => {
         <div className='relative w-full h-full'>
           <div onClick={() => removeChild(child.props.name)} className='absolute top-1 right-1 bg-black text-white px-0.5 leading-[initial] cursor-pointer border border-white'>x</div>
             {cloneElement(child, {
-              tabIndex: sortedIndizes.findIndex((element:any) => element.i === child.props.name) + 1,
+              tabIndex: `${props.index}000${sortedIndizes.findIndex((element:any) => element.i === child.props.name) + 1}`,
               gridSize: childrenSize[view][child.props.name][`${parentLayout.w}x${parentLayout.h}`]
             })}
           </div>
@@ -152,10 +146,6 @@ const View = (props: ViewProps) => {
   }
 
   const performAction = (action:string) => {}
-
-  const updateCurrentBreakpoint = (event:any) => {
-    setCurrentBreakpoint(event)
-  }
 
   const handleActions = (action:string, event:any) => {
     if(action.startsWith('view.')) {
@@ -225,7 +215,6 @@ const View = (props: ViewProps) => {
             isDraggable={isViewDraggable}
             isResizable={isViewResizable}
             margin={[0,0]}
-            onBreakpointChange={updateCurrentBreakpoint}
             onLayoutChange={updateLayout}>
             {processedChildren().filter((child:any) => (childrenSize[view][child.key][`${parentLayout.w}x${parentLayout.h}`].visible))}
           </ResponsiveGridLayout>
