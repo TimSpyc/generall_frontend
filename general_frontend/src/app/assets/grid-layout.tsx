@@ -32,7 +32,7 @@ const GridLayout = (props: GridLayoutProps) => {
 		else {
 			let sizes:GridLayoutSizes = {sm: {}, md: {}, lg: {}}
 
-			React.Children.toArray(props.children).map((element:any) => {
+			React.Children.map(props.children, (element:JSX.Element, index: number) => {
 				sizes.sm[element.props.name] = {i: element.props.name, x: 0, y: 0, w: 3, h: 1}
 				sizes.md[element.props.name] = {i: element.props.name, x: 0, y: 0, w: 2, h: 1}
 				sizes.lg[element.props.name] = {i: element.props.name, x: 0, y: 0, w: 1, h: 1}
@@ -50,16 +50,16 @@ const GridLayout = (props: GridLayoutProps) => {
 	const [isViewResizable, setIsViewResizeable] = useState<boolean>(false)
 	const [currentlyResizing, setCurrentlyResizing] = useState<boolean>(false)
 
-	const children = React.Children.toArray(props.children).map((element:any, index:number) => {
+	const children = React.Children.map(props.children, (child:JSX.Element, index: number) => {
 		if(layouts[currentBreakpoint] === undefined) layouts[currentBreakpoint] = {}
 
-		if(layouts[currentBreakpoint].hasOwnProperty(element.props.name) === false) {
-			layouts[currentBreakpoint][element.props.name] = {i: element.props.name, x: 0, y: 0, w: 3, h: 1}
+		if(layouts[currentBreakpoint].hasOwnProperty(child.props.name) === false) {
+			layouts[currentBreakpoint][child.props.name] = {i: child.props.name, x: 0, y: 0, w: 3, h: 1}
 		}
 
 		return (
-			<div key={element.props.name} data-grid={layouts[currentBreakpoint][element.props.name]}>
-				{cloneElement(element, {index:index})}
+			<div key={child.props.name} data-grid={layouts[currentBreakpoint][child.props.name]}>
+				{cloneElement(child, {index:index})}
 			</div>
 		);
 	});
@@ -76,7 +76,7 @@ const GridLayout = (props: GridLayoutProps) => {
 		})
 	}
 
-	const updateGridEditable = (event:any) => {
+	const updateGridEditable = (event:boolean) => {
 		setIsDraggable(event ? true : false)
 	}
 

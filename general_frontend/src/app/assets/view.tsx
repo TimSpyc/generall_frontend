@@ -4,7 +4,7 @@ import { useGridLayoutContext } from './grid-layout';
 import useSWR from 'swr';
 import { fetcher } from "../fetcher"
 import { Responsive, WidthProvider } from "react-grid-layout";
-import {sortBy} from "lodash"
+import { sortBy } from "lodash"
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -45,7 +45,7 @@ const View = (props: ViewProps) => {
     if(childrenSize[view] === undefined) childrenSize[view] = {}
 
     // prepare the children Sizes for parsing afterwards
-    React.Children.toArray(props.children).map((child: any) => {
+    React.Children.map(props.children, (child:JSX.Element, index: number) => {
       // push all sizes to view if not existent
       if(childrenSize[view].hasOwnProperty(child.props.name) === false) {
         childrenSize[view][child.props.name] = {
@@ -64,7 +64,7 @@ const View = (props: ViewProps) => {
 
     let indizes:any = []
     
-    React.Children.toArray(props.children).map((child:any) => {
+    React.Children.map(props.children, (child:JSX.Element, index: number) => {
       let element = childrenSize[view][child.props.name][`${parentLayout.w}x${parentLayout.h}`]
       element["i"] = child.props.name
       indizes.push(childrenSize[view][child.props.name][`${parentLayout.w}x${parentLayout.h}`])
@@ -79,22 +79,17 @@ const View = (props: ViewProps) => {
         <div className='relative w-full h-full'>
           <div onClick={() => removeChild(child.props.name)} className='absolute top-1 right-1 bg-black text-white px-0.5 leading-[initial] cursor-pointer border border-white'>x</div>
             {cloneElement(child, {
+              key: child.props.name,
               tabIndex: `${props.index}000${sortedIndizes.findIndex((element:any) => element.i === child.props.name) + 1}`,
               gridSize: childrenSize[view][child.props.name][`${parentLayout.w}x${parentLayout.h}`]
             })}
           </div>
         </div>
-      );
+      )
     });
   }
 
-  const collectActions = () => {
-    processedChildren().filter((child:any) => {
-      if(childrenSize[view][child.key][`${parentLayout.w}x${parentLayout.h}`].visible) {
-        
-      }
-    })
-  }
+  console.log(processedChildren())
 
   const data:any = {}
 
@@ -168,7 +163,6 @@ const View = (props: ViewProps) => {
   }
 
   FetchRequests()
-  collectActions()
 
   return (
     <ViewContext.Provider value={{view, setView, data, FetchRequest, handleActions, handleFormData, handleFormSubmit}}>

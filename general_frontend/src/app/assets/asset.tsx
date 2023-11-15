@@ -22,7 +22,7 @@ const Asset= (props: AssetProps) => {
       <AssetContext.Provider value={{view, setView, assetName, setAssetName}}>
         <div className="w-full h-full">
             <div className="outline outline-red-400 rounded-md w-full bg-white/50 h-full">
-                {props.children.map((child, index) => {
+                {props.children.map((child:JSX.Element, index: number) => {
                   if(child.props.hasOwnProperty('type') === false || child.props.type.includes(view)) {
                     return(
                       <div className='h-full w-full' key={index}>
