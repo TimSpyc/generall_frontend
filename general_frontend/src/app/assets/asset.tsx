@@ -22,9 +22,13 @@ const Asset= (props: AssetProps) => {
       <AssetContext.Provider value={{view, setView, assetName, setAssetName}}>
         <div className="w-full h-full">
             <div className="outline outline-red-400 rounded-md w-full bg-white/50 h-full">
-                {props.children.map((child) => {
+                {props.children.map((child, index) => {
                   if(child.props.hasOwnProperty('type') === false || child.props.type.includes(view)) {
-                    return cloneElement(child, {index: props.index})
+                    return(
+                      <div className='h-full w-full' key={index}>
+                        {cloneElement(child, {index: props.index})}
+                      </div>
+                    )
                   }
                 })}
             </div>

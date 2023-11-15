@@ -26,7 +26,7 @@ type ViewContextType = {
 }
 
 const View = (props: ViewProps) => {
-  const {view, setView, assetName} = useAssetContext();
+  const {view, setView, assetName, setAssetName} = useAssetContext();
   const {currentLayout, isViewDraggable, isViewResizable, currentlyResizing} = useGridLayoutContext();
 
   const parentLayout = currentLayout[assetName]
