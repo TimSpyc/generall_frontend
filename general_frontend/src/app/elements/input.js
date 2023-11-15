@@ -28,6 +28,7 @@ const Input = (props) => {
 
         {(data[props.link].isLoading === false && data[props.link].data) &&
           <input
+            tabIndex={props.tabIndex}
             onInput={changeHandler}
             value={value}
             type="text"
