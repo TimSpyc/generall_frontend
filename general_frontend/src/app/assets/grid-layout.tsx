@@ -13,7 +13,6 @@ type GridLayoutContextType = {
 
 type GridLayoutChildren = {
 	key: string,
-  	children: JSX.Element[],
 	props: any
 	type: any
 }

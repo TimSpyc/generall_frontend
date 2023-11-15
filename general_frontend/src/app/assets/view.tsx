@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, cloneElement } from 'react';
-import { AssetContext, useAssetContext } from "./asset";
-import { GridLayoutContext, useGridLayoutContext } from './grid-layout';
+import { useAssetContext } from "./asset";
+import { useGridLayoutContext } from './grid-layout';
 import useSWR from 'swr';
 import { fetcher } from "../fetcher"
 import { Responsive, WidthProvider } from "react-grid-layout";
@@ -20,11 +20,14 @@ type ViewProps = {
   api: object
 }
 
-type AssetContextType = {
+type ViewContextType = {
   view: string,
   setView: Function,
-  assetName: string,
-  setAssetName: Function
+  data: object,
+  FetchRequest: Function,
+  handleActions: Function,
+  handleFormData: Function,
+  handleFormSubmit: Function,
 }
 
 const View = (props: ViewProps) => {
@@ -101,13 +104,13 @@ const View = (props: ViewProps) => {
 
   const data:any = {}
 
-  const fetchRequests = () => {
+  const FetchRequests = () => {
     for (const [key, value] of Object.entries(props.api)) {
-      fetchRequest(key, value)
+      FetchRequest(key, value)
     }
   }
 
-  const fetchRequest = (key:string, value:any, params?:any) => {
+  const FetchRequest = (key:string, value:any, params?:any) => {
     // TODO: If filter is set use a custom key in object to store the data. Also check if this Object is destroyed when the Component umnounts
     // also possible to use data_filtered and make it available in the Content, clear it when Filter is unset
     return data[key] = useSWR(value.url, fetcher)
@@ -176,11 +179,11 @@ const View = (props: ViewProps) => {
     console.log(formData)
   }
 
-  fetchRequests()
+  FetchRequests()
   collectActions()
 
   return (
-    <ViewContext.Provider value={{view, setView, data, fetchRequest, handleActions, handleFormData, handleFormSubmit}}>
+    <ViewContext.Provider value={{view, setView, data, FetchRequest, handleActions, handleFormData, handleFormSubmit}}>
       <div className="w-full h-full">
         
         <div className={`absolute z-40 top-0 bottom-0 right-0 bg-white shadow-md border border-black transition-all ease-in-out ${sidebarOpen ? 'block w-[200px]' : 'hidden w-[0px]'}`}>
@@ -233,4 +236,7 @@ const View = (props: ViewProps) => {
 }
 
 export default View
-export const ViewContext = createContext({});
+
+// Best practice for unassigned Contexts: https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/context/#without-default-context-value
+export const ViewContext = createContext<ViewContextType | any>({});
+export const useViewContext = () => useContext(ViewContext);

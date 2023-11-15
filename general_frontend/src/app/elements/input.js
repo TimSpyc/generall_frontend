@@ -1,8 +1,8 @@
-import { useContext, useState, useEffect, forwardRef, useImperativeHandle } from "react";
-import { ViewContext } from "../assets/view";
+import { useState, useEffect } from "react";
+import { useViewContext } from "../assets/view";
 
 const Input = (props) => {
-  const {setView, resetToDefault, data, fetchRequest, handleActions, handleFormData} = useContext(ViewContext);
+  const {setView, resetToDefault, data, FetchRequest, handleActions, handleFormData} = useViewContext();
   const [value, setValue] = useState('');
   const [finishedLoading, setFinishedLoading] = useState(false)
 
