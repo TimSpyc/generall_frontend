@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext, cloneElement } from 'react';
+import useSWR from 'swr';
 import { useAssetContext } from "./asset";
 import { useGridLayoutContext } from './grid-layout';
-import useSWR from 'swr';
 import { fetcher } from "../fetcher"
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { sortBy } from "lodash"
@@ -79,7 +79,7 @@ const View = (props: ViewProps) => {
       return (
         <div key={child.props.name} data-grid={childrenSize[view][child.props.name][`${parentLayout.w}x${parentLayout.h}`]}>
           <div className='relative w-full h-full p-1'>
-            <div onClick={() => removeChild(child.props.name)} className='absolute top-1 right-1 bg-black text-white px-0.5 leading-[initial] cursor-pointer border border-white'>x</div>
+            <div onClick={() => removeChild(child.props.name)} className='absolute top-1 right-1 bg-gray-800 rounded-md shadow-sm text-white px-1 leading-[initial] cursor-pointer border border-white'><span>x</span></div>
             {cloneElement(child, {
               key: child.props.name,
               tabIndex: `${props.index}000${sortedIndizes.findIndex((element:any) => element.i === child.props.name) + 1}`,
@@ -162,13 +162,11 @@ const View = (props: ViewProps) => {
 
   return (
     <ViewContext.Provider value={{view, setView, data, FetchRequest, handleActions, handleFormData, handleFormSubmit}}>
-      <div className="w-full h-full">
-        
-        <div className={`absolute z-40 top-4 bottom-4 right-4 bg-white shadow-md border border-black transition-all ease-in-out ${sidebarOpen ? 'block w-[200px]' : 'hidden w-[0px]'}`}>
-          <div className='p-2'>
-            <p className='text-black'>
+        <div className={`absolute z-40 top-4 bottom-4 right-4 bg-white shadow-md rounded-md border border-gray-400 transition-all ease-in-out ${sidebarOpen ? 'block w-[200px]' : 'hidden w-[0px]'}`}>
+          <div className='p-2 w-full border-b border-gray-400'>
+            <strong className='text-black'>
               Hidden Items {currentLayout[assetName].w}x{currentLayout[assetName].h}
-            </p>
+            </strong>
           </div>
 
           {childrenSize[view] &&
@@ -188,7 +186,7 @@ const View = (props: ViewProps) => {
           }
         </div>
 
-        <div className='absolute z-40 bottom-3 right-3 bg-black text-white px-1'>
+        <div className='absolute z-40 bottom-6 right-6 bg-gray-800 text-white px-1 rounded-sm shadow-md'>
           <button onClick={() => setSidebarOpen(!sidebarOpen)} className={`transition-all ease-in-out flex flex-row gap-2 text-xs`}>
             {processedChildren().filter((child:any) => (childrenSize[view][child.key][`${parentLayout.w}x${parentLayout.h}`].visible === false)).length} Elements hidden 
             <div className={`${sidebarOpen ? 'rotate-180' : ''} transition-all ease-in-out`}>
@@ -197,8 +195,8 @@ const View = (props: ViewProps) => {
           </button>
         </div>
 
-        <div className="p-4 w-full h-full max-w-full max-h-full">
-          <div className="relative bg-white/70 w-full h-full max-w-full max-h-full">
+        <div className="p-2 w-full h-full max-w-full max-h-full">
+          <div className="relative bg-white shadow-md rounded-md w-full h-full max-w-full max-h-full">
             <ResponsiveGridLayout 
               className="layout"
               breakpoints={{ lg: 1200, md: 996, sm: 768 }}
@@ -212,8 +210,6 @@ const View = (props: ViewProps) => {
             </ResponsiveGridLayout>
           </div>
         </div>
-
-      </div>
     </ViewContext.Provider>
   )
 }

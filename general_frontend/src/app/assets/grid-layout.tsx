@@ -50,7 +50,7 @@ const GridLayout = (props: GridLayoutProps) => {
 	const [isViewResizable, setIsViewResizeable] = useState<boolean>(false)
 	const [currentlyResizing, setCurrentlyResizing] = useState<boolean>(false)
 
-	const children = React.Children.toArray(props.children).map((child:JSX.Element, index: number) => {
+	const children = React.Children.toArray(props.children).map((child:any, index: number) => {
 		if(layouts[currentBreakpoint] === undefined) layouts[currentBreakpoint] = {}
 
 		if(layouts[currentBreakpoint].hasOwnProperty(child.props.name) === false) {
@@ -90,7 +90,7 @@ const GridLayout = (props: GridLayoutProps) => {
 
 	return (
 		<>
-			<button className='py-2 px-3 bg-yellow-400 text-white mb-2' onClick={() => toggleEdit()}>Toggle Edit</button>
+			<button className='ml-2 py-1 px-2 bg-yellow-400 text-white mb-2 rounded-md' onClick={() => toggleEdit()}>Toggle Edit</button>
 			<GridLayoutContext.Provider value={{layouts, setLayouts, currentLayout, updateGridEditable, isViewDraggable, isViewResizable, currentlyResizing}}>
 				<ResponsiveGridLayout className="layout"
 					breakpoints={{ lg: 1200, md: 996, sm: 768 }}
