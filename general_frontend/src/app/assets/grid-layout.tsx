@@ -50,7 +50,7 @@ const GridLayout = (props: GridLayoutProps) => {
 	const [isViewResizable, setIsViewResizeable] = useState<boolean>(false)
 	const [currentlyResizing, setCurrentlyResizing] = useState<boolean>(false)
 
-	const children = React.Children.map(props.children, (child:JSX.Element, index: number) => {
+	const children = React.Children.toArray(props.children).map((child:JSX.Element, index: number) => {
 		if(layouts[currentBreakpoint] === undefined) layouts[currentBreakpoint] = {}
 
 		if(layouts[currentBreakpoint].hasOwnProperty(child.props.name) === false) {
