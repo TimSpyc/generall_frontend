@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, cloneElement } from 'react';
 import { Responsive, WidthProvider } from "react-grid-layout";
+import { grid_config } from "../config/grid"
 
 type GridLayoutContextType = {
 	layouts: object,
@@ -92,8 +93,8 @@ const GridLayout = (props: GridLayoutProps) => {
 			<button className='py-2 px-3 bg-yellow-400 text-white mb-2' onClick={() => toggleEdit()}>Toggle Edit</button>
 			<GridLayoutContext.Provider value={{layouts, setLayouts, currentLayout, updateGridEditable, isViewDraggable, isViewResizable, currentlyResizing}}>
 				<ResponsiveGridLayout className="layout"
-					breakpoints={{ lg: 1200, md: 996, sm: 768 }}
-					cols={{ lg: 3, md: 2, sm: 1 }}
+					breakpoints={grid_config.breakpoints}
+					cols={grid_config.cols}
 					rowHeight={600}
 					isDraggable={isDraggable}
 					isResizable={isResizable}

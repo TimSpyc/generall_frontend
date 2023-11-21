@@ -3,6 +3,7 @@ import { useAssetContext } from "./asset";
 import { useGridLayoutContext } from './grid-layout';
 import useSWR from 'swr';
 import { fetcher } from "../fetcher"
+import { grid_config } from "../config/grid"
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { sortBy } from "lodash"
 
@@ -201,8 +202,11 @@ const View = (props: ViewProps) => {
         <div className="outline outline-green-400 relative bg-white/70 w-full h-full max-w-full max-h-full">
           <ResponsiveGridLayout 
             className="layout"
-            breakpoints={{ lg: 1200, md: 996, sm: 768 }}
-				    cols={{lg: 36, md: 24, sm: 12}}
+            breakpoints={grid_config.breakpoints}
+				    cols={{
+              lg: (grid_config.cols.lg * 3), 
+              md: (grid_config.cols.md * 12), 
+              sm: (grid_config.cols.sm * 12)}}
             rowHeight={50}
             isDraggable={isViewDraggable}
             isResizable={isViewResizable}
