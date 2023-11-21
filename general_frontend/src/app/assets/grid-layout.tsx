@@ -56,21 +56,22 @@ const GridLayout = (props: GridLayoutProps) => {
 		if(layouts[currentBreakpoint].hasOwnProperty(child.props.name) === false) {
 			layouts[currentBreakpoint][child.props.name] = {i: child.props.name, x: 0, y: 0, w: 3, h: 1}
 		}
-
+		
 		return (
 			<div key={child.props.name} data-grid={layouts[currentBreakpoint][child.props.name]}>
 				{cloneElement(child, {index:index})}
 			</div>
-		);
+		)
 	});
 
-	const updateLayout = (layouts:any) => {
+	const updateLayout = (gridLayouts:any) => {
 		setLayouts((currentState:any) => {
-			layouts.forEach((elementDimension:any) => {
+			gridLayouts.forEach((elementDimension:any) => {
 				currentState[currentBreakpoint][elementDimension.i] = {
 					i: elementDimension.i, x: elementDimension.x, y: elementDimension.y, w: elementDimension.w, h: elementDimension.h
 				}
 			})
+
 			localStorage.setItem(props.name, JSON.stringify(currentState))
       		return {...currentState};
 		})
