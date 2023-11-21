@@ -1,6 +1,5 @@
 import React, { createContext, useState, useContext, cloneElement } from 'react';
 import { Responsive, WidthProvider } from "react-grid-layout";
-import { grid_config } from "../config/grid"
 
 type GridLayoutContextType = {
 	layouts: object,
@@ -57,21 +56,23 @@ const GridLayout = (props: GridLayoutProps) => {
 		if(layouts[currentBreakpoint].hasOwnProperty(child.props.name) === false) {
 			layouts[currentBreakpoint][child.props.name] = {i: child.props.name, x: 0, y: 0, w: 3, h: 1}
 		}
-
+		
 		return (
 			<div key={child.props.name} data-grid={layouts[currentBreakpoint][child.props.name]}>
 				{cloneElement(child, {index:index})}
 			</div>
-		);
+		)
 	});
 
-	const updateLayout = (layouts:any) => {
+	const updateLayout = (gridLayouts:any) => {
+		console.log(gridLayouts)
 		setLayouts((currentState:any) => {
-			layouts.forEach((elementDimension:any) => {
+			gridLayouts.forEach((elementDimension:any) => {
 				currentState[currentBreakpoint][elementDimension.i] = {
 					i: elementDimension.i, x: elementDimension.x, y: elementDimension.y, w: elementDimension.w, h: elementDimension.h
 				}
 			})
+
 			localStorage.setItem(props.name, JSON.stringify(currentState))
       		return {...currentState};
 		})
@@ -93,8 +94,8 @@ const GridLayout = (props: GridLayoutProps) => {
 			<button className='py-2 px-3 bg-yellow-400 text-white mb-2' onClick={() => toggleEdit()}>Toggle Edit</button>
 			<GridLayoutContext.Provider value={{layouts, setLayouts, currentLayout, updateGridEditable, isViewDraggable, isViewResizable, currentlyResizing}}>
 				<ResponsiveGridLayout className="layout"
-					breakpoints={grid_config.breakpoints}
-					cols={grid_config.cols}
+					breakpoints={{ lg: 1200, md: 996, sm: 768 }}
+					cols={{ lg: 3, md: 2, sm: 1 }}
 					rowHeight={600}
 					isDraggable={isDraggable}
 					isResizable={isResizable}

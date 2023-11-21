@@ -1,9 +1,8 @@
-import React, { createContext, useState, useContext, cloneElement, ReactElement, ReactPortal, ReactFragment } from 'react';
+import React, { createContext, useState, useContext, cloneElement } from 'react';
 import { useAssetContext } from "./asset";
 import { useGridLayoutContext } from './grid-layout';
 import useSWR from 'swr';
 import { fetcher } from "../fetcher"
-import { grid_config } from "../config/grid"
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { sortBy } from "lodash"
 
@@ -39,6 +38,8 @@ const View = (props: ViewProps) => {
       ? JSON.parse(localStorage.getItem(assetName)!)
       : {}
   })
+
+  const data:any = {}
 
   // always cast children to array for filtering and memorize them for better performance
   const processedChildren = () => {
@@ -77,8 +78,8 @@ const View = (props: ViewProps) => {
       // prepare all elements to be visible in the grid
       return (
         <div key={child.props.name} data-grid={childrenSize[view][child.props.name][`${parentLayout.w}x${parentLayout.h}`]}>
-        <div className='relative w-full h-full'>
-          <div onClick={() => removeChild(child.props.name)} className='absolute top-1 right-1 bg-black text-white px-0.5 leading-[initial] cursor-pointer border border-white'>x</div>
+          <div className='relative w-full h-full p-1'>
+            <div onClick={() => removeChild(child.props.name)} className='absolute top-1 right-1 bg-black text-white px-0.5 leading-[initial] cursor-pointer border border-white'>x</div>
             {cloneElement(child, {
               key: child.props.name,
               tabIndex: `${props.index}000${sortedIndizes.findIndex((element:any) => element.i === child.props.name) + 1}`,
@@ -89,10 +90,6 @@ const View = (props: ViewProps) => {
       )
     });
   }
-
-  console.log(processedChildren())
-
-  const data:any = {}
 
   const FetchRequests = () => {
     for (const [key, value] of Object.entries(props.api)) {
@@ -169,27 +166,30 @@ const View = (props: ViewProps) => {
     <ViewContext.Provider value={{view, setView, data, FetchRequest, handleActions, handleFormData, handleFormSubmit}}>
       <div className="w-full h-full">
         
-        <div className={`absolute z-40 top-0 bottom-0 right-0 bg-white shadow-md border border-black transition-all ease-in-out ${sidebarOpen ? 'block w-[200px]' : 'hidden w-[0px]'}`}>
+        <div className={`absolute z-40 top-4 bottom-4 right-4 bg-white shadow-md border border-black transition-all ease-in-out ${sidebarOpen ? 'block w-[200px]' : 'hidden w-[0px]'}`}>
           <div className='p-2'>
             <p className='text-black'>
               Hidden Items {currentLayout[assetName].w}x{currentLayout[assetName].h}
             </p>
           </div>
 
-          <div className='w-full h-full overflow-y-auto'>
-            {Object.entries(childrenSize[view]).map(([idx, view]:any) => {
-              let child = view[`${parentLayout.w}x${parentLayout.h}`]
+          {childrenSize[view] &&
+            <div className='w-full h-full overflow-y-auto'>
+              {Object.entries(childrenSize[view]).map(([idx, view]:any) => {
+                let child = view[`${parentLayout.w}x${parentLayout.h}`]
 
-              if(child.visible === false) {
-                return ( 
-                  <div onClick={() => addChild(idx)} className='text-black w-full p-2 first-of-type:border-t border-b border-black' key={idx}>
-                    {idx}
-                  </div>
-                )
-              }
-            })}
-          </div>
+                if(child.visible === false) {
+                  return ( 
+                    <div onClick={() => addChild(idx)} className='text-black w-full p-2 first-of-type:border-t border-b border-black' key={idx}>
+                      {idx}
+                    </div>
+                  )
+                }
+              })}
+            </div>
+          }
         </div>
+
         <div className='absolute z-40 bottom-3 right-3 bg-black text-white px-1'>
           <button onClick={() => setSidebarOpen(!sidebarOpen)} className={`transition-all ease-in-out flex flex-row gap-2 text-xs`}>
             {processedChildren().filter((child:any) => (childrenSize[view][child.key][`${parentLayout.w}x${parentLayout.h}`].visible === false)).length} Elements hidden 
@@ -199,22 +199,22 @@ const View = (props: ViewProps) => {
           </button>
         </div>
 
-        <div className="outline outline-green-400 relative bg-white/70 w-full h-full max-w-full max-h-full">
-          <ResponsiveGridLayout 
-            className="layout"
-            breakpoints={grid_config.breakpoints}
-				    cols={{
-              lg: (grid_config.cols.lg * 3), 
-              md: (grid_config.cols.md * 12), 
-              sm: (grid_config.cols.sm * 12)}}
-            rowHeight={50}
-            isDraggable={isViewDraggable}
-            isResizable={isViewResizable}
-            margin={[0,0]}
-            onLayoutChange={updateLayout}>
-            {processedChildren().filter((child:any) => (childrenSize[view][child.key][`${parentLayout.w}x${parentLayout.h}`].visible))}
-          </ResponsiveGridLayout>
+        <div className="p-4 w-full h-full max-w-full max-h-full">
+          <div className="relative bg-white/70 w-full h-full max-w-full max-h-full">
+            <ResponsiveGridLayout 
+              className="layout"
+              breakpoints={{ lg: 1200, md: 996, sm: 768 }}
+              cols={{lg: 36, md: 24, sm: 12}}
+              rowHeight={50}
+              isDraggable={isViewDraggable}
+              isResizable={isViewResizable}
+              margin={[0,0]}
+              onLayoutChange={updateLayout}>
+              {processedChildren().filter((child:any) => (childrenSize[view][child.key][`${parentLayout.w}x${parentLayout.h}`].visible))}
+            </ResponsiveGridLayout>
+          </div>
         </div>
+
       </div>
     </ViewContext.Provider>
   )
