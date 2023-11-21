@@ -5,7 +5,9 @@ import Asset from "./assets/asset"
 import View from "./assets/view"
 
 import Input from "./elements/input"
-import SubmitButton from "./elements/submitbutton"
+import Button from "./elements/button"
+import DatePicker from "./elements/date-picker"
+import Chart from "./elements/chart"
 
 const Home = () => {
   return (
@@ -23,6 +25,7 @@ const Home = () => {
               link="user" 
               linkKey="id" 
               placeholder="User ID"
+              label="Label"
               actions={{
                 edit: "edit", 
                 filters: true
@@ -32,6 +35,7 @@ const Home = () => {
               link="user" 
               linkKey="firstName" 
               placeholder="First Name"
+              label="Label"
               actions={{
                 edit: "edit", 
                 filters: true
@@ -41,6 +45,7 @@ const Home = () => {
               link="user" 
               linkKey="lastName" 
               placeholder="Last Name"
+              label="Label"
               actions={{
                 edit: "edit.users", 
                 filters: true
@@ -50,11 +55,25 @@ const Home = () => {
               link="user" 
               linkKey="university" 
               placeholder="University"
+              label="Label"
               actions={{
                 edit: "edit.users", 
                 filters: true
               }}/>
-              <SubmitButton name="submit.user"/>
+            <DatePicker 
+              name="user.birthDate"
+              link="user" 
+              linkKey="birthDate" 
+              placeholder="Birthdate"
+              label="Birthdate"
+              actions={{
+                edit: "edit.users", 
+                filters: true
+              }}/>
+              <Button name="submit.user" link="submit.user">
+                Submit
+              </Button>
+              <Chart name="chart.example"/>
           </View>
           <View
             type={['detail']} 
@@ -124,7 +143,9 @@ const Home = () => {
                 edit: "edit.users", 
                 filters: true
               }}/>
-            <SubmitButton name="submit.user"/>
+            <Button name="submit.user" link="submit.user">
+              Submit
+            </Button>
           </View>
           <View
             type={['detail']} 

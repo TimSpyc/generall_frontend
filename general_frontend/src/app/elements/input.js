@@ -1,43 +1,51 @@
 import { useState, useEffect } from "react";
 import { useViewContext } from "../assets/view";
+import { useGridLayoutContext } from "../assets/grid-layout"
+import {TextField, Label, Input} from 'react-aria-components';
 
-const Input = (props) => {
-  const {setView, resetToDefault, data, FetchRequest, handleActions, handleFormData} = useViewContext();
-  const [value, setValue] = useState('');
-  const [finishedLoading, setFinishedLoading] = useState(false)
+const CustomButton = (props) => {
+    const {setView, resetToDefault, data, FetchRequest, handleActions, handleFormData, handleFormSubmit} = useViewContext();
+    const {layouts, setLayouts, currentLayout, updateGridEditable, isViewDraggable, isViewResizable, currentlyResizing} = useGridLayoutContext();
 
-  const changeHandler = (e) => {
-    setValue(e.target.value)
-    handleFormData([props.linkKey], e.target.value)
-  }
+    const [value, setValue] = useState('');
+    const [finishedLoading, setFinishedLoading] = useState(false)
 
-  useEffect(() => {
-    if(data[props.link].isLoading === false && finishedLoading === false) {
-      setValue(data[props.link].data[props.linkKey])
-      setFinishedLoading(true)
+    const onChange = (e) => {
+        setValue(e.target.value)
+        handleFormData([props.linkKey], e.target.value)
     }
-  }, [data]);
 
-  return (
-    <div className="w-full h-full shadow-sm">
-        {data[props.link].isLoading === true &&
-          <div className="absolute top-0 left-0 w-full h-full backdrop-blur-md bg-gray-100 rounded-md p-4 flex items-center justify-center">
-            <p>Loading...</p>
-          </div>
+    useEffect(() => {
+        if(data[props.link].isLoading === false && finishedLoading === false) {
+            setValue(data[props.link].data[props.linkKey])
+            setFinishedLoading(true)
         }
+    }, [data]);
 
-        {(data[props.link].isLoading === false && data[props.link].data) &&
-          <input
-            tabIndex={props.tabIndex}
-            onInput={changeHandler}
-            value={value}
-            type="text"
-            className="px-2 py-1 w-full h-full rounded-md border border-gray-400"
-            placeholder={props.placeholder}
-            name={props.linkKey}/>
-        }
-    </div>
-  )
+    return (
+        <div className={`
+            ${props.classNameInputWrapper} 
+            ${isViewDraggable ? 'pointer-events-none border-green-400' : 'border-gray-400'} 
+            w-full h-full shadow-sm rounded-md border text-black p-0.5 px-1 skeleton bg-white`
+        }>
+            {(data[props.link]?.isLoading === false && data[props.link]?.data) &&
+                <TextField className={`${props.classNameInput} w-full h-full flex flex-col gap-1`}>
+                    {props.label &&
+                        <Label className="text-[8px] text-gray-500">
+                            {props.label}
+                        </Label>
+                    }
+                    
+                    <Input 
+                        onChange={onChange} 
+                        value={value} 
+                        className={`w-full h-full`} 
+                        tabIndex={props.tabIndex}
+                    />
+                </TextField>
+            }
+        </div>
+    )
 }
 
-export default Input
+export default CustomButton

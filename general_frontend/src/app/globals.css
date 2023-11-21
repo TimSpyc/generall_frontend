@@ -37,3 +37,32 @@ body {
   background-color: gray;
   border-radius: 0.5rem;
 }
+
+.react-aria-DateInput {
+  display: flex;
+  flex-direction: row;
+}
+
+.react-aria-DatePicker .react-aria-Group{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.react-aria-DatePicker {
+  display: flex;
+  flex-direction: column;
+}
+
+.skeleton:empty {
+  animation: skeleton-loading 1s linear infinite alternate;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: rgb(255, 255, 255)
+  }
+  100% {
+    background-color: rgb(240, 243, 245)
+  }
+}

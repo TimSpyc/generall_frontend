@@ -95,7 +95,7 @@ const GridLayout = (props: GridLayoutProps) => {
 				<ResponsiveGridLayout className="layout"
 					breakpoints={{ lg: 1200, md: 996, sm: 768 }}
 					cols={{ lg: 3, md: 2, sm: 1 }}
-					rowHeight={600}
+					rowHeight={615}
 					isDraggable={isDraggable}
 					isResizable={isResizable}
 					onResizeStart={() => setCurrentlyResizing(true)}
