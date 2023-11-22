@@ -4,7 +4,8 @@ import {merge} from 'lodash'
 type AssetProps = {
   children: JSX.Element[],
   name: string,
-  index?: number
+  index?: number,
+  defaultView?: string
 }
 
 type AssetContextType = {
@@ -15,35 +16,42 @@ type AssetContextType = {
 }
 
 const Asset= (props: AssetProps): JSX.Element => {
-  const [view, setView] = useState<string>('default');
+  const [view, setView] = useState<string>(props.defaultView ? props.defaultView : 'default');
   const [externalProps, setExternalProps] = useState({});
   const [assetName, setAssetName] = useState<string>(props.name)
+
+  // temporary
+  const [nextID, setNextID] = useState(0)
 
   const setViewWithProps = (view:string, props:any) => {
     setView(view)
     setExternalProps(props)
   }
 
-  const prepareProps = (childProps) => {
-    return merge(childProps, externalProps)
+  const prepareProps = (child:any, index:number) => {
+    // merge the api endpoints and overwrite them accordingly
+    externalProps['index'] = index
+
+    return merge(externalProps, child.props)
   }
 
   return (
     <>
-      <div className="absolute -top-10 right-0">
-        <button className='ml-2 py-1 px-2 bg-yellow-400 text-white mb-2 rounded-md' onClick={() => setViewWithProps("default", {})}>
+      <div className="absolute -top-10 right-0 flex flex-row gap-2">
+        <button className='ml-2 py-1 px-2 bg-yellow-400 text-white mb-2 rounded-md' onClick={() => setViewWithProps("default", {api: {post: { id:2 }, user: { id:2 }}})}>
           Default View
         </button>
-        <button className='ml-2 py-1 px-2 bg-yellow-400 text-white mb-2 rounded-md' onClick={() => setViewWithProps("edit", {user: 123})}>
+        <button className='ml-2 py-1 px-2 bg-yellow-400 text-white mb-2 rounded-md' onClick={() => setViewWithProps("edit", {api: {post: { id:nextID }, user: { id:nextID }}})}>
           Edit View
         </button>
+        <input className='ml-2 py-1 px-2 bg-white shadow-md text-black mb-2 rounded-md max-w-32' placeholder='next id' onChange={(event) => setNextID(event.target.value)}/>
       </div>
       <AssetContext.Provider value={{view, setView, assetName, setAssetName, setViewWithProps}}>
         {props.children.map((child:JSX.Element, index: number) => {
           if(child.props.hasOwnProperty('type') === false || child.props.type === view) {
             return(
               <div className='h-full w-full' key={index}>
-                {cloneElement(child, prepareProps({index: props.index}))}
+                {cloneElement(child, prepareProps(child, index))}
               </div>
             )
           }
@@ -55,6 +63,5 @@ const Asset= (props: AssetProps): JSX.Element => {
 
 export default Asset
 
-// Best practice for unassigned Contexts: https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/context/#without-default-context-value
 export const AssetContext = createContext<AssetContextType | any>({});
 export const useAssetContext = () => useContext(AssetContext);

@@ -63,6 +63,10 @@ body {
   width: 100%;
 }
 
+.react-aria-DateRangePicker, .react-aria-DatePicker {
+  line-height: initial;
+}
+
 .skeleton:empty {
   animation: skeleton-loading 1s linear infinite alternate;
 }

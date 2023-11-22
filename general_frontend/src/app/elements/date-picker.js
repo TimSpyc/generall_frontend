@@ -25,6 +25,14 @@ const CustomDatePicker = (props) => {
     }
 
     useEffect(() => {
+        if(data[props.link] === undefined) {
+          throw new Error(`api does not contain any link with name ${props.link}`)
+        }
+
+        if(data[props.link].isLoading === true) {
+          setFinishedLoading(false)
+        }
+
         if(data[props.link].isLoading === false && finishedLoading === false) {
           let date = new Date(data[props.link].data[props.linkKey])
 
@@ -37,42 +45,42 @@ const CustomDatePicker = (props) => {
     }, [data]);
 
     return (
-        <div className={`
-            ${props.classNameInputWrapper} 
-            ${isViewDraggable ? 'pointer-events-none border-green-400' : 'border-gray-400'} 
-            w-full h-full shadow-sm rounded-md border text-black p-0.5 px-1 skeleton`
-        }>
-          {(data[props.link]?.isLoading === false && data[props.link]?.data) &&
-            <div className="flex flex-col gap-0.5 h-full w-full">
-              <DatePicker onChange={onChange} value={value != '' ? value : null} aria-label={props.label}>
-                  <Group>
-                      <DateInput tabIndex={props.tabIndex}>
-                          {(segment) => <DateSegment segment={segment} />}
-                      </DateInput>
-                      <Button>▼</Button>
-                  </Group>
-                  <Popover>
-                      <Dialog>
-                          <Calendar>
-                              <header>
+      <div className={`
+        ${props.classNameInputWrapper} 
+        ${isViewDraggable ? 'pointer-events-none border-green-400' : ''} 
+        w-full h-full shadow-sm rounded-md border text-black p-0.5 px-1 skeleton`
+      }>
+        {(data[props.link]?.isLoading === false && data[props.link]?.data) &&
+          <div className="flex flex-col gap-0.5 h-full w-full">
+            <DatePicker onChange={onChange} value={value != '' ? value : null} aria-label={props.label}>
+                <Group>
+                    <DateInput tabIndex={props.tabIndex}>
+                      {(segment) => <DateSegment segment={segment} />}
+                    </DateInput>
+                    <Button>▼</Button>
+                </Group>
+                <Popover>
+                    <Dialog>
+                        <Calendar>
+                            <header>
                               <Button slot="previous">◀</Button>
-                              <Heading />
+                                <Heading />
                               <Button slot="next">▶</Button>
-                              </header>
-                              <CalendarGrid>
+                            </header>
+                            <CalendarGrid>
                               {(date) => <CalendarCell date={date} />}
-                              </CalendarGrid>
-                          </Calendar>
-                      </Dialog>
-                  </Popover>
-              </DatePicker>
-              <hr/>
-              <Label className="text-[8px] text-gray-500">
-                {props.label}
-              </Label>
-            </div>
-          }
-        </div>
+                            </CalendarGrid>
+                        </Calendar>
+                    </Dialog>
+                </Popover>
+            </DatePicker>
+            <hr/>
+            <Label className="text-[8px] text-black">
+              {props.label}
+            </Label>
+          </div>
+        }
+      </div>
     )
 }
 

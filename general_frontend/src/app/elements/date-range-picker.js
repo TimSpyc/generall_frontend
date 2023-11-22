@@ -36,6 +36,14 @@ const CustomRangeDatePicker = (props) => {
     }
 
     useEffect(() => {
+        if(data[props.link] === undefined) {
+          throw new Error(`api does not contain any link with name ${props.link}`)
+        }
+
+        if(data[props.link].isLoading === true) {
+          setFinishedLoading(false)
+        }
+
         if(data[props.link].isLoading === false && finishedLoading === false) {
           let date = new Date(data[props.link].data[props.linkKey])
 
@@ -51,32 +59,32 @@ const CustomRangeDatePicker = (props) => {
     return (
         <div className={`
             ${props.classNameInputWrapper} 
-            ${isViewDraggable ? 'pointer-events-none border-green-400' : 'border-gray-400'} 
+            ${isViewDraggable ? 'pointer-events-none border-green-400' : ''} 
             w-full h-full shadow-sm rounded-md border text-black p-0.5 px-1 skeleton`
         }>
           {(data[props.link]?.isLoading === false && data[props.link]?.data) &&
             <div className="flex flex-col gap-0.5 h-full w-full">
 							<DateRangePicker onChange={onChange} value={value != '' ? value : null} aria-label={props.label}>
                 <Group>
-                    <DateInput slot="start">
+                  <DateInput slot="start" tabIndex={props.tabIndex}>
                     {(segment) => <DateSegment segment={segment} />}
-                    </DateInput>
-                    <span aria-hidden="true">–</span>
-                    <DateInput slot="end">
+                  </DateInput>
+                  <span aria-hidden="true">–</span>
+                  <DateInput slot="end" tabIndex={props.tabIndex}>
                     {(segment) => <DateSegment segment={segment} />}
-                    </DateInput>
-                    <Button>▼</Button>
+                  </DateInput>
+                  <Button>▼</Button>
                 </Group>
                 <Popover>
                     <Dialog>
                     <RangeCalendar>
                         <header>
-                        <Button slot="previous">◀</Button>
-                        <Heading />
-                        <Button slot="next">▶</Button>
+                          <Button slot="previous">◀</Button>
+                            <Heading />
+                          <Button slot="next">▶</Button>
                         </header>
                         <CalendarGrid>
-                        {(date) => <CalendarCell date={date} />}
+                          {(date) => <CalendarCell date={date} />}
                         </CalendarGrid>
                     </RangeCalendar>
                     </Dialog>
@@ -85,7 +93,7 @@ const CustomRangeDatePicker = (props) => {
 							{props.label &&
 								<>
 									<hr/>
-									<Label className="text-[8px] text-gray-500">
+									<Label className="text-[8px] text-black">
 										{props.label}
 									</Label>
 								</>

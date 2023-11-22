@@ -26,8 +26,6 @@ type ViewContextType = {
 }
 
 const View = (props: ViewProps): JSX.Element => {
-  console.log(props)
-  
   const {view, setView, assetName, setAssetName} = useAssetContext();
   const {currentLayout, isViewDraggable, isViewResizable, currentlyResizing} = useGridLayoutContext();
 
@@ -41,7 +39,7 @@ const View = (props: ViewProps): JSX.Element => {
       : {}
   })
 
-  const data:any = {}
+  let data:any = {}
 
   // always cast children to array for filtering and memorize them for better performance
   const processedChildren = () => {
@@ -74,37 +72,39 @@ const View = (props: ViewProps): JSX.Element => {
       indizes.push(childrenSize[view][child.props.name][`${parentLayout.w}x${parentLayout.h}`])
     })
 
-    let sortedIndizes:any = sortBy(indizes, ['y', 'x'])
+    let sortedIndizes:any = sortBy(indizes, ['y','x'])
 
     return React.Children.toArray(props.children).map((child:any) => {
       // prepare all elements to be visible in the grid
       return (
         <div key={child.props.name} data-grid={childrenSize[view][child.props.name][`${parentLayout.w}x${parentLayout.h}`]}>
-          <div className='relative w-full h-full p-1'>
-            <div onClick={() => removeChild(child.props.name)} className='absolute -top-1.5 -right-1.5 bg-gray-600 rounded-lg shadow-md text-white px-1 leading-[initial] cursor-pointer border border-white flex items-center justify-center'>
-              <span>x</span>
+            <div className='relative w-full h-full p-1'>
+              {isViewDraggable &&
+                <div onClick={() => removeChild(child.props.name)} className='absolute top-1.5 right-1.5 w-4 h-4 bg-gray-600 rounded-full text-xs shadow-md text-white leading-[initial] cursor-pointer border border-white flex items-center justify-center'>
+                  <span>x</span>
+                </div>
+              }
+              {cloneElement(child, {
+                key: child.props.name,
+                tabIndex: `${props.index}000${sortedIndizes.findIndex((element:any) => element.i === child.props.name) + 1}`,
+                gridSize: childrenSize[view][child.props.name][`${parentLayout.w}x${parentLayout.h}`]
+              })}
             </div>
-            {cloneElement(child, {
-              key: child.props.name,
-              tabIndex: `${props.index}000${sortedIndizes.findIndex((element:any) => element.i === child.props.name) + 1}`,
-              gridSize: childrenSize[view][child.props.name][`${parentLayout.w}x${parentLayout.h}`]
-            })}
-          </div>
         </div>
       )
     });
   }
 
-  const FetchRequests = () => {
+  const FetchRequests = async() => {
     for (const [key, value] of Object.entries(props.api)) {
       FetchRequest(key, value)
     }
   }
 
-  const FetchRequest = (key:string, value:any, params?:any) => {
-    // TODO: If filter is set use a custom key in object to store the data. Also check if this Object is destroyed when the Component umnounts
-    // also possible to use data_filtered and make it available in the Content, clear it when Filter is unset
-    return data[key] = useSWR(value.url, fetcher)
+  const FetchRequest = async (key:string, value:any, params?:any) => {
+    let url = value.url.endsWith('/') ? value.url : `${value.url}/`
+
+    return data[key] = useSWR(`${url}${value.id ? value.id : ''}`, fetcher)
   }
 
   const updateLayout = (layouts:any) => {
@@ -170,41 +170,43 @@ const View = (props: ViewProps): JSX.Element => {
 
   return (
     <ViewContext.Provider value={{view, setView, data, FetchRequest, handleActions, handleFormData, handleFormSubmit}}>
-        <div className={` 
-          ${sidebarOpen ? 'block w-[200px]' : 'hidden w-[0px]'} 
-          absolute z-40 top-4 bottom-4 right-4 bg-white shadow-md rounded-md border border-gray-400 transition-all ease-in-out
-        `}>
-          <div className='p-2 w-full border-b border-gray-400'>
-            <strong className='text-black'>
-              Hidden Items {currentLayout[assetName].w}x{currentLayout[assetName].h}
-            </strong>
+        {isViewDraggable &&
+        <>
+          <div className={` 
+            ${sidebarOpen ? 'block w-[200px]' : 'hidden w-[0px]'} 
+            absolute z-40 top-2 bottom-2 left-0 -translate-x-full bg-white shadow-md rounded-md border border-gray-400 transition-all ease-in-out
+          `}>
+            <div className='p-2 w-full border-b border-gray-400'>
+              <strong className='text-black'>
+                Hidden Items {currentLayout[assetName].w}x{currentLayout[assetName].h}
+              </strong>
+            </div>
+
+            {childrenSize[view] &&
+              <div className='w-full h-full overflow-y-auto'>
+                {Object.entries(childrenSize[view]).map(([idx, view]:any) => {
+                  if(view[`${parentLayout.w}x${parentLayout.h}`].visible === false) {
+                    return ( 
+                      <div onClick={() => addChild(idx)} className='text-black w-full p-2 first-of-type:border-t border-b border-black cursor-crosshair' key={idx}>
+                        {idx}
+                      </div>
+                    )
+                  }
+                })}
+              </div>
+            }
           </div>
 
-          {childrenSize[view] &&
-            <div className='w-full h-full overflow-y-auto'>
-              {Object.entries(childrenSize[view]).map(([idx, view]:any) => {
-                let child = view[`${parentLayout.w}x${parentLayout.h}`]
-
-                if(child.visible === false) {
-                  return ( 
-                    <div onClick={() => addChild(idx)} className='text-black w-full p-2 first-of-type:border-t border-b border-black' key={idx}>
-                      {idx}
-                    </div>
-                  )
-                }
-              })}
-            </div>
-          }
-        </div>
-
-        <div className={`${isViewDraggable ? 'opacity-100' : 'opacity-0'} absolute z-40 bottom-6 right-6 bg-gray-800 text-white px-1 rounded-sm shadow-md`}>
-          <button onClick={() => setSidebarOpen(!sidebarOpen)} className={`transition-all ease-in-out flex flex-row gap-2 text-xs`}>
-            {processedChildren().filter((child:any) => (childrenSize[view][child.key][`${parentLayout.w}x${parentLayout.h}`].visible === false)).length} Elements hidden 
-            <div className={`${sidebarOpen ? 'rotate-180' : ''} transition-all ease-in-out`}>
-              ►
-            </div>
-          </button>
-        </div>
+          <div className={`absolute z-40 bottom-4 left-4 bg-gray-800 text-white px-1 rounded-sm shadow-md`}>
+            <button onClick={() => setSidebarOpen(!sidebarOpen)} className={`transition-all ease-in-out flex flex-row gap-2 text-xs`}>
+              <div className={`${sidebarOpen ? 'rotate-180' : ''} transition-all ease-in-out`}>
+                ►
+              </div>
+              {processedChildren().filter((child:any) => (childrenSize[view][child.key][`${parentLayout.w}x${parentLayout.h}`].visible === false)).length} Elements hidden 
+            </button>
+          </div>
+        </>
+        }
 
         <div className="p-2 w-full h-full max-w-full max-h-full">
           <div className="relative bg-white shadow-md rounded-md w-full h-full max-w-full max-h-full">
@@ -227,6 +229,5 @@ const View = (props: ViewProps): JSX.Element => {
 
 export default View
 
-// Best practice for unassigned Contexts: https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/context/#without-default-context-value
 export const ViewContext = createContext<ViewContextType | any>({});
 export const useViewContext = () => useContext(ViewContext);

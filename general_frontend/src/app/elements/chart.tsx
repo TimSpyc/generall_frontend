@@ -1,11 +1,16 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { useViewContext } from "../layout/view";
+import { useGridLayoutContext } from "../layout/grid-layout"
 
 type CustomChartType = {
     name: string
 }
 
 const CustomChart:CustomChartType = (props:any):JSX.Element => {
-    const data = [
+    const {setView, resetToDefault, data, FetchRequest, handleActions, handleFormData, handleFormSubmit} = useViewContext();
+    const {layouts, setLayouts, currentLayout, updateGridEditable, isViewDraggable, isViewResizable, currentlyResizing} = useGridLayoutContext();
+
+    const chartdata = [
         {
             name: 'Page A',
             uv: 4000,
@@ -52,11 +57,11 @@ const CustomChart:CustomChartType = (props:any):JSX.Element => {
 
     return (
         <>
-            <ResponsiveContainer width="100%" height="100%" className='w-full h-full max-w-full max-h-full'>
+            <ResponsiveContainer width="100%" height="100%" className={`w-full h-full max-w-full max-h-full border rounded-md shadow-md ${isViewDraggable ? 'border-green-400' : ''}`}>
                 <LineChart
                     width={500}
                     height={300}
-                    data={data}
+                    data={chartdata}
                     margin={{
                     top: 0,
                     right: 0,
