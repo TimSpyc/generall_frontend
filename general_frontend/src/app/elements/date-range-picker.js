@@ -66,13 +66,15 @@ const CustomRangeDatePicker = (props) => {
             <div className="flex flex-col gap-0.5 h-full w-full">
 							<DateRangePicker onChange={onChange} value={value != '' ? value : null} aria-label={props.label}>
                 <Group>
-                  <DateInput slot="start" tabIndex={props.tabIndex}>
-                    {(segment) => <DateSegment segment={segment} />}
-                  </DateInput>
-                  <span aria-hidden="true">–</span>
-                  <DateInput slot="end" tabIndex={props.tabIndex}>
-                    {(segment) => <DateSegment segment={segment} />}
-                  </DateInput>
+                  <div className="flex flex-row gap-1 items-center">
+                    <DateInput slot="start" tabIndex={props.tabIndex}>
+                      {(segment) => <DateSegment segment={segment} />}
+                    </DateInput>
+                    <span aria-hidden="true">–</span>
+                    <DateInput slot="end" tabIndex={props.tabIndex}>
+                      {(segment) => <DateSegment segment={segment} />}
+                    </DateInput>
+                  </div>
                   <Button>▼</Button>
                 </Group>
                 <Popover>

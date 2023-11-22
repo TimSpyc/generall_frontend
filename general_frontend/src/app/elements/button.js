@@ -14,7 +14,7 @@ const CustomButton = (props) => {
         {props.link &&
 					<button 
 						/* events emittet from react aria button */
-						onClick={(event) => handleActions(event)} 
+						onClick={(event) => handleActions(props.action, props.actionProps, event)} 
 
 						/* values writable to react aria button */
 						name={props.name}

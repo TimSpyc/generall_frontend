@@ -26,7 +26,7 @@ type ViewContextType = {
 }
 
 const View = (props: ViewProps): JSX.Element => {
-  const {view, setView, assetName, setAssetName} = useAssetContext();
+  const {view, setView, assetName, setAssetName, setViewWithProps} = useAssetContext();
   const {currentLayout, isViewDraggable, isViewResizable, currentlyResizing} = useGridLayoutContext();
 
   const parentLayout = currentLayout[assetName]
@@ -144,11 +144,16 @@ const View = (props: ViewProps): JSX.Element => {
 
   const performAction = (action:string) => {}
 
-  const handleActions = (action:string, event:Event) => {
-    if(action.startsWith('view.')) {
-      setView(action.replace('view.', ''))
+  const handleActions = (action:string, actionProps:any, event:Event) => {
+    let actionPath = action.split('.')
+    let actionTrigger = actionPath[0]
+    let actionDestination = actionPath[1]
+
+    if(actionTrigger === 'view') {
+      setViewWithProps(actionDestination, actionProps)
     }
-    else if(action.startsWith('action.')) {
+    
+    if(actionTrigger === 'action') {
       performAction(action.replace('action.', ''))
     }
   }

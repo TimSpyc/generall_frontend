@@ -9,6 +9,7 @@ import Button from "./elements/button"
 import DatePicker from "./elements/date-picker"
 import DateRangePicker from "./elements/date-range-picker"
 import Chart from "./elements/chart"
+import Checkbox from "./elements/checkbox"
 
 const Home = () => {
   return (
@@ -90,7 +91,7 @@ const Home = () => {
               <Button name="submit.user" link="submit.user">
                 Submit
               </Button>
-              <Button name="view.detail" action="view.detail" link="test">
+              <Button name="view.edit" action="view.edit" actionProps={{api:{user:{id:90}}}} link="test">
                 Change to Edit
               </Button>
               <Chart name="chart.example.1"/>
