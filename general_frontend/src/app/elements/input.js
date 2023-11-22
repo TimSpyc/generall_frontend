@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { useViewContext } from "../assets/view";
-import { useGridLayoutContext } from "../assets/grid-layout"
-import {TextField, Label, Input} from 'react-aria-components';
+import { useViewContext } from "../layout/view";
+import { useGridLayoutContext } from "../layout/grid-layout"
+import { TextField, Label, Input } from 'react-aria-components';
 
 const CustomButton = (props) => {
     const {setView, resetToDefault, data, FetchRequest, handleActions, handleFormData, handleFormSubmit} = useViewContext();
@@ -29,19 +29,21 @@ const CustomButton = (props) => {
             w-full h-full shadow-sm rounded-md border text-black p-0.5 px-1 skeleton bg-white`
         }>
             {(data[props.link]?.isLoading === false && data[props.link]?.data) &&
-                <TextField className={`${props.classNameInput} w-full h-full flex flex-col gap-1`}>
-                    {props.label &&
-                        <Label className="text-[8px] text-gray-500">
-                            {props.label}
-                        </Label>
-                    }
-                    
+                <TextField className={`${props.classNameInput} w-full h-full flex flex-col gap-0.5`}>
                     <Input 
                         onChange={onChange} 
                         value={value} 
                         className={`w-full h-full`} 
                         tabIndex={props.tabIndex}
                     />
+                    {props.label &&
+                        <>
+                            <hr/>
+                            <Label className="text-[8px] text-gray-500">
+                                {props.label}
+                            </Label>
+                        </>
+                    }
                 </TextField>
             }
         </div>

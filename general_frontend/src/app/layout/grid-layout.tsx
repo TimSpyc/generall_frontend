@@ -24,7 +24,7 @@ type GridLayoutSizes = {
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-const GridLayout = (props: GridLayoutProps) => {
+const GridLayout = (props: GridLayoutProps): JSX.Element => {
 	const [layouts, setLayouts] = useState(() => {
 		if(localStorage.getItem(props.name)) {
 			return JSON.parse(localStorage.getItem(props.name)!)

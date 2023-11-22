@@ -11,7 +11,7 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 type ViewProps = {
   children: JSX.Element[] | JSX.Element,
   api: object
-  type: string[],
+  type: string,
   index?: number
 }
 
@@ -25,7 +25,9 @@ type ViewContextType = {
   handleFormSubmit: Function,
 }
 
-const View = (props: ViewProps) => {
+const View = (props: ViewProps): JSX.Element => {
+  console.log(props)
+  
   const {view, setView, assetName, setAssetName} = useAssetContext();
   const {currentLayout, isViewDraggable, isViewResizable, currentlyResizing} = useGridLayoutContext();
 

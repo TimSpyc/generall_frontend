@@ -1,21 +1,26 @@
 'use client'
 
-import GridLayout from "./assets/grid-layout"
-import Asset from "./assets/asset"
-import View from "./assets/view"
+import GridLayout from "./layout/grid-layout"
+import Asset from "./layout/asset"
+import View from "./layout/view"
 
 import Input from "./elements/input"
 import Button from "./elements/button"
 import DatePicker from "./elements/date-picker"
+import DateRangePicker from "./elements/date-range-picker"
 import Chart from "./elements/chart"
 
+import { useViewContext } from "./layout/view";
+
 const Home = () => {
+  const {setView, resetToDefault, data, FetchRequest, handleActions, handleFormData, handleFormSubmit} = useViewContext();
+
   return (
     <main className="min-h-screen min-w-screen p-12">
       <GridLayout name="testing">
         <Asset name="custom-asset-test">
           <View
-            type={['default']} 
+            type="default" 
             api={{
               user: {url: "https://dummyjson.com/user/3"},
               posts: {url: "https://dummyjson.com/posts"}
@@ -70,13 +75,27 @@ const Home = () => {
                 edit: "edit.users", 
                 filters: true
               }}/>
+            <DateRangePicker 
+              name="user.birthDateRange"
+              link="user" 
+              linkKey="birthDate" 
+              placeholder="Birthdate"
+              label="Birthdate"
+              actions={{
+                edit: "edit.users", 
+                filters: true
+              }}/>
               <Button name="submit.user" link="submit.user">
                 Submit
               </Button>
+              <Button name="view.detail" action="view.detail" link="test">
+                Change to Edit
+              </Button>
               <Chart name="chart.example"/>
+              <Chart name="chart.example.2"/>
           </View>
           <View
-            type={['detail']} 
+            type="detail" 
             api={{
               users: {url: "https://dummyjson.com/users"},
               posts: {url: "https://dummyjson.com/posts"}
@@ -84,25 +103,17 @@ const Home = () => {
             <Input link="posts" linkKey="university" name="user.test.1"/>
           </View>
           <View
-            type={['edit']} 
+            type="edit" 
             api={{
-              users: {url: "https://dummyjson.com/users"},
-              posts: {url: "https://dummyjson.com/posts"}
+              users: {url: "https://dummyjson.com/user/[user]"},
+              posts: {url: "https://dummyjson.com/posts/[post]"}
             }}>
-            <Input link="posts" linkKey="university" name="user.test.1"/>
-          </View>
-          <View
-            type={['filters']} 
-            api={{
-              users: {url: "https://dummyjson.com/users"},
-              posts: {url: "https://dummyjson.com/posts"}
-            }}>
-            <Input link="posts" linkKey="university" name="user.test.1"/>
+            <Input link="posts" linkKey="user.firstName" name="user.firstName"/>
           </View>
         </Asset>
         <Asset name="custom-asset-test-1">
           <View
-            type={['default']} 
+            type="default" 
             api={{
               user: {url: "https://dummyjson.com/user/1"},
               posts: {url: "https://dummyjson.com/posts"}
@@ -112,6 +123,7 @@ const Home = () => {
               link="user" 
               linkKey="id" 
               placeholder="User ID"
+              label="Label"
               actions={{
                 edit: "edit", 
                 filters: true
@@ -121,6 +133,7 @@ const Home = () => {
               link="user" 
               linkKey="firstName" 
               placeholder="First Name"
+              label="Label"
               actions={{
                 edit: "edit", 
                 filters: true
@@ -130,6 +143,7 @@ const Home = () => {
               link="user" 
               linkKey="lastName" 
               placeholder="Last Name"
+              label="Label"
               actions={{
                 edit: "edit.users", 
                 filters: true
@@ -139,6 +153,7 @@ const Home = () => {
               link="user" 
               linkKey="university" 
               placeholder="University"
+              label="Label"
               actions={{
                 edit: "edit.users", 
                 filters: true
@@ -148,7 +163,7 @@ const Home = () => {
             </Button>
           </View>
           <View
-            type={['detail']} 
+            type="detail" 
             api={{
               users: {url: "https://dummyjson.com/users"},
               posts: {url: "https://dummyjson.com/posts"}
@@ -156,15 +171,7 @@ const Home = () => {
             <Input link="user" linkKey="university" name="user.test.1"/>
           </View>
           <View
-            type={['edit']} 
-            api={{
-              users: {url: "https://dummyjson.com/users"},
-              posts: {url: "https://dummyjson.com/posts"}
-            }}>
-            <Input link="user" linkKey="university" name="user.test.1"/>
-          </View>
-          <View
-            type={['filters']} 
+            type="edit" 
             api={{
               users: {url: "https://dummyjson.com/users"},
               posts: {url: "https://dummyjson.com/posts"}

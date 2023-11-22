@@ -1,6 +1,10 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-const CustomChart = () => {
+type CustomChartType = {
+    name: string
+}
+
+const CustomChart:CustomChartType = (props:any):JSX.Element => {
     const data = [
         {
             name: 'Page A',
@@ -47,27 +51,29 @@ const CustomChart = () => {
     ];
 
     return (
-        <ResponsiveContainer width="100%" height="100%" className='w-full h-full max-w-full max-h-full'>
-            <LineChart
-                width={500}
-                height={300}
-                data={data}
-                margin={{
-                top: 0,
-                right: 0,
-                left: 0,
-                bottom: 0,
-                }}
-            >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-                <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-            </LineChart>
-        </ResponsiveContainer>
+        <>
+            <ResponsiveContainer width="100%" height="100%" className='w-full h-full max-w-full max-h-full'>
+                <LineChart
+                    width={500}
+                    height={300}
+                    data={data}
+                    margin={{
+                    top: 0,
+                    right: 0,
+                    left: 0,
+                    bottom: 0,
+                    }}
+                >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
+                    <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+                </LineChart>
+            </ResponsiveContainer>
+        </>
     )
 }
 

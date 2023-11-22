@@ -41,17 +41,26 @@ body {
 .react-aria-DateInput {
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
 
 .react-aria-DatePicker .react-aria-Group{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  height: 100%;
 }
 
 .react-aria-DatePicker {
   display: flex;
   flex-direction: column;
+  height: 100%;
+}
+
+.react-aria-Group {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
 }
 
 .skeleton:empty {
