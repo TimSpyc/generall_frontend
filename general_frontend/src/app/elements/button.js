@@ -7,25 +7,25 @@ const CustomButton = (props) => {
 
     return (
         <div className={`
-					${props.classNameInputWrapper} 
-					${isViewDraggable ? 'pointer-events-none border-green-400' : 'border-gray-400'} 
-					w-full h-full shadow-sm rounded-md border text-black skeleton`
+			${props.classNameInputWrapper} 
+			${isViewDraggable ? 'pointer-events-none border-green-400 unselectable' : 'border-gray-400'} 
+			w-full h-full shadow-sm rounded-md border text-black skeleton`
         }>
         {props.link &&
-					<button 
-						/* events emittet from react aria button */
-						onClick={(event) => handleActions(props.action, props.actionProps, event)} 
+			<button 
+				/* events emittet from react aria button */
+				onClick={(event) => handleActions(props.action, props.actionProps, event)} 
 
-						/* values writable to react aria button */
-						name={props.name}
-						value={props.value}
-						autoFocus={props.autoFocus}
-						type={props.type}
-						tabIndex={props.tabIndex}
-						className={`${props.classNameInput} w-full h-full`}
-					>
-						{props.children}
-					</button>
+				/* values writable to react aria button */
+				name={props.name}
+				value={props.value}
+				autoFocus={props.autoFocus}
+				type={props.type}
+				tabIndex={props.tabIndex}
+				className={`${props.classNameInput} w-full h-full`}
+			>
+				{props.children}
+			</button>
         }
         </div>
     )

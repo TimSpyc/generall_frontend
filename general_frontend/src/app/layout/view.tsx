@@ -142,8 +142,6 @@ const View = (props: ViewProps): JSX.Element => {
     })
   }
 
-  const performAction = (action:string) => {}
-
   const handleActions = (action:string, actionProps:any, event:Event) => {
     let actionPath = action.split('.')
     let actionTrigger = actionPath[0]
@@ -153,8 +151,8 @@ const View = (props: ViewProps): JSX.Element => {
       setViewWithProps(actionDestination, actionProps)
     }
     
-    if(actionTrigger === 'action') {
-      performAction(action.replace('action.', ''))
+    if(actionTrigger === 'submit') {
+      console.log("submit form")
     }
   }
 
