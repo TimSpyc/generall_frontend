@@ -25,6 +25,14 @@ type ViewContextType = {
   handleFormSubmit: Function,
 }
 
+type IndizesType = {
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  visible: boolean
+}
+
 const View = (props: ViewProps): JSX.Element => {
   const {view, setView, assetName, setAssetName, setViewWithProps} = useAssetContext();
   const {currentLayout, isViewDraggable, isViewResizable, currentlyResizing} = useGridLayoutContext();
@@ -64,7 +72,7 @@ const View = (props: ViewProps): JSX.Element => {
       }
     })
 
-    let indizes:any = []
+    let indizes:IndizesType[] = []
     
     React.Children.map(props.children, (child:JSX.Element, index: number) => {
       let element = childrenSize[view][child.props.name][`${parentLayout.w}x${parentLayout.h}`]
@@ -72,7 +80,7 @@ const View = (props: ViewProps): JSX.Element => {
       indizes.push(childrenSize[view][child.props.name][`${parentLayout.w}x${parentLayout.h}`])
     })
 
-    let sortedIndizes:any = sortBy(indizes, ['y','x'])
+    let sortedIndizes:IndizesType[] = sortBy(indizes, ['y','x'])
 
     return React.Children.toArray(props.children).map((child:any) => {
       // prepare all elements to be visible in the grid

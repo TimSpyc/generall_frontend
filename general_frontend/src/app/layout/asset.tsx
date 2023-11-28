@@ -1,4 +1,4 @@
-import React, { cloneElement, createContext, useContext, useState } from 'react';
+import React, { ReactElement, cloneElement, createContext, useContext, useState } from 'react';
 import {merge} from 'lodash'
 
 type AssetProps = {
@@ -28,7 +28,7 @@ const Asset= (props: AssetProps): JSX.Element => {
     setExternalProps(props)
   }
 
-  const prepareProps = (child:any, index:number) => {
+  const prepareProps = (child:ReactElement, index:number) => {
     // merge the api endpoints and overwrite them accordingly
     externalProps['index'] = index
 
