@@ -2,11 +2,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import { useViewContext } from "../layout/view";
 import { useGridLayoutContext } from "../layout/grid-layout"
 
-type CustomChartType = {
-    name: string
-}
-
-const CustomChart:CustomChartType = (props:any):JSX.Element => {
+const CustomChart = (props:any):JSX.Element => {
     const {setView, resetToDefault, data, FetchRequest, handleActions, handleFormData, handleFormSubmit} = useViewContext();
     const {layouts, setLayouts, currentLayout, updateGridEditable, isViewDraggable, isViewResizable, currentlyResizing} = useGridLayoutContext();
 

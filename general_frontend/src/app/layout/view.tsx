@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, cloneElement } from 'react';
+import React, { createContext, useState, useContext, cloneElement, ReactElement } from 'react';
 import useSWR from 'swr';
 import { useAssetContext } from "./asset";
 import { useGridLayoutContext } from './grid-layout';
@@ -31,6 +31,26 @@ type IndizesType = {
   w: number,
   h: number,
   visible: boolean
+}
+
+type CurrentStateType = {
+  [key:string]: {
+    [key:string]: IndizesType
+  }
+}
+
+type LayoutElementType = {
+  w: number,
+  h: number,
+  x: number,
+  y: number,
+  i: string,
+  isBounded: boolean,
+  isDraggable: boolean,
+  isResizable: boolean,
+  resizeHandles: [],
+  moved: boolean,
+  static: boolean,
 }
 
 const View = (props: ViewProps): JSX.Element => {
@@ -119,12 +139,12 @@ const View = (props: ViewProps): JSX.Element => {
   const updateLayout = (layouts:any) => {
     // required because otherwhise the grid receives wrong sizes!
     if(currentlyResizing === false) {
-      setChildrenSize((currentState:any) => {
-        layouts.forEach((element:any) => {
-          currentState[view][element.i][`${parentLayout.w}x${parentLayout.h}`].w = element.w
-          currentState[view][element.i][`${parentLayout.w}x${parentLayout.h}`].h = element.h
-          currentState[view][element.i][`${parentLayout.w}x${parentLayout.h}`].x = element.x
-          currentState[view][element.i][`${parentLayout.w}x${parentLayout.h}`].y = element.y
+      setChildrenSize((currentState:CurrentStateType[]) => {
+        layouts.forEach((layoutElement:LayoutElementType) => {
+          currentState[view][layoutElement.i][`${parentLayout.w}x${parentLayout.h}`].w = layoutElement.w
+          currentState[view][layoutElement.i][`${parentLayout.w}x${parentLayout.h}`].h = layoutElement.h
+          currentState[view][layoutElement.i][`${parentLayout.w}x${parentLayout.h}`].x = layoutElement.x
+          currentState[view][layoutElement.i][`${parentLayout.w}x${parentLayout.h}`].y = layoutElement.y
         })
 
         localStorage.setItem(assetName, JSON.stringify(currentState))
@@ -156,13 +176,18 @@ const View = (props: ViewProps): JSX.Element => {
     let actionTrigger = actionPath[0]
     let actionDestination = actionPath[1]
 
+    console.log(actionTrigger)
+
     switch (actionTrigger) {
       case 'view':
         setViewWithProps(actionDestination, actionProps)
+        break;
       case 'store':
         console.log("store")
+        break;
       case 'reload':
         console.log("reload")
+        break;
       default:
         setViewWithProps('default', {})
     }

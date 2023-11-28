@@ -22,6 +22,34 @@ type GridLayoutSizes = {
 	lg: any,
 }
 
+type IndizesType = {
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  visible: boolean
+}
+
+type CurrentStateType = {
+  [key:string]: {
+    [key:string]: IndizesType
+  }
+}
+
+type LayoutElementType = {
+  w: number,
+  h: number,
+  x: number,
+  y: number,
+  i: string,
+  isBounded: boolean,
+  isDraggable: boolean,
+  isResizable: boolean,
+  resizeHandles: [],
+  moved: boolean,
+  static: boolean,
+}
+
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const GridLayout = (props: GridLayoutProps): JSX.Element => {
@@ -66,9 +94,9 @@ const GridLayout = (props: GridLayoutProps): JSX.Element => {
 
 	const updateLayout = (gridLayouts:any) => {
 		setLayouts((currentState:any) => {
-			gridLayouts.forEach((elementDimension:any) => {
-				currentState[currentBreakpoint][elementDimension.i] = {
-					i: elementDimension.i, x: elementDimension.x, y: elementDimension.y, w: elementDimension.w, h: elementDimension.h
+			gridLayouts.forEach((LayoutElementType:LayoutElementType) => {
+				currentState[currentBreakpoint][LayoutElementType.i] = {
+					i: LayoutElementType.i, x: LayoutElementType.x, y: LayoutElementType.y, w: LayoutElementType.w, h: LayoutElementType.h
 				}
 			})
 
