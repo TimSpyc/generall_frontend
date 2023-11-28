@@ -92,6 +92,7 @@ const View = (props: ViewProps): JSX.Element => {
       }
     })
 
+    // prepare the indizes for all child elements
     let indizes:IndizesType[] = []
     
     React.Children.map(props.children, (child:JSX.Element, index: number) => {

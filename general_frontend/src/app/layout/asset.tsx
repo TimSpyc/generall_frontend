@@ -1,21 +1,13 @@
 import React, { ReactElement, cloneElement, createContext, useContext, useState } from 'react';
-import {merge} from 'lodash'
-
-type AssetProps = {
-  children: JSX.Element[],
-  name: string,
-  index?: number,
-  defaultView?: string
-}
-
-type AssetContextType = {
-  view: string,
-  setView: Function,
-  assetName: string,
-  setAssetName: Function
-}
+import { merge } from 'lodash'
+import { AssetProps, AssetContextType } from '../types/asset-types';
 
 const Asset= (props: AssetProps): JSX.Element => {
+  // Throw an Error if not View with the default type is present
+  if(props.children.filter((child:ReactElement) => child.props.type === (props.defaultView ? props.defaultView : 'default')).length <= 0) {
+    throw new Error(`KnowledgeHub: Specify exact one default page or change the defaultView Property on your asset to have an existing default page assigned`)
+  }
+  
   const [view, setView] = useState<string>(props.defaultView ? props.defaultView : 'default');
   const [externalProps, setExternalProps] = useState<any>({});
   const [assetName, setAssetName] = useState<string>(props.name)
@@ -31,7 +23,6 @@ const Asset= (props: AssetProps): JSX.Element => {
   const prepareProps = (child:ReactElement, index:number) => {
     // merge the api endpoints and overwrite them accordingly
     externalProps['index'] = index
-
     return merge(externalProps, child.props)
   }
 
@@ -46,7 +37,7 @@ const Asset= (props: AssetProps): JSX.Element => {
         </button>
         <input className='ml-2 py-1 px-2 bg-white shadow-md text-black mb-2 rounded-md max-w-32' placeholder='next id' onChange={(event:any) => setNextID(event.target.value)}/>
       </div>
-      <AssetContext.Provider value={{view, setView, assetName, setAssetName, setViewWithProps}}>
+      <AssetContext.Provider value={{view, setView, assetName, setAssetName, setViewWithProps, externalProps, setExternalProps}}>
         {props.children.map((child:JSX.Element, index: number) => {
           if(child.props.hasOwnProperty('type') === false || child.props.type === view) {
             return(

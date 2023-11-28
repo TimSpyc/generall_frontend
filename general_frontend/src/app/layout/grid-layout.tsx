@@ -1,54 +1,6 @@
 import React, { createContext, useState, useContext, cloneElement } from 'react';
 import { Responsive, WidthProvider } from "react-grid-layout";
-
-type GridLayoutContextType = {
-	layouts: object,
-	setLayouts: Function,
-	currentLayout: object
-	updateGridEditable: Function,
-	isViewDraggable: Boolean,
-	isViewResizable: Boolean,
-	currentlyResizing: Boolean
-}
-
-type GridLayoutProps = {
-	name: string,
-	children: JSX.Element[] | JSX.Element,
-}
-
-type GridLayoutSizes = {
-	sm: any,
-	md: any,
-	lg: any,
-}
-
-type IndizesType = {
-  x: number,
-  y: number,
-  w: number,
-  h: number,
-  visible: boolean
-}
-
-type CurrentStateType = {
-  [key:string]: {
-    [key:string]: IndizesType
-  }
-}
-
-type LayoutElementType = {
-  w: number,
-  h: number,
-  x: number,
-  y: number,
-  i: string,
-  isBounded: boolean,
-  isDraggable: boolean,
-  isResizable: boolean,
-  resizeHandles: [],
-  moved: boolean,
-  static: boolean,
-}
+import { GridLayoutContextType, GridLayoutProps, GridLayoutSizes, LayoutElementType } from '../types/grid-layout-types';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -94,9 +46,9 @@ const GridLayout = (props: GridLayoutProps): JSX.Element => {
 
 	const updateLayout = (gridLayouts:any) => {
 		setLayouts((currentState:any) => {
-			gridLayouts.forEach((LayoutElementType:LayoutElementType) => {
-				currentState[currentBreakpoint][LayoutElementType.i] = {
-					i: LayoutElementType.i, x: LayoutElementType.x, y: LayoutElementType.y, w: LayoutElementType.w, h: LayoutElementType.h
+			gridLayouts.forEach((layoutElement:LayoutElementType) => {
+				currentState[currentBreakpoint][layoutElement.i] = {
+					i: layoutElement.i, x: layoutElement.x, y: layoutElement.y, w: layoutElement.w, h: layoutElement.h
 				}
 			})
 
