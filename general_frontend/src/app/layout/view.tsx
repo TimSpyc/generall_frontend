@@ -95,16 +95,17 @@ const View = (props: ViewProps): JSX.Element => {
     });
   }
 
-  const FetchRequests = async() => {
+  const useFetchRequests = async() => {
     for (const [key, value] of Object.entries(props.api)) {
-      FetchRequest(key, value)
+      useFetchRequest(key, value)
     }
   }
 
-  const FetchRequest = async (key:string, value:any, params?:any) => {
+  const useFetchRequest = async (key:string, value:any) => {
     let url = value.url.endsWith('/') ? value.url : `${value.url}/`
+    let params = value.params ? `?${new URLSearchParams(value.params).toString()}` : ''
 
-    return data[key] = useSWR(`${url}${value.id ? value.id : ''}`, fetcher)
+    return data[key] = useSWR(`${url}${value.id ? value.id : ''}${params}`, fetcher)
   }
 
   const updateLayout = (layouts:any) => {
@@ -147,12 +148,15 @@ const View = (props: ViewProps): JSX.Element => {
     let actionTrigger = actionPath[0]
     let actionDestination = actionPath[1]
 
-    if(actionTrigger === 'view') {
-      setViewWithProps(actionDestination, actionProps)
-    }
-    
-    if(actionTrigger === 'submit') {
-      console.log("submit form")
+    switch (actionTrigger) {
+      case 'view':
+        setViewWithProps(actionDestination, actionProps)
+      case 'store':
+        console.log("store")
+      case 'reload':
+        console.log("reload")
+      default:
+        setViewWithProps('default', {})
     }
   }
 
@@ -169,20 +173,20 @@ const View = (props: ViewProps): JSX.Element => {
     console.log(event)
   }
 
-  FetchRequests()
+  useFetchRequests()
 
   return (
-    <ViewContext.Provider value={{view, setView, data, FetchRequest, handleActions, handleFormData, handleFormSubmit}}>
+    <ViewContext.Provider value={{view, setView, data, useFetchRequest, handleActions, handleFormData, handleFormSubmit}}>
         {isViewDraggable &&
         <>
           <div className={` 
             ${sidebarOpen ? 'block w-[200px]' : 'hidden w-[0px]'} 
-            absolute z-40 top-2 bottom-2 left-0 -translate-x-full bg-white shadow-md rounded-md border border-gray-400 transition-all ease-in-out
+            absolute z-40 top-2 bottom-2 left-0 -translate-x-full bg-white shadow-md rounded-md transition-all ease-in-out
           `}>
-            <div className='p-2 w-full border-b border-gray-400'>
-              <strong className='text-black'>
+            <div className='p-2 py-3 w-full shadow-md'>
+              <p className='text-black'>
                 Hidden Items {currentLayout[assetName].w}x{currentLayout[assetName].h}
-              </strong>
+              </p>
             </div>
 
             {childrenSize[view] &&
@@ -190,7 +194,7 @@ const View = (props: ViewProps): JSX.Element => {
                 {Object.entries(childrenSize[view]).map(([idx, view]:any) => {
                   if(view[`${parentLayout.w}x${parentLayout.h}`].visible === false) {
                     return ( 
-                      <div onClick={() => addChild(idx)} className='text-black w-full p-2 first-of-type:border-t border-b border-black cursor-crosshair' key={idx}>
+                      <div onClick={() => addChild(idx)} className='text-black w-full p-2 px-3 first-of-type:border-t border-b border-black cursor-crosshair' key={idx}>
                         {idx}
                       </div>
                     )
@@ -215,13 +219,13 @@ const View = (props: ViewProps): JSX.Element => {
           <div className="relative bg-white shadow-md rounded-md w-full h-full max-w-full max-h-full">
             <ResponsiveGridLayout 
               className="layout"
-              breakpoints={{ lg: 1200, md: 996, sm: 768 }}
+              breakpoints={{ lg: 1301, md: 868, sm: 434 }}
               cols={{lg: 36, md: 24, sm: 12}}
               rowHeight={50}
               isDraggable={isViewDraggable}
               isResizable={isViewResizable}
               margin={[0,0]}
-              onLayoutChange={updateLayout}>
+              onLayoutChange={(event) => updateLayout(event)}>
               {processedChildren().filter((child:any) => (childrenSize[view][child.key][`${parentLayout.w}x${parentLayout.h}`].visible))}
             </ResponsiveGridLayout>
           </div>

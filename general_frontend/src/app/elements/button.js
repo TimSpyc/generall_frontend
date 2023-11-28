@@ -11,7 +11,6 @@ const CustomButton = (props) => {
 			${isViewDraggable ? 'pointer-events-none border-green-400 unselectable' : 'border-gray-400'} 
 			w-full h-full shadow-sm rounded-md border text-black skeleton`
         }>
-        {props.link &&
 			<button 
 				/* events emittet from react aria button */
 				onClick={(event) => handleActions(props.action, props.actionProps, event)} 
@@ -26,7 +25,6 @@ const CustomButton = (props) => {
 			>
 				{props.children}
 			</button>
-        }
         </div>
     )
 }

@@ -17,11 +17,11 @@ type AssetContextType = {
 
 const Asset= (props: AssetProps): JSX.Element => {
   const [view, setView] = useState<string>(props.defaultView ? props.defaultView : 'default');
-  const [externalProps, setExternalProps] = useState({});
+  const [externalProps, setExternalProps] = useState<any>({});
   const [assetName, setAssetName] = useState<string>(props.name)
 
-  // temporary
-  const [nextID, setNextID] = useState(0)
+  // TODO: remove, temporary
+  const [nextID, setNextID] = useState<number>(0)
 
   const setViewWithProps = (view:string, props:any) => {
     setView(view)
@@ -44,7 +44,7 @@ const Asset= (props: AssetProps): JSX.Element => {
         <button className='ml-2 py-1 px-2 bg-yellow-400 text-white mb-2 rounded-md' onClick={() => setViewWithProps("edit", {api: {post: { id:nextID }, user: { id:nextID }}})}>
           Edit View
         </button>
-        <input className='ml-2 py-1 px-2 bg-white shadow-md text-black mb-2 rounded-md max-w-32' placeholder='next id' onChange={(event) => setNextID(event.target.value)}/>
+        <input className='ml-2 py-1 px-2 bg-white shadow-md text-black mb-2 rounded-md max-w-32' placeholder='next id' onChange={(event:any) => setNextID(event.target.value)}/>
       </div>
       <AssetContext.Provider value={{view, setView, assetName, setAssetName, setViewWithProps}}>
         {props.children.map((child:JSX.Element, index: number) => {

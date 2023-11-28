@@ -89,14 +89,14 @@ const GridLayout = (props: GridLayoutProps): JSX.Element => {
 	}
 
 	return (
-		<div className="mt-16">
+		<div className="mt-16 max-w-[1300px] mx-auto">
 			<div className="absolute top-4">
 				<button className={`ml-2 py-1 px-2 text-white mb-2 rounded-md ${isDraggable ? 'bg-green-400' : 'bg-red-400'}`} onClick={() => setIsDraggable(!isDraggable)}>Toggle Grid Edit</button>
 				<button className={`ml-2 py-1 px-2 text-white mb-2 rounded-md ${isViewDraggable ? 'bg-green-400' : 'bg-red-400'}`} onClick={() => toggleEdit()}>Toggle Edit</button>
 			</div>
-			<GridLayoutContext.Provider value={{layouts, setLayouts, currentLayout, updateGridEditable, isViewDraggable, isViewResizable, currentlyResizing}}>
+			<GridLayoutContext.Provider value={{layouts, setLayouts, currentLayout, setCurrentLayout, isResizable, setIsResizable, updateGridEditable, isViewDraggable, isViewResizable, currentlyResizing}}>
 				<ResponsiveGridLayout className="layout"
-					breakpoints={{ lg: 1200, md: 996, sm: 768 }}
+					breakpoints={{ lg: 1200, md: 800, sm: 600 }}
 					cols={{ lg: 3, md: 2, sm: 1 }}
 					rowHeight={615}
 					isDraggable={isDraggable}

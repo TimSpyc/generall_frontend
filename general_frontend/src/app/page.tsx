@@ -9,7 +9,6 @@ import Button from "./elements/button"
 import DatePicker from "./elements/date-picker"
 import DateRangePicker from "./elements/date-range-picker"
 import Chart from "./elements/chart"
-import Checkbox from "./elements/checkbox"
 
 const Home = () => {
   return (
@@ -21,7 +20,7 @@ const Home = () => {
             api={{
               user: {
                 url: "https://dummyjson.com/user",
-                id: 4,
+                id: 1,
               },
               post: {
                 url: "https://dummyjson.com/posts",
@@ -88,13 +87,21 @@ const Home = () => {
                 edit: "edit.users", 
                 filters: true
               }}/>
-              <Button name="submit.user" action="submit.user" link="submit.user">
+              <Button name="submit.user" action="submit.user">
                 Submit
               </Button>
               <Button name="view.edit" 
                 action="view.edit" 
-                actionProps={{api:{user:{id:90}}}} 
-                link="test"
+                actionProps={{
+                  api: {
+                    user:{
+                      id:90, 
+                      params: {
+                        search: "Search String"
+                      }
+                    }
+                  }
+                }} 
               >
                 Change to Edit
               </Button>
@@ -264,8 +271,16 @@ const Home = () => {
               </Button>
               <Button name="view.edit" 
                 action="view.edit" 
-                actionProps={{api:{user:{id:90}}}} 
-                link="test"
+                actionProps={{
+                  api: {
+                    user:{
+                      id:90, 
+                      params: {
+                        search: "Search String"
+                      }
+                    }
+                  }
+                }} 
               >
                 Change to Edit
               </Button>
