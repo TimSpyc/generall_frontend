@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "react-grid-layout/css/styles.css";
+@import "react-resizable/css/styles.css";
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+.react-resizable-handle.react-resizable-handle-se {
+  z-index: 50;
+}
+
+.react-grid-item.react-grid-placeholder {
+  background-color: gray;
+  border-radius: 0.5rem;
+}
+
+.react-aria-DateInput {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.react-aria-DatePicker .react-aria-Group{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.react-aria-DatePicker {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.react-aria-Group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.react-aria-DateRangePicker, .react-aria-DatePicker {
+  line-height: initial;
+}
+
+.skeleton:empty {
+  animation: skeleton-loading 1s linear infinite alternate;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: rgb(255, 255, 255)
+  }
+  100% {
+    background-color: rgb(240, 243, 245)
+  }
+}
+
+.unselectable *{
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  cursor: not-allowed;
+}
