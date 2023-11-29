@@ -18,11 +18,37 @@ const Home = () => {
         <GridLayout name="testing">
           <Asset name="custom-asset-test" buttons={[
             {
-              action: 'view.edit',
-              actionProps: {},
-              label: '',
-              icon: ''
-            }
+              action: 'view.default',
+              actionProps: {
+                api: {
+                  user: {
+                    url: "https://dummyjson.com/user",
+                    id: 5,
+                    params: {
+                      search: "test"
+                    }
+                  },
+                },
+              },
+              label: 'User Default',
+              icon: 'index'
+            },
+            {
+              action: 'view.detail',
+              actionProps: {
+                api: {
+                  user: {
+                    url: "https://dummyjson.com/user",
+                    id: 1,
+                    params: {
+                      search: "test"
+                    },
+                  },
+                },
+              },
+              label: 'User Edit',
+              icon: 'edit'
+            },
           ]}>
             <View
               type="default" 
@@ -104,7 +130,7 @@ const Home = () => {
                   actionProps={{
                     api: {
                       user:{
-                        id:90, 
+                        id: 1, 
                         params: {
                           search: "Search String"
                         }
@@ -122,7 +148,7 @@ const Home = () => {
               api={{
                 user: {
                   url: "https://dummyjson.com/user",
-                  id: 2,
+                  id: 5,
                 },
                 post: {
                   url: "https://dummyjson.com/posts",

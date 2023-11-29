@@ -17,5 +17,6 @@ export type AssetContextType = {
   view: string,
   setView: Function,
   assetName: string,
-  setAssetName: Function
+  setAssetName: Function,
+  handleActions: Function,
 }

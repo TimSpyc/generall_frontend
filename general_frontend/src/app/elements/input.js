@@ -9,7 +9,6 @@ const CustomButton = (props) => {
     resetToDefault,
     data,
     FetchRequest,
-    handleActions,
     handleFormData,
     handleFormSubmit,
   } = useViewContext();
@@ -25,6 +24,7 @@ const CustomButton = (props) => {
 
   const [value, setValue] = useState("");
   const [finishedLoading, setFinishedLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const onChange = (e) => {
     setValue(e.target.value);
@@ -36,13 +36,20 @@ const CustomButton = (props) => {
       throw new Error(`api does not contain any link with name ${props.link}`);
     }
 
-    if (data[props.link].isLoading === true) {
-      setFinishedLoading(false);
+    if (data[props.link].error != undefined) {
+      console.log(data[props.link].error.info)
+      setError(true);
     }
 
-    if (data[props.link].isLoading === false && finishedLoading === false) {
+    if (data[props.link].isLoading === true && data[props.link].error === undefined) {
+      setFinishedLoading(false);
+      setError(false);
+    }
+
+    if (data[props.link].isLoading === false && finishedLoading === false && data[props.link].error === undefined && data[props.link].data) {
       setValue(data[props.link].data[props.linkKey]);
       setFinishedLoading(true);
+      setError(false);
     }
   }, [data]);
 
@@ -50,7 +57,8 @@ const CustomButton = (props) => {
     <div
       className={`
 					${props.classNameInputWrapper} 
-					${isViewDraggable ? "pointer-events-none border-green-400 unselectable" : ""} 
+					${isViewDraggable ? "pointer-events-none border-green-400 unselectable" : ""}
+					${error ? "pointer-events-none border-red-400 unselectable" : ""}
 					w-full h-full shadow-sm rounded-md border text-black p-0.5 px-1 skeleton bg-white`}
     >
       {data[props.link]?.isLoading === false && data[props.link]?.data && (
@@ -76,6 +84,11 @@ const CustomButton = (props) => {
           )}
         </TextField>
       )}
+      {data[props.link]?.error != undefined &&
+        <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 text-red-400 text-sm">
+          Error fetching Data
+        </div>
+      }
     </div>
   );
 };

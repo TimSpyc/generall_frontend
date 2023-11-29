@@ -10,6 +10,7 @@ const CustomDatePicker = (props) => {
 
     const [value, setValue] = useState('');
     const [finishedLoading, setFinishedLoading] = useState(false)
+    const [error, setError] = useState(false);
 
     const onChange = (e) => {
         setValue(
@@ -29,18 +30,25 @@ const CustomDatePicker = (props) => {
           throw new Error(`api does not contain any link with name ${props.link}`)
         }
 
-        if(data[props.link].isLoading === true) {
-          setFinishedLoading(false)
+        if (data[props.link].error != undefined) {
+          console.log(data[props.link].error)
+          setError(true);
         }
 
-        if(data[props.link].isLoading === false && finishedLoading === false) {
+        if(data[props.link].isLoading === true && data[props.link].error === undefined) {
+          setFinishedLoading(false);
+          setError(false);
+        }
+
+        if(data[props.link].isLoading === false && finishedLoading === false && data[props.link].error === undefined && data[props.link].data) {
           let date = new Date(data[props.link].data[props.linkKey])
 
           setValue(
             parseDate(`${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`)
           )
           
-          setFinishedLoading(true)
+          setFinishedLoading(true);
+          setError(false);
         }
     }, [data]);
 
@@ -48,6 +56,7 @@ const CustomDatePicker = (props) => {
       <div className={`
         ${props.classNameInputWrapper} 
         ${isViewDraggable ? 'pointer-events-none border-green-400' : ''} 
+        ${error ? "pointer-events-none border-red-400 unselectable" : ""}
         w-full h-full shadow-sm rounded-md border text-black p-0.5 px-1 skeleton`
       }>
         {(data[props.link]?.isLoading === false && data[props.link]?.data) &&
@@ -78,6 +87,11 @@ const CustomDatePicker = (props) => {
             <Label className="text-[8px] text-black">
               {props.label}
             </Label>
+          </div>
+        }
+        {data[props.link]?.error != undefined &&
+          <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 text-red-400 text-sm">
+            Error fetching Data
           </div>
         }
       </div>

@@ -12,12 +12,32 @@ const Asset= (props: AssetProps): JSX.Element => {
   const [externalProps, setExternalProps] = useState<any>({});
   const [assetName, setAssetName] = useState<string>(props.name)
 
-  // TODO: remove, temporary
-  const [nextID, setNextID] = useState<number>(0)
-
   const setViewWithProps = (view:string, props:any) => {
     setView(view)
     setExternalProps(props)
+  }
+
+  const handleActions = (action:string, actionProps:any, event:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    let actionPath = action.split('.')
+    let actionTrigger = actionPath[0]
+    let actionDestination = actionPath[1]
+
+    switch (actionTrigger) {
+      case 'view':
+        setViewWithProps(actionDestination, actionProps)
+        break;
+      case 'paginate':
+        console.log('paginate')
+        break;
+      case 'store':
+        console.log("store")
+        break;
+      case 'reload':
+        console.log("reload")
+        break;
+      default:
+        setViewWithProps('default', {})
+    }
   }
 
   const prepareProps = (child:ReactElement, index:number) => {
@@ -28,16 +48,7 @@ const Asset= (props: AssetProps): JSX.Element => {
 
   return (
     <>
-      <div className="absolute -top-10 right-0 flex flex-row gap-2">
-        <button className='ml-2 py-1 px-2 bg-yellow-400 text-white mb-2 rounded-md' onClick={() => setViewWithProps("default", {api: {post: { id:2 }, user: { id:2 }}})}>
-          Default View
-        </button>
-        <button className='ml-2 py-1 px-2 bg-yellow-400 text-white mb-2 rounded-md' onClick={() => setViewWithProps("edit", {api: {post: { id:nextID }, user: { id:nextID }}})}>
-          Edit View
-        </button>
-        <input className='ml-2 py-1 px-2 bg-white shadow-md text-black mb-2 rounded-md max-w-32' placeholder='next id' onChange={(event:any) => setNextID(event.target.value)}/>
-      </div>
-      <AssetContext.Provider value={{view, setView, assetName, setAssetName, setViewWithProps, externalProps, setExternalProps}}>
+      <AssetContext.Provider value={{view, setView, assetName, setAssetName, setViewWithProps, externalProps, setExternalProps, handleActions}}>
         {props.children.map((child:JSX.Element, index: number) => {
           if(child.props.hasOwnProperty('type') === false || child.props.type === view) {
             return(
@@ -48,6 +59,18 @@ const Asset= (props: AssetProps): JSX.Element => {
           }
         })}
       </AssetContext.Provider>
+
+      {props.buttons &&
+        <div className="absolute -bottom-2 z-50 right-6 flex flex-row gap-1">
+          {props.buttons.map((data:any, index:number) => {
+            return(
+              <button key={index} className='py-0.5 px-1 bg-black text-white text-xs mb-2 rounded-md' onClick={(event) => handleActions(data.action, data.actionProps, event)}>
+                {data.label}
+              </button>
+            )
+          })}
+        </div>
+      }
     </>
   )
 }

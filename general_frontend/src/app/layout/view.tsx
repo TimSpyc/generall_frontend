@@ -2,7 +2,7 @@ import React, { createContext, useState, useContext, cloneElement, ReactElement 
 import useSWR from 'swr';
 import { useAssetContext } from "./asset";
 import { useGridLayoutContext } from './grid-layout';
-import { fetcher } from "../fetcher"
+import { fetcher, swrConfig } from "../api"
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { sortBy } from "lodash"
 
@@ -20,7 +20,6 @@ type ViewContextType = {
   setView: Function,
   data: object,
   FetchRequest: Function,
-  handleActions: Function,
   handleFormData: Function,
   handleFormSubmit: Function,
 }
@@ -54,7 +53,7 @@ type LayoutElementType = {
 }
 
 const View = (props: ViewProps): JSX.Element => {
-  const {view, setView, assetName, setAssetName, setViewWithProps} = useAssetContext();
+  const {view, setView, assetName, setAssetName, setViewWithProps, handleActions} = useAssetContext();
   const {currentLayout, isViewDraggable, isViewResizable, currentlyResizing} = useGridLayoutContext();
 
   const parentLayout = currentLayout[assetName]
@@ -134,14 +133,16 @@ const View = (props: ViewProps): JSX.Element => {
     let url = value.url.endsWith('/') ? value.url : `${value.url}/`
     let params = value.params ? `?${new URLSearchParams(value.params).toString()}` : ''
 
-    return data[key] = useSWR(`${url}${value.id ? value.id : ''}${params}`, fetcher)
+    console.log(value)
+
+    return data[key] = useSWR(`${url}${value.id ? value.id : ''}${params}`, fetcher, swrConfig)
   }
 
-  const updateLayout = (layouts:any) => {
+  const updateLayout = (currentLayout: LayoutElementType[]) => {
     // required because otherwhise the grid receives wrong sizes!
     if(currentlyResizing === false) {
       setChildrenSize((currentState:CurrentStateType[]) => {
-        layouts.forEach((layoutElement:LayoutElementType) => {
+        currentLayout.forEach((layoutElement:LayoutElementType) => {
           currentState[view][layoutElement.i][`${parentLayout.w}x${parentLayout.h}`].w = layoutElement.w
           currentState[view][layoutElement.i][`${parentLayout.w}x${parentLayout.h}`].h = layoutElement.h
           currentState[view][layoutElement.i][`${parentLayout.w}x${parentLayout.h}`].x = layoutElement.x
@@ -172,28 +173,6 @@ const View = (props: ViewProps): JSX.Element => {
     })
   }
 
-  const handleActions = (action:string, actionProps:any, event:Event) => {
-    let actionPath = action.split('.')
-    let actionTrigger = actionPath[0]
-    let actionDestination = actionPath[1]
-
-    console.log(actionTrigger)
-
-    switch (actionTrigger) {
-      case 'view':
-        setViewWithProps(actionDestination, actionProps)
-        break;
-      case 'store':
-        console.log("store")
-        break;
-      case 'reload':
-        console.log("reload")
-        break;
-      default:
-        setViewWithProps('default', {})
-    }
-  }
-
   const handleFormData = (key:string, value:any) => {
     setFormData((currentState:any) => {
       currentState[key] = value;
@@ -210,7 +189,7 @@ const View = (props: ViewProps): JSX.Element => {
   useFetchRequests()
 
   return (
-    <ViewContext.Provider value={{view, setView, data, useFetchRequest, handleActions, handleFormData, handleFormSubmit}}>
+    <ViewContext.Provider value={{view, setView, data, useFetchRequest, handleFormData, handleFormSubmit}}>
         {isViewDraggable &&
         <>
           <div className={` 
@@ -238,7 +217,7 @@ const View = (props: ViewProps): JSX.Element => {
             }
           </div>
 
-          <div className={`absolute z-40 bottom-4 left-4 bg-gray-800 text-white px-1 rounded-sm shadow-md`}>
+          <div className={`absolute z-40 bottom-4 left-4 bg-gray-800 text-white px-1 py-0.5 rounded-md shadow-md`}>
             <button onClick={() => setSidebarOpen(!sidebarOpen)} className={`transition-all ease-in-out flex flex-row gap-2 text-xs`}>
               <div className={`${sidebarOpen ? 'rotate-180' : ''} transition-all ease-in-out`}>
                 ►
