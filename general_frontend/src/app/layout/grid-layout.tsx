@@ -1,24 +1,45 @@
 import React, { createContext, useState, useContext, cloneElement } from 'react';
 import { Responsive, WidthProvider } from "react-grid-layout";
-import { GridLayoutContextType, GridLayoutProps, GridLayoutSizes, LayoutElementType } from '../types/grid-layout-types';
+import { GridLayoutContextType, GridLayoutProps, GridLayoutSizes, LayoutElementType, CurrentStateType } from '../types/grid-layout-types';
+import { each } from "lodash"
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const GridLayout = (props: GridLayoutProps): JSX.Element => {
+	let sizes:GridLayoutSizes = {sm: {}, md: {}, lg: {}}
+
+	const removeUnusedChildren = (children:any) => {
+		let existingChildren:any = []
+
+		React.Children.map(props.children, (element:JSX.Element, index: number) => {
+			existingChildren.push(element.props.name)
+		});
+
+		each(children, (size, sizeKey) => {
+			each(size, (element, elementKey:number) => {
+				if(existingChildren.indexOf(elementKey) === -1) {
+					if(children[sizeKey][elementKey]) {
+						delete(children[sizeKey][elementKey])
+					}
+				}
+			})
+		})
+
+		return children
+	}
+
 	const [layouts, setLayouts] = useState(() => {
 		if(localStorage.getItem(props.name)) {
-			return JSON.parse(localStorage.getItem(props.name)!)
+			return removeUnusedChildren(JSON.parse(localStorage.getItem(props.name)!))
 		} 
 		else {
-			let sizes:GridLayoutSizes = {sm: {}, md: {}, lg: {}}
-
 			React.Children.map(props.children, (element:JSX.Element, index: number) => {
 				sizes.sm[element.props.name] = {i: element.props.name, x: 0, y: 0, w: 3, h: 1}
 				sizes.md[element.props.name] = {i: element.props.name, x: 0, y: 0, w: 2, h: 1}
 				sizes.lg[element.props.name] = {i: element.props.name, x: 0, y: 0, w: 1, h: 1}
 			})
 
-			return sizes
+			return removeChildren(sizes)
 		}
 	})
 
@@ -44,11 +65,15 @@ const GridLayout = (props: GridLayoutProps): JSX.Element => {
 		)
 	});
 
-	const updateLayout = (gridLayouts:any) => {
-		setLayouts((currentState:any) => {
-			gridLayouts.forEach((layoutElement:LayoutElementType) => {
-				currentState[currentBreakpoint][layoutElement.i] = {
-					i: layoutElement.i, x: layoutElement.x, y: layoutElement.y, w: layoutElement.w, h: layoutElement.h
+	const updateLayout = (currentLayout:LayoutElementType[]) => {
+		setLayouts((currentState:CurrentStateType[]) => {
+			currentLayout.forEach((layoutElement:LayoutElementType) => {
+				currentState[currentBreakpoint as any][layoutElement.i] = {
+					i: layoutElement.i as string,
+					x: layoutElement.x as number,
+					y: layoutElement.y as number,
+					w: layoutElement.w as number,
+					h: layoutElement.h as number
 				}
 			})
 

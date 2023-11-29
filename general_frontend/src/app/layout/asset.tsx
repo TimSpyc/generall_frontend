@@ -43,7 +43,7 @@ const Asset= (props: AssetProps): JSX.Element => {
   const prepareProps = (child:ReactElement, index:number) => {
     // merge the api endpoints and overwrite them accordingly
     externalProps['index'] = index
-    return merge(externalProps, child.props)
+    return merge(child.props, externalProps)
   }
 
   return (

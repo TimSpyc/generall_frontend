@@ -32,3 +32,17 @@ export type LayoutElementType = {
   moved: boolean,
   static: boolean,
 }
+
+type IndizesType = {
+	x: number,
+	y: number,
+	w: number,
+	h: number,
+	visible: boolean
+}
+
+export type CurrentStateType = {
+  [key:string]: {
+    [key:string]: IndizesType
+  }
+}

@@ -15,8 +15,8 @@
 [-] Werte über API abfragen und diese aus den individuellen Komponenten abrufen können
     [x] Error und Loading Handling
     [] Aktualisieren von Daten über Websockets
-[] Jeder View muss seine verfügbaren Buttons definieren können und mit Elementen oder Aktionen verknüpft werden
-    [] Definitions Konvention überlegen
+[x] Jeder View muss seine verfügbaren Buttons definieren können und mit Elementen oder Aktionen verknüpft werden
+    [x] Definitions Konvention überlegen
 [] Element sagen ob es selbst filtert oder ob die API die Filterung übernimmt
 [] Design muss von aktueller Seite übernommen werden
 [x] Unterschiedliche Views müssen definierbar und wechselbar sein

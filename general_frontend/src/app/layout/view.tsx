@@ -4,7 +4,7 @@ import { useAssetContext } from "./asset";
 import { useGridLayoutContext } from './grid-layout';
 import { fetcher, swrConfig } from "../api"
 import { Responsive, WidthProvider } from "react-grid-layout";
-import { sortBy } from "lodash"
+import { sortBy, each } from "lodash";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -53,6 +53,26 @@ type LayoutElementType = {
 }
 
 const View = (props: ViewProps): JSX.Element => {
+  const removeUnusedChildren = (children:any) => {
+    let existingChildren:any = []
+
+    React.Children.map(props.children, (element:JSX.Element, index: number) => {
+			existingChildren.push(element.props.name)
+		});
+  
+		each(children, (view, viewKey) => {
+      each(view, (element, elementKey:any) => {
+				if(existingChildren.indexOf(elementKey) === -1) {
+					if(children[viewKey][elementKey]) {
+						delete(children[viewKey][elementKey])
+					}
+				}
+			})
+    })
+
+		return children
+	}
+
   const {view, setView, assetName, setAssetName, setViewWithProps, handleActions} = useAssetContext();
   const {currentLayout, isViewDraggable, isViewResizable, currentlyResizing} = useGridLayoutContext();
 
@@ -62,8 +82,8 @@ const View = (props: ViewProps): JSX.Element => {
   const [formData, setFormData] = useState({})
   const [childrenSize, setChildrenSize] = useState(() => {
     return (localStorage.getItem(assetName))
-      ? JSON.parse(localStorage.getItem(assetName)!)
-      : {}
+      ? removeUnusedChildren(JSON.parse(localStorage.getItem(assetName)!))
+      : removeUnusedChildren({})
   })
 
   let data:any = {}
@@ -133,8 +153,6 @@ const View = (props: ViewProps): JSX.Element => {
     let url = value.url.endsWith('/') ? value.url : `${value.url}/`
     let params = value.params ? `?${new URLSearchParams(value.params).toString()}` : ''
 
-    console.log(value)
-
     return data[key] = useSWR(`${url}${value.id ? value.id : ''}${params}`, fetcher, swrConfig)
   }
 
@@ -178,12 +196,9 @@ const View = (props: ViewProps): JSX.Element => {
       currentState[key] = value;
       return {...currentState};
 		})
-
-    console.log(formData)
   }
 
   const handleFormSubmit = (event:Event) => {
-    console.log(event)
   }
 
   useFetchRequests()
@@ -238,7 +253,7 @@ const View = (props: ViewProps): JSX.Element => {
               isDraggable={isViewDraggable}
               isResizable={isViewResizable}
               margin={[0,0]}
-              onLayoutChange={(event) => updateLayout(event)}>
+              onLayoutChange={updateLayout}>
               {processedChildren().filter((child:any) => (childrenSize[view][child.key][`${parentLayout.w}x${parentLayout.h}`].visible))}
             </ResponsiveGridLayout>
           </div>

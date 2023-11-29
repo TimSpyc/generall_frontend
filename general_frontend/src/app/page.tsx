@@ -23,10 +23,7 @@ const Home = () => {
                 api: {
                   user: {
                     url: "https://dummyjson.com/user",
-                    id: 5,
-                    params: {
-                      search: "test"
-                    }
+                    id: 1,
                   },
                 },
               },
@@ -39,15 +36,13 @@ const Home = () => {
                 api: {
                   user: {
                     url: "https://dummyjson.com/user",
-                    id: 1,
-                    params: {
-                      search: "test"
-                    },
+                    id: 50
+                    ,
                   },
                 },
               },
-              label: 'User Edit',
-              icon: 'edit'
+              label: 'User Detail',
+              icon: 'detail'
             },
           ]}>
             <View
@@ -228,7 +223,7 @@ const Home = () => {
                 }}/>
             </View>
           </Asset>
-          <Asset name="custom-asset-test-2">
+          {/* <Asset name="custom-asset-test-2">
             <View
               type="default" 
               api={{
@@ -406,7 +401,7 @@ const Home = () => {
                   filters: true
                 }}/>
             </View>
-          </Asset>
+          </Asset> */}
         </GridLayout>
       </main>
     </React.StrictMode>
