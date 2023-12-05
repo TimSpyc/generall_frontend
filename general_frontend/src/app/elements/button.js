@@ -2,8 +2,8 @@ import { useViewContext } from "../layout/view";
 import { useGridLayoutContext } from "../layout/grid-layout"
 
 const CustomButton = (props) => {
-    const {setView, resetToDefault, data, FetchRequest, handleActions, handleFormData, handleFormSubmit} = useViewContext();
-    const {layouts, setLayouts, currentLayout, updateGridEditable, isViewDraggable, isViewResizable, currentlyResizing} = useGridLayoutContext();
+    const {handleActions} = useViewContext();
+    const {isViewDraggable} = useGridLayoutContext();
 
     return (
         <div className={`

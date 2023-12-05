@@ -5,21 +5,11 @@ import { TextField, Label, Input } from "react-aria-components";
 
 const CustomButton = (props) => {
   const {
-    setView,
-    resetToDefault,
     data,
-    FetchRequest,
     handleFormData,
-    handleFormSubmit,
   } = useViewContext();
   const {
-    layouts,
-    setLayouts,
-    currentLayout,
-    updateGridEditable,
     isViewDraggable,
-    isViewResizable,
-    currentlyResizing,
   } = useGridLayoutContext();
 
   const [value, setValue] = useState("");

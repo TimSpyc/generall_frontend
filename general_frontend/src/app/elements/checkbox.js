@@ -4,16 +4,20 @@ import { useGridLayoutContext } from "../layout/grid-layout"
 import { Checkbox } from 'react-aria-components';
 
 const CustomCheckbox = (props) => {
-    const {setView, resetToDefault, data, FetchRequest, handleActions, handleFormData, handleFormSubmit} = useViewContext();
-    const {layouts, setLayouts, currentLayout, updateGridEditable, isViewDraggable, isViewResizable, currentlyResizing} = useGridLayoutContext();
+    const {
+		data,
+		handleFormData,
+	} = useViewContext();
+	const {
+		isViewDraggable,
+	} = useGridLayoutContext();
 
     const [value, setValue] = useState('');
     const [finishedLoading, setFinishedLoading] = useState(false)
 
-    const onChange = (e) => {
-			console.log(e)
-			setValue(e.target.value)
-			handleFormData([props.linkKey], e.target.value)
+    const onChange = (event) => {
+		setValue(event)
+		handleFormData([props.linkKey], event)
     }
 
     useEffect(() => {
@@ -33,20 +37,20 @@ const CustomCheckbox = (props) => {
 
     return (
         <div className={`
-					${props.classNameInputWrapper} 
-					${isViewDraggable ? 'pointer-events-none border-green-400' : ''} 
-					w-full h-full shadow-sm rounded-md border text-black p-0.5 px-1 skeleton bg-white`
+			${props.classNameInputWrapper} 
+			${isViewDraggable ? 'pointer-events-none border-green-400' : ''} 
+			w-full h-full shadow-sm rounded-md border text-black p-0.5 px-1 skeleton bg-white`
         }>
-					{(data[props.link]?.isLoading === false && data[props.link]?.data) &&
-						<Checkbox onChange={onChange} isSelected={value} tabIndex={props.tabIndex}>
-							<div className="checkbox">
-								<svg viewBox="0 0 18 18" aria-hidden="true">
-									<polyline points="1 9 7 14 15 4" />
-								</svg>
-							</div>
-							{props.children}
-						</Checkbox>
-					}
+			{(data[props.link]?.isLoading === false && data[props.link]?.data) &&
+				<Checkbox onChange={onChange} isSelected={value} tabIndex={props.tabIndex}>
+					<div className="checkbox">
+						<svg viewBox="0 0 18 18" aria-hidden="true">
+							<polyline points="1 9 7 14 15 4" />
+						</svg>
+					</div>
+					{props.children}
+				</Checkbox>
+			}
         </div>
     )
 }

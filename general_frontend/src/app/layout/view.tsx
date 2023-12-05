@@ -194,6 +194,8 @@ const View = (props: ViewProps): JSX.Element => {
       currentState[key] = value;
       return {...currentState};
 		})
+
+    console.log("FormData", formData)
   }
 
   const handleFormSubmit = (event:Event) => {

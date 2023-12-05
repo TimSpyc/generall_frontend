@@ -25,14 +25,14 @@
 [x] Position der Input Elemente muss gespeichert werden
 [x] Der View muss den Zustand aller Input Felder kennen und diesen für die API zugänglich machen
 [] Alle Input Komponenten müssen funktionieren welche auch auf der aktuellen Seite funktionieren (lieber noch mehr)
-    [] Textinput
+    [x] Textinput
     [] Number
     [] Slider (Number Range)
     [] Select
     [] Multiselect
     [] Toggle
     [] Radio Button Single and Multi Select
-    [] Dateinput (Daterange, Time, Date, Datetime)
+    [-] Dateinput (Daterange, Time, Date, Datetime)
     [] Tabellen Input
     [] Textbox
 [] Default Elemente müssen im neuen Schema Funktionieren:
