@@ -62,10 +62,8 @@ const View = (props: ViewProps): JSX.Element => {
   
 		each(children, (view, viewKey) => {
       each(view, (element, elementKey:any) => {
-				if(existingChildren.indexOf(elementKey) === -1) {
-					if(children[viewKey][elementKey]) {
-						delete(children[viewKey][elementKey])
-					}
+				if(existingChildren.indexOf(elementKey) === -1 && children[viewKey][elementKey]) {
+					delete(children[viewKey][elementKey])
 				}
 			})
     })
@@ -81,7 +79,7 @@ const View = (props: ViewProps): JSX.Element => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [formData, setFormData] = useState({})
   const [childrenSize, setChildrenSize] = useState(() => {
-    return (localStorage.getItem(assetName))
+    return (typeof window !== "undefined" && localStorage.getItem(assetName))
       ? removeUnusedChildren(JSON.parse(localStorage.getItem(assetName)!))
       : removeUnusedChildren({})
   })
@@ -145,11 +143,11 @@ const View = (props: ViewProps): JSX.Element => {
 
   const useFetchRequests = async() => {
     for (const [key, value] of Object.entries(props.api)) {
-      useFetchRequest(key, value)
+      FetchRequest(key, value)
     }
   }
 
-  const useFetchRequest = async (key:string, value:any) => {
+  const FetchRequest = async (key:string, value:any) => {
     let url = value.url.endsWith('/') ? value.url : `${value.url}/`
     let params = value.params ? `?${new URLSearchParams(value.params).toString()}` : ''
 
@@ -204,7 +202,7 @@ const View = (props: ViewProps): JSX.Element => {
   useFetchRequests()
 
   return (
-    <ViewContext.Provider value={{view, setView, data, useFetchRequest, handleFormData, handleFormSubmit}}>
+    <ViewContext.Provider value={{view, setView, data, FetchRequest, handleFormData, handleFormSubmit}}>
         {isViewDraggable &&
         <>
           <div className={` 

@@ -18,16 +18,16 @@ const CustomCheckbox = (props) => {
 
     useEffect(() => {
         if(data[props.link] === undefined) {
-					throw new Error(`api does not contain any link with name ${props.link}`)
+			throw new Error(`KnowledgeHub: api does not contain any link with name ${props.link}`)
         }
 
         if(data[props.link].isLoading === true) {
-					setFinishedLoading(false)
+			setFinishedLoading(false)
         }
 
         if(data[props.link].isLoading === false && finishedLoading === false) {
-					setValue(data[props.link].data[props.linkKey])
-					setFinishedLoading(true)
+			setValue(data[props.link].data[props.linkKey])
+			setFinishedLoading(true)
         }
     }, [data]);
 

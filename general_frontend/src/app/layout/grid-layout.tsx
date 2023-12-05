@@ -1,6 +1,8 @@
+'use client'
+
 import React, { createContext, useState, useContext, cloneElement } from 'react';
 import { Responsive, WidthProvider } from "react-grid-layout";
-import { GridLayoutContextType, GridLayoutProps, GridLayoutSizes, LayoutElementType, CurrentStateType } from '../types/grid-layout-types';
+import { GridLayoutContextType, GridLayoutProps, GridLayoutSizes, LayoutElementType } from '../types/grid-layout-types';
 import { each } from "lodash"
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -17,10 +19,8 @@ const GridLayout = (props: GridLayoutProps): JSX.Element => {
 
 		each(children, (size, sizeKey) => {
 			each(size, (element, elementKey:number) => {
-				if(existingChildren.indexOf(elementKey) === -1) {
-					if(children[sizeKey][elementKey]) {
-						delete(children[sizeKey][elementKey])
-					}
+				if(existingChildren.indexOf(elementKey) === -1 && children[sizeKey][elementKey]) {
+					delete(children[sizeKey][elementKey])
 				}
 			})
 		})
@@ -29,7 +29,7 @@ const GridLayout = (props: GridLayoutProps): JSX.Element => {
 	}
 
 	const [layouts, setLayouts] = useState(() => {
-		if(localStorage.getItem(props.name)) {
+		if(typeof window !== "undefined" && localStorage.getItem(props.name)) {
 			return removeUnusedChildren(JSON.parse(localStorage.getItem(props.name)!))
 		} 
 		else {
@@ -39,7 +39,7 @@ const GridLayout = (props: GridLayoutProps): JSX.Element => {
 				sizes.lg[element.props.name] = {i: element.props.name, x: 0, y: 0, w: 1, h: 1}
 			})
 
-			return removeChildren(sizes)
+			return removeUnusedChildren(sizes)
 		}
 	})
 
@@ -66,14 +66,14 @@ const GridLayout = (props: GridLayoutProps): JSX.Element => {
 	});
 
 	const updateLayout = (currentLayout:LayoutElementType[]) => {
-		setLayouts((currentState:CurrentStateType[]) => {
+		setLayouts((currentState:any) => {
 			currentLayout.forEach((layoutElement:LayoutElementType) => {
-				currentState[currentBreakpoint as any][layoutElement.i] = {
-					i: layoutElement.i as string,
-					x: layoutElement.x as number,
-					y: layoutElement.y as number,
-					w: layoutElement.w as number,
-					h: layoutElement.h as number
+				currentState[currentBreakpoint][layoutElement.i] = {
+					i: layoutElement.i,
+					x: layoutElement.x,
+					y: layoutElement.y,
+					w: layoutElement.w,
+					h: layoutElement.h
 				}
 			})
 

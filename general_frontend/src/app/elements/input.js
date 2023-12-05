@@ -33,7 +33,7 @@ const CustomButton = (props) => {
 
   useEffect(() => {
     if (data[props.link] === undefined) {
-      throw new Error(`api does not contain any link with name ${props.link}`);
+      throw new Error(`KnowledgeHub: api does not contain any link with name ${props.link}`);
     }
 
     if (data[props.link].error != undefined) {
@@ -61,7 +61,7 @@ const CustomButton = (props) => {
 					${error ? "pointer-events-none border-red-400 unselectable" : ""}
 					w-full h-full shadow-sm rounded-md border text-black p-0.5 px-1 skeleton bg-white`}
     >
-      {data[props.link]?.isLoading === false && data[props.link]?.data && (
+      {data[props.link].isLoading === false && data[props.link].data && (
         <TextField
           className={`${props.classNameInput} w-full h-full flex flex-col`}
         >

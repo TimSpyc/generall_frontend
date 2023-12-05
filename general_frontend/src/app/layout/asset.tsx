@@ -5,7 +5,7 @@ import { AssetProps, AssetContextType } from '../types/asset-types';
 const Asset= (props: AssetProps): JSX.Element => {
   // Throw an Error if not View with the default type is present
   if(props.children.filter((child:ReactElement) => child.props.type === (props.defaultView ? props.defaultView : 'default')).length <= 0) {
-    throw new Error(`KnowledgeHub: Specify exact one default page or change the defaultView Property on your asset to have an existing default page assigned`)
+    throw new Error(`KnowledgeHub: The view ${props.name} needs exact one default page or change the defaultView Property on your asset to have an existing default page assigned`)
   }
   
   const [view, setView] = useState<string>(props.defaultView ? props.defaultView : 'default');
@@ -63,11 +63,13 @@ const Asset= (props: AssetProps): JSX.Element => {
       {props.buttons &&
         <div className="absolute -bottom-2 z-50 right-6 flex flex-row gap-1">
           {props.buttons.map((data:any, index:number) => {
-            return(
-              <button key={index} className='py-0.5 px-1 bg-black text-white text-xs mb-2 rounded-md' onClick={(event) => handleActions(data.action, data.actionProps, event)}>
-                {data.label}
-              </button>
-            )
+            if(data.view.includes(view)) {
+              return(
+                <button key={index} className='py-0.5 px-1 bg-black text-white text-xs mb-2 rounded-md' onClick={(event) => handleActions(data.action, data.actionProps, event)}>
+                  {data.label}
+                </button>
+              )
+            }
           })}
         </div>
       }

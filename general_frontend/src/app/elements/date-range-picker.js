@@ -38,7 +38,7 @@ const CustomRangeDatePicker = (props) => {
 
     useEffect(() => {
         if(data[props.link] === undefined) {
-          throw new Error(`api does not contain any link with name ${props.link}`)
+          throw new Error(`KnowledgeHub: api does not contain any link with name ${props.link}`)
         }
 
         if (data[props.link].error != undefined) {

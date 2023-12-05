@@ -17,7 +17,8 @@ const Home = () => {
       <main className="min-h-screen min-w-screen p-12">
         <GridLayout name="testing">
           <Asset name="custom-asset-test" buttons={[
-            {
+           { 
+              view: ['default', 'detail'],
               action: 'view.default',
               actionProps: {
                 api: {
@@ -31,13 +32,13 @@ const Home = () => {
               icon: 'index'
             },
             {
+              view: ['default'],
               action: 'view.detail',
               actionProps: {
                 api: {
                   user: {
                     url: "https://dummyjson.com/user",
-                    id: 50
-                    ,
+                    id: 50,
                   },
                 },
               },
@@ -223,7 +224,7 @@ const Home = () => {
                 }}/>
             </View>
           </Asset>
-          {/* <Asset name="custom-asset-test-2">
+          <Asset name="custom-asset-test-2">
             <View
               type="default" 
               api={{
@@ -401,7 +402,7 @@ const Home = () => {
                   filters: true
                 }}/>
             </View>
-          </Asset> */}
+          </Asset>
         </GridLayout>
       </main>
     </React.StrictMode>

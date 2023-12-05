@@ -1,4 +1,5 @@
 type AssetButton = {
+  view: string[]
   action: string; 
   actionProps: {}; 
   label: string; 
