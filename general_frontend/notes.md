@@ -51,3 +51,4 @@
 [] Websocket implementierung für Benutzer bearbeitet aktuell
 [] History Push state für Route Context (History: pushState(), https://developer.mozilla.org/en-US/docs/Web/API/History/pushState)
 [] Buttons müssen per View dargestellt werden und nicht auf das gesamte Asset
+[x] Alle Files formatieren
