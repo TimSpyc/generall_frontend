@@ -54,12 +54,14 @@ const GridLayout = (props: GridLayoutProps): JSX.Element => {
 
 	// recognize window resize for disabling setting the layout
 	let timeout:NodeJS.Timeout;
-	
-	window.onresize = function(){
-		setWindowCurrentlyResizing(true)
-		clearTimeout(timeout);
-		timeout = setTimeout(() => setWindowCurrentlyResizing(false), 100);
-	};
+
+	if(typeof window !== "undefined") {
+		window.onresize = function(){
+			setWindowCurrentlyResizing(true)
+			clearTimeout(timeout);
+			timeout = setTimeout(() => setWindowCurrentlyResizing(false), 100);
+		};
+	}
 
 	const children = React.Children.toArray(props.children).map((child:any, index: number) => {
 		if(layouts[currentBreakpoint] === undefined) layouts[currentBreakpoint] = {}
@@ -76,7 +78,6 @@ const GridLayout = (props: GridLayoutProps): JSX.Element => {
 	});
 
 	const updateLayout = (currentLayout:LayoutElementType[]) => {
-		console.log("resizing", windowCurrentlyResizing)
 		if(windowCurrentlyResizing === false) {
 			setLayouts((currentState:any) => {
 				currentLayout.forEach((layoutElement:LayoutElementType) => {

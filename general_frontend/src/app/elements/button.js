@@ -1,8 +1,9 @@
 import { useViewContext } from "../layout/view";
+import { useAssetContext } from "../layout/asset";
 import { useGridLayoutContext } from "../layout/grid-layout"
 
 const CustomButton = (props) => {
-    const {handleActions} = useViewContext();
+    const {handleActions} = useAssetContext();
     const {isViewDraggable} = useGridLayoutContext();
 
     return (
