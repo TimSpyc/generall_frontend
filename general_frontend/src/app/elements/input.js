@@ -4,13 +4,8 @@ import { useGridLayoutContext } from "../layout/grid-layout";
 import { TextField, Label, Input } from "react-aria-components";
 
 const CustomButton = (props) => {
-  const {
-    data,
-    handleFormData,
-  } = useViewContext();
-  const {
-    isViewDraggable,
-  } = useGridLayoutContext();
+  const { data, handleFormData } = useViewContext();
+  const { isViewDraggable } = useGridLayoutContext();
 
   const [value, setValue] = useState("");
   const [finishedLoading, setFinishedLoading] = useState(false);
@@ -23,20 +18,30 @@ const CustomButton = (props) => {
 
   useEffect(() => {
     if (data[props.link] === undefined) {
-      throw new Error(`KnowledgeHub: api does not contain any link with name ${props.link}`);
+      throw new Error(
+        `KnowledgeHub: api does not contain any link with name ${props.link}`
+      );
     }
 
     if (data[props.link].error != undefined) {
-      console.log(data[props.link].error.info)
+      console.log(data[props.link].error.info);
       setError(true);
     }
 
-    if (data[props.link].isLoading === true && data[props.link].error === undefined) {
+    if (
+      data[props.link].isLoading === true &&
+      data[props.link].error === undefined
+    ) {
       setFinishedLoading(false);
       setError(false);
     }
 
-    if (data[props.link].isLoading === false && finishedLoading === false && data[props.link].error === undefined && data[props.link].data) {
+    if (
+      data[props.link].isLoading === false &&
+      finishedLoading === false &&
+      data[props.link].error === undefined &&
+      data[props.link].data
+    ) {
       setValue(data[props.link].data[props.linkKey]);
       setFinishedLoading(true);
       setError(false);
@@ -74,11 +79,11 @@ const CustomButton = (props) => {
           )}
         </TextField>
       )}
-      {data[props.link]?.error != undefined &&
+      {data[props.link]?.error != undefined && (
         <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 text-red-400 text-sm">
           Error fetching Data
         </div>
-      }
+      )}
     </div>
   );
 };

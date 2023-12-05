@@ -1,58 +1,60 @@
 import { useState, useEffect } from "react";
 import { useViewContext } from "../layout/view";
-import { useGridLayoutContext } from "../layout/grid-layout"
-import { Checkbox } from 'react-aria-components';
+import { useGridLayoutContext } from "../layout/grid-layout";
+import { Checkbox } from "react-aria-components";
 
 const CustomCheckbox = (props) => {
-    const {
-		data,
-		handleFormData,
-	} = useViewContext();
-	const {
-		isViewDraggable,
-	} = useGridLayoutContext();
+  const { data, handleFormData } = useViewContext();
+  const { isViewDraggable } = useGridLayoutContext();
 
-    const [value, setValue] = useState('');
-    const [finishedLoading, setFinishedLoading] = useState(false)
+  const [value, setValue] = useState("");
+  const [finishedLoading, setFinishedLoading] = useState(false);
 
-    const onChange = (event) => {
-		setValue(event)
-		handleFormData([props.linkKey], event)
+  const onChange = (event) => {
+    setValue(event);
+    handleFormData([props.linkKey], event);
+  };
+
+  useEffect(() => {
+    if (data[props.link] === undefined) {
+      throw new Error(
+        `KnowledgeHub: api does not contain any link with name ${props.link}`
+      );
     }
 
-    useEffect(() => {
-        if(data[props.link] === undefined) {
-			throw new Error(`KnowledgeHub: api does not contain any link with name ${props.link}`)
-        }
+    if (data[props.link].isLoading === true) {
+      setFinishedLoading(false);
+    }
 
-        if(data[props.link].isLoading === true) {
-			setFinishedLoading(false)
-        }
+    if (data[props.link].isLoading === false && finishedLoading === false) {
+      setValue(data[props.link].data[props.linkKey]);
+      setFinishedLoading(true);
+    }
+  }, [data]);
 
-        if(data[props.link].isLoading === false && finishedLoading === false) {
-			setValue(data[props.link].data[props.linkKey])
-			setFinishedLoading(true)
-        }
-    }, [data]);
-
-    return (
-        <div className={`
+  return (
+    <div
+      className={`
 			${props.classNameInputWrapper} 
-			${isViewDraggable ? 'pointer-events-none border-green-400' : ''} 
-			w-full h-full shadow-sm rounded-md border text-black p-0.5 px-1 skeleton bg-white`
-        }>
-			{(data[props.link]?.isLoading === false && data[props.link]?.data) &&
-				<Checkbox onChange={onChange} isSelected={value} tabIndex={props.tabIndex}>
-					<div className="checkbox">
-						<svg viewBox="0 0 18 18" aria-hidden="true">
-							<polyline points="1 9 7 14 15 4" />
-						</svg>
-					</div>
-					{props.children}
-				</Checkbox>
-			}
-        </div>
-    )
-}
+			${isViewDraggable ? "pointer-events-none border-green-400" : ""} 
+			w-full h-full shadow-sm rounded-md border text-black p-0.5 px-1 skeleton bg-white`}
+    >
+      {data[props.link]?.isLoading === false && data[props.link]?.data && (
+        <Checkbox
+          onChange={onChange}
+          isSelected={value}
+          tabIndex={props.tabIndex}
+        >
+          <div className="checkbox">
+            <svg viewBox="0 0 18 18" aria-hidden="true">
+              <polyline points="1 9 7 14 15 4" />
+            </svg>
+          </div>
+          {props.children}
+        </Checkbox>
+      )}
+    </div>
+  );
+};
 
-export default CustomCheckbox
+export default CustomCheckbox;
