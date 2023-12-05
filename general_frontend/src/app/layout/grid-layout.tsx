@@ -50,6 +50,16 @@ const GridLayout = (props: GridLayoutProps): JSX.Element => {
 	const [isViewDraggable, setIsViewDraggable] = useState<boolean>(false)
 	const [isViewResizable, setIsViewResizeable] = useState<boolean>(false)
 	const [currentlyResizing, setCurrentlyResizing] = useState<boolean>(false)
+	const [windowCurrentlyResizing, setWindowCurrentlyResizing] = useState<boolean>(false)
+
+	// recognize window resize for disabling setting the layout
+	let timeout:NodeJS.Timeout;
+	
+	window.onresize = function(){
+		setWindowCurrentlyResizing(true)
+		clearTimeout(timeout);
+		timeout = setTimeout(() => setWindowCurrentlyResizing(false), 100);
+	};
 
 	const children = React.Children.toArray(props.children).map((child:any, index: number) => {
 		if(layouts[currentBreakpoint] === undefined) layouts[currentBreakpoint] = {}
@@ -66,20 +76,23 @@ const GridLayout = (props: GridLayoutProps): JSX.Element => {
 	});
 
 	const updateLayout = (currentLayout:LayoutElementType[]) => {
-		setLayouts((currentState:any) => {
-			currentLayout.forEach((layoutElement:LayoutElementType) => {
-				currentState[currentBreakpoint][layoutElement.i] = {
-					i: layoutElement.i,
-					x: layoutElement.x,
-					y: layoutElement.y,
-					w: layoutElement.w,
-					h: layoutElement.h
-				}
-			})
+		console.log("resizing", windowCurrentlyResizing)
+		if(windowCurrentlyResizing === false) {
+			setLayouts((currentState:any) => {
+				currentLayout.forEach((layoutElement:LayoutElementType) => {
+					currentState[currentBreakpoint][layoutElement.i] = {
+						i: layoutElement.i,
+						x: layoutElement.x,
+						y: layoutElement.y,
+						w: layoutElement.w,
+						h: layoutElement.h
+					}
+				})
 
-			localStorage.setItem(props.name, JSON.stringify(currentState))
-      		return {...currentState};
-		})
+				localStorage.setItem(props.name, JSON.stringify(currentState))
+				return {...currentState};
+			})
+		}
 	}
 
 	const updateGridEditable = (event:boolean) => {
