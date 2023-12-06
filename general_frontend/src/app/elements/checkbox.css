@@ -1,0 +1,43 @@
+:is(.react-aria-Checkbox[data-selected],.react-aria-Checkbox[data-indeterminate]) .checkbox {
+  border-color: var(--selected-color);
+  background: var(--selected-color);
+}
+.react-aria-Checkbox .checkbox {
+  border: 1px solid var(--deselected-color);
+  border-radius: 4px;
+  justify-content: center;
+  align-items: center;
+  width: 1rem;
+  height: 1rem;
+  transition: all .2s;
+  display: flex;
+}
+
+.react-aria-Checkbox {
+  --label-color: var(--spectrum-alias-text-color);
+  --deselected-color: #000;
+  --deselected-color-pressed: #000;
+  --selected-color: #000;
+  --selected-color-pressed: #000;
+  --checkmark-color: white;
+  --invalid-color: var(--spectrum-global-color-red-600);
+  --invalid-color-pressed: var(--spectrum-global-color-red-700);
+  align-items: center;
+  gap: 0.571rem;
+  font-size: 1rem;
+  display: flex;
+}
+
+:is(.react-aria-Checkbox[data-selected], .react-aria-Checkbox[data-indeterminate]) svg {
+    stroke-dashoffset: 44px;
+}
+.react-aria-Checkbox svg {
+  fill: none;
+  stroke: var(--checkmark-color);
+  stroke-width: 3px;
+  stroke-dasharray: 22;
+  stroke-dashoffset: 66px;
+  width: 1rem;
+  height: 1rem;
+  transition: all .2s;
+}

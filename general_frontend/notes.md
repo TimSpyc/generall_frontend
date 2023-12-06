@@ -42,13 +42,13 @@
     [] Text
     [] Textbox
 [] Durch einen Validate Request finden wir heraus ob Schreib oder Lese Rechte vorhanden sind sonst wieder zurück auf default view
-[x] Assets müssen Seitenweise sortiert werden
 [] Tooltips für Input Felder wenn Fehlermeldung bei validator zurückkommt
 [] Asset spezifische Filter
 [-] Es soll möglich sein Mischseiten zu erstellen auch mit teilen aus der vorherigen Seite
     [] Mit aktuellem Asset versuchen
 [] So wenige Any Types wie möglich (TS)
 [] Websocket implementierung für Benutzer bearbeitet aktuell
-[] History Push state für Route Context (History: pushState(), https://developer.mozilla.org/en-US/docs/Web/API/History/pushState)
-[] Buttons müssen per View dargestellt werden und nicht auf das gesamte Asset
+[x] Assets müssen Seitenweise sortiert werden
+[x] Buttons müssen per View dargestellt werden und nicht auf das gesamte Asset
 [x] Alle Files formatieren
+[] History Push state für Route Context (History: pushState(), https://developer.mozilla.org/en-US/docs/Web/API/History/pushState)

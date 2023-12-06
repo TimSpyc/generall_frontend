@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import { useViewContext } from "../layout/view";
 import { useGridLayoutContext } from "../layout/grid-layout";
 import { TextField, Label, Input } from "react-aria-components";
+import { validateElementLink, validateElementLinkKey } from "../helpers/validateElementLinks"
 
-const CustomButton = (props) => {
+const CustomInput = (props:any) => {
   const { data, handleFormData } = useViewContext();
   const { isViewDraggable } = useGridLayoutContext();
 
@@ -11,18 +12,14 @@ const CustomButton = (props) => {
   const [finishedLoading, setFinishedLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  const onChange = (e) => {
-    setValue(e.target.value);
-    handleFormData([props.linkKey], e.target.value);
+  validateElementLink(data, props.link);
+
+  const onChange = (event:React.FormEvent<HTMLInputElement>) => {
+    setValue(event.currentTarget.value);
+    handleFormData([props.linkKey], event.currentTarget.value);
   };
 
   useEffect(() => {
-    if (data[props.link] === undefined) {
-      throw new Error(
-        `KnowledgeHub: api does not contain any link with name ${props.link}`
-      );
-    }
-
     if (data[props.link].error != undefined) {
       console.log(data[props.link].error.info);
       setError(true);
@@ -42,6 +39,7 @@ const CustomButton = (props) => {
       data[props.link].error === undefined &&
       data[props.link].data
     ) {
+      validateElementLinkKey(data, props.link, props.linkKey);
       setValue(data[props.link].data[props.linkKey]);
       setFinishedLoading(true);
       setError(false);
@@ -88,4 +86,4 @@ const CustomButton = (props) => {
   );
 };
 
-export default CustomButton;
+export default CustomInput;

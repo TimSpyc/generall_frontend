@@ -60,25 +60,25 @@ type LayoutElementType = {
 
 const View = (props: ViewProps): JSX.Element => {
   const removeUnusedChildren = (children: any) => {
-    let existingChildren: any = [];
+    // let existingChildren: any = [];
 
-    React.Children.map(
-      props.children,
-      (element: JSX.Element, index: number) => {
-        existingChildren.push(element.props.name);
-      }
-    );
-
-    each(children, (view, viewKey) => {
-      each(view, (element, elementKey: any) => {
-        if (
-          existingChildren.indexOf(elementKey) === -1 &&
-          children[viewKey][elementKey]
-        ) {
-          delete children[viewKey][elementKey];
-        }
-      });
-    });
+    // React.Children.map(
+    //   props.children,
+    //   (element: JSX.Element, index: number) => {
+    //     existingChildren.push(element.props.name);
+    //   }
+    // );
+    // TODO: Nur für die aktuell ausgewählte View sonst werden in der jeweils anderen View auch alle gelöscht
+    // each(children, (view, viewKey) => {
+    //   each(view, (element, elementKey: any) => {
+    //     if (
+    //       existingChildren.indexOf(elementKey) === -1 &&
+    //       children[viewKey][elementKey]
+    //     ) {
+    //       delete children[viewKey][elementKey];
+    //     }
+    //   });
+    // });
 
     return children;
   };

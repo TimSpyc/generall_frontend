@@ -1,0 +1,550 @@
+@layer button {
+    .react-aria-Button {
+        --border-color: var(--spectrum-alias-border-color);
+        --border-color-pressed: var(--spectrum-alias-border-color-down);
+        --border-color-disabled: var(--spectrum-alias-border-color-disabled);
+        --background-color: var(--spectrum-global-color-gray-50);
+        --background-color-pressed: var(--spectrum-global-color-gray-100);
+        --text-color: var(--spectrum-alias-text-color);
+        --text-color-disabled: var(--spectrum-alias-text-color-disabled);
+        --primary-color: #000;
+        --focus-ring-color: var(--primary-color);
+        color: var(--text-color);
+        background: var(--background-color);
+        border: 1px solid var(--border-color);
+        -webkit-appearance: none;
+        appearance: none;
+        vertical-align: middle;
+        text-align: center;
+        border-radius: 4px;
+        outline: none;
+        margin: 0;
+        padding: 6px 10px;
+        font-size: 1rem;
+        text-decoration: none
+    }
+
+    .react-aria-Button[data-pressed] {
+        background: var(--background-color-pressed);
+        border-color: var(--border-color-pressed);
+        box-shadow: inset 0 1px 2px #0000001a
+    }
+
+    .react-aria-Button[data-focus-visible] {
+        border-color: var(--focus-ring-color);
+        box-shadow: 0 0 0 1px var(--focus-ring-color)
+    }
+
+    @media (forced-colors:active) {
+        .react-aria-Button {
+            forced-color-adjust: none;
+            --border-color: ButtonBorder;
+            --border-color-pressed: ButtonBorder;
+            --border-color-disabled: GrayText;
+            --background-color: ButtonFace;
+            --background-color-pressed: ButtonFace;
+            --text-color: ButtonText;
+            --text-color-disabled: GrayText;
+            --focus-ring-color: Highlight
+        }
+    }
+
+    .react-aria-Button[data-disabled] {
+        border-color: var(--border-color-disabled);
+        color: var(--text-color-disabled)
+    }
+}
+
+@layer popover {
+    .react-aria-Popover {
+        --background-color: var(--page-background);
+        --border-color: var(--spectrum-global-color-gray-400);
+        border: 1px solid var(--border-color);
+        background: var(--background-color);
+        box-sizing: border-box;
+        border-radius: 6px;
+        outline: none;
+        max-width: 250px;
+        box-shadow: 0 8px 20px #0000001a
+    }
+
+    .react-aria-Popover .react-aria-OverlayArrow svg {
+        fill: var(--background-color);
+        stroke: var(--border-color);
+        stroke-width: 1px;
+        display: block
+    }
+
+    .react-aria-Popover[data-placement=top] {
+        --origin: translateY(8px)
+    }
+
+    .react-aria-Popover[data-placement=top]: has(.react-aria-OverlayArrow) {
+        margin-bottom:6px
+    }
+
+    .react-aria-Popover[data-placement=bottom] {
+        --origin: translateY(-8px)
+    }
+
+    .react-aria-Popover[data-placement=bottom]: has(.react-aria-OverlayArrow) {
+        margin-top:6px
+    }
+
+    .react-aria-Popover[data-placement=bottom] .react-aria-OverlayArrow svg {
+        transform: rotate(180deg)
+    }
+
+    .react-aria-Popover[data-placement=right] {
+        --origin: translateX(-8px)
+    }
+
+    .react-aria-Popover[data-placement=right]: has(.react-aria-OverlayArrow) {
+        margin-left:6px
+    }
+
+    .react-aria-Popover[data-placement=right] .react-aria-OverlayArrow svg {
+        transform: rotate(90deg)
+    }
+
+    .react-aria-Popover[data-placement=left] {
+        --origin: translateX(8px)
+    }
+
+    .react-aria-Popover[data-placement=left]: has(.react-aria-OverlayArrow) {
+        margin-right:6px
+    }
+
+    .react-aria-Popover[data-placement=left] .react-aria-OverlayArrow svg {
+        transform: rotate(-90deg)
+    }
+
+    .react-aria-Popover[data-entering] {
+        animation: .2s popover-slide
+    }
+
+    .react-aria-Popover[data-exiting] {
+        animation: .2s ease-in reverse popover-slide
+    }
+
+    @media (forced-colors:active) {
+        .react-aria-Popover {
+            --background-color: Canvas;
+            --border-color: ButtonBorder
+        }
+    }
+
+    @keyframes popover-slide {
+        0% {
+            transform: var(--origin);
+            opacity: 0
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0)
+        }
+    }
+
+    .react-aria-Popover {
+        max-width: unset;
+        padding: 1.25rem
+    }
+}
+
+@layer datefield {
+    .react-aria-DateField {
+        --field-border: var(--spectrum-global-color-gray-400);
+        --field-background: var(--spectrum-global-color-gray-50);
+        --text-color: var(--spectrum-alias-text-color);
+        --text-color-placeholder: var(--spectrum-global-color-gray-700);
+        --text-color-invalid: var(--spectrum-global-color-red-600);
+        --highlight-background: slateblue;
+        --highlight-foreground: white;
+        --highlight-background-invalid: var(--spectrum-global-color-static-red-600)
+    }
+
+    .react-aria-DateInput {
+        border: 1px solid var(--field-border);
+        background: var(--field-background);
+        white-space: nowrap;
+        border-radius: 6px;
+        width: fit-content;
+        min-width: 150px;
+        padding: 4px;
+        display: flex
+    }
+
+    .react-aria-DateInput[data-focus-within] {
+        border-color: var(--highlight-background);
+        box-shadow: 0 0 0 1px var(--highlight-background)
+    }
+
+    .react-aria-DateSegment {
+        font-variant-numeric: tabular-nums;
+        text-align: end;
+        color: var(--text-color);
+        padding: 0 2px
+    }
+
+    .react-aria-DateSegment[data-type=literal] {
+        padding: 0
+    }
+
+    .react-aria-DateSegment[data-placeholder] {
+        color: var(--text-color-placeholder);
+        font-style: italic
+    }
+
+    .react-aria-DateSegment:focus {
+        color: var(--highlight-foreground);
+        background: var(--highlight-background);
+        caret-color: #0000;
+        border-radius: 4px;
+        outline: none
+    }
+
+    @media (forced-colors:active) {
+        .react-aria-DateField {
+            forced-color-adjust: none;
+            --text-color-invalid: LinkText;
+            --field-border: ButtonBorder;
+            --field-background: Field;
+            --text-color: FieldText;
+            --text-color-placeholder: FieldText;
+            --text-color-invalid: LinkText;
+            --highlight-background: Highlight;
+            --highlight-foreground: HighlightText;
+            --highlight-background-invalid: LinkText
+        }
+    }
+
+    .react-aria-DateSegment[data-invalid] {
+        color: var(--text-color-invalid)
+    }
+
+    .react-aria-DateSegment[data-invalid]: focus {
+        background:var(--highlight-background-invalid);
+        color: var(--highlight-foreground)
+    }
+
+    .react-aria-FieldError {
+        color: var(--text-color-invalid);
+        font-size: 12px
+    }
+
+    .react-aria-DateField [slot=description] {
+        font-size: 12px
+    }
+
+    fieldset {
+        width: fit-content;
+        padding: 1.5em
+    }
+
+    .invalid {
+        color: var(--spectrum-global-color-red-600);
+        margin-top: 1em;
+        display: block
+    }
+
+    @media (forced-colors:active) {
+        .invalid {
+            color: LinkText
+        }
+    }
+}
+
+@layer calendar {
+    .react-aria-Calendar {
+        --highlight-background: slateblue;
+        --highlight-foreground: white;
+        --text-color: var(--spectrum-alias-text-color);
+        --text-color-disabled: var(--spectrum-alias-text-color-disabled);
+        --text-color-invalid: var(--spectrum-global-color-red-600);
+        --pressed-color: var(--spectrum-global-color-gray-200);
+        --unavailable-color: var(--spectrum-global-color-red-600);
+        --invalid-color: var(--spectrum-global-color-static-red-600);
+        color: var(--text-color);
+        width: fit-content;
+        max-width: 100%
+    }
+
+    .react-aria-Calendar header {
+        align-items: center;
+        margin: 0 4px .5rem;
+        display: flex
+    }
+
+    .react-aria-Calendar header .react-aria-Heading {
+        text-align: center;
+        flex: 1;
+        margin: 0;
+        font-size: 1.375rem
+    }
+
+    .react-aria-Calendar .react-aria-Button {
+        width: 2rem;
+        height: 2rem;
+        padding: 0
+    }
+
+    .react-aria-Calendar .react-aria-CalendarCell {
+        text-align: center;
+        cursor: default;
+        border: 2px solid var(--spectrum-alias-background-color-default);
+        border-radius: 6px;
+        outline: none;
+        width: 2rem;
+        margin: -1px;
+        line-height: 2rem
+    }
+
+    .react-aria-Calendar .react-aria-CalendarCell[data-outside-month] {
+        display: none
+    }
+
+    .react-aria-Calendar .react-aria-CalendarCell[data-pressed] {
+        background: var(--pressed-color)
+    }
+
+    .react-aria-Calendar .react-aria-CalendarCell[data-focus-visible] {
+        box-shadow: 0 0 0 2px var(--highlight-background)
+    }
+
+    .react-aria-Calendar .react-aria-CalendarCell[data-selected] {
+        background: var(--highlight-background);
+        color: var(--highlight-foreground)
+    }
+
+    @media (forced-colors:active) {
+        .react-aria-Calendar {
+            forced-color-adjust: none;
+            --highlight-background: Highlight;
+            --highlight-foreground: HighlightText;
+            --text-color: ButtonText;
+            --text-color-disabled: GrayText;
+            --text-color-invalid: LinkText;
+            --unavailable-color: GrayText;
+            --invalid-color: LinkText;
+            --pressed-color: Canvas;
+            --spectrum-alias-background-color-default: Canvas
+        }
+    }
+
+    .react-aria-Calendar .react-aria-CalendarCell[data-disabled] {
+        color: var(--text-color-disabled)
+    }
+
+    .react-aria-Calendar .react-aria-CalendarCell[data-unavailable] {
+        color: var(--unavailable-color);
+        text-decoration: line-through
+    }
+
+    .react-aria-Calendar .react-aria-CalendarCell[data-invalid] {
+        background: var(--invalid-color);
+        color: var(--highlight-foreground)
+    }
+
+    .react-aria-Calendar [slot=errorMessage] {
+        color: var(--text-color-invalid);
+        font-size: 12px
+    }
+
+    .calendar-picker>.react-aria-Button {
+        margin: 0 4px 8px
+    }
+
+    .week {
+        grid-template-areas: "heading heading heading""previous grid next";
+        place-items: center;
+        gap: 8px;
+        display: grid
+    }
+
+    .week .react-aria-Heading {
+        grid-area: heading;
+        margin: 0;
+        font-size: 1.2rem
+    }
+
+    .week .react-aria-CalendarCell[data-outside-month] {
+        display: block
+    }
+}
+
+@layer form {
+    .react-aria-Form {
+        flex-direction: column;
+        align-items: start;
+        gap: 8px;
+        display: flex
+    }
+
+    .react-aria-Form [role=alert] {
+        border: 2px solid var(--spectrum-red-800);
+        background: var(--spectrum-gray-50);
+        border-radius: 6px;
+        outline: none;
+        max-width: 250px;
+        padding: 12px
+    }
+
+    .react-aria-Form [role=alert]: focus-visible {
+        outline-offset:2px;
+        outline: 2px solid var(--primary-color)
+    }
+
+    .react-aria-Form [role=alert] h3 {
+        margin-top: 0
+    }
+
+    .react-aria-Form [role=alert] p {
+        margin-bottom: 0
+    }
+}
+
+.react-aria-DatePicker {
+    --field-border: var(--spectrum-global-color-gray-400);
+    --field-background: var(--spectrum-global-color-gray-50);
+    --text-color: var(--spectrum-alias-text-color);
+    --text-color-placeholder: var(--spectrum-global-color-gray-700);
+    --text-color-invalid: var(--spectrum-global-color-red-600);
+    --highlight-background: slateblue;
+    --highlight-foreground: white;
+    --highlight-background-invalid: var(--spectrum-global-color-static-red-600)
+}
+
+.react-aria-DatePicker .react-aria-Group {
+    box-sizing: border-box;
+    border: 1px solid var(--field-border);
+    background: var(--field-background);
+    white-space: nowrap;
+    border-radius: 6px;
+    align-items: center;
+    width: -moz-fit-content;
+    width: fit-content;
+    min-width: 220px;
+    max-width: 100%;
+    width: 100%;
+    padding: 0px;
+    display: flex;
+    position: relative;
+    overflow: auto;
+}
+
+.react-aria-DatePicker .react-aria-Button {
+    color: #fff;
+    box-sizing: content-box;
+    border: none;
+    border: 2px solid var(--page-background);
+    background: var(--primary-color);
+    border-radius: 4px;
+    flex-shrink: 0;
+    width: 1.429rem;
+    height: 1.429rem;
+    margin-left: auto;
+    padding: 0;
+    font-size: .857rem;
+    position: sticky;
+    right: 0
+}
+
+.react-aria-DatePicker .react-aria-Button[data-focus-visible] {
+    box-shadow: 0 0 0 2px var(--primary-color)
+}
+
+.react-aria-DatePicker .react-aria-DateInput {
+    width: 100%;
+    padding: 0px
+}
+
+.react-aria-Calendar .react-aria-CalendarCell {
+    border-color: var(--page-background)
+}
+
+@media (forced-colors:active) {
+    .react-aria-DatePicker {
+        --text-color-invalid: LinkText
+    }
+
+    .react-aria-DatePicker .react-aria-Button {
+        forced-color-adjust: none;
+        --focus-ring-color: Highlight;
+        background: ButtonFace;
+        color: ButtonText;
+        border: 1px solid ButtonBorder
+    }
+
+    .react-aria-DatePicker .react-aria-Button[data-focus-visible] {
+        border-color: Highlight;
+        box-shadow: 0 0 0 1px Highlight
+    }
+
+    .react-aria-Calendar .react-aria-CalendarCell {
+        border-color: Canvas
+    }
+}
+
+.react-aria-DatePicker[data-invalid] .react-aria-DateInput:after {
+    content: "🚫"/"";
+    content: "🚫";
+    alt: " ";
+    text-align: end;
+    flex: 1
+}
+
+.react-aria-FieldError {
+    color: var(--text-color-invalid);
+    font-size: 12px
+}
+
+.react-aria-DatePicker [slot=description] {
+    font-size: 12px
+}
+
+fieldset {
+    width: fit-content;
+    padding: 1.5em
+}
+
+.invalid {
+    color: var(--spectrum-global-color-red-600);
+    margin-top: 1em;
+    display: block
+}
+
+@media (forced-colors:active) {
+    .invalid {
+        color: LinkText
+    }
+}
+
+.clear-button {
+    vertical-align: middle;
+    text-align: center;
+    color: #fff;
+    background: gray;
+    border: none;
+    border-radius: 1.143rem;
+    outline: none;
+    width: 1.143rem;
+    height: 1.143rem;
+    margin-left: -3.4rem;
+    padding: 0;
+    font-size: .857rem;
+    line-height: .857rem
+}
+
+.clear-button[data-pressed] {
+    background: #696969
+}
+
+.clear-button[data-focus-visible] {
+    outline-offset: 2px;
+    outline: 2px solid var(--primary-color)
+}
+
+.clear-button+.react-aria-Button {
+    margin-left: 4px
+}

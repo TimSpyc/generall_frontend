@@ -5,6 +5,7 @@ import GridLayout from "./layout/grid-layout";
 import Asset from "./layout/asset";
 import View from "./layout/view";
 
+import TextArea from "./elements/textarea";
 import Input from "./elements/input";
 import Button from "./elements/button";
 import DatePicker from "./elements/date-picker";
@@ -62,6 +63,17 @@ const Home = () => {
               },
             }}
           >
+            <TextArea
+              name="user.userAgent"
+              link="user"
+              linkKey="userAgent"
+              placeholder="User Agent"
+              label="Label"
+              actions={{
+                edit: "edit",
+                filters: true,
+              }}
+            />
             <Input
               name="user.id"
               link="user"
@@ -111,7 +123,7 @@ const Home = () => {
               link="user"
               linkKey="university"
               placeholder="University"
-              label="Label"
+              label="Custom Label"
             />
             <DatePicker
               name="user.birthDate"

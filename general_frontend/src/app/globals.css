@@ -30,36 +30,6 @@ body {
   border-radius: 0.5rem;
 }
 
-.react-aria-DateInput {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.react-aria-DatePicker .react-aria-Group{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  height: 100%;
-}
-
-.react-aria-DatePicker {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.react-aria-Group {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.react-aria-DateRangePicker, .react-aria-DatePicker {
-  line-height: initial;
-}
-
 .skeleton:empty {
   animation: skeleton-loading 1s linear infinite alternate;
 }
