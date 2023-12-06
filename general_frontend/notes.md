@@ -30,11 +30,15 @@
     [] Slider (Number Range)
     [] Select
     [] Multiselect
-    [] Toggle
+    [x] Toggle
     [] Radio Button Single and Multi Select
-    [-] Dateinput (Daterange, Time, Date, Datetime)
+    [] Dateinput 
+        [x] Daterange
+        [] Time
+        [x] Date
+        [] Datetime
     [] Tabellen Input
-    [] Textbox
+    [x] Textbox
 [] Default Elemente müssen im neuen Schema Funktionieren:
     [] Tabelle / Pivot Tabelle
     [] Charts (Recharts) --> Props Interface
@@ -52,3 +56,4 @@
 [x] Buttons müssen per View dargestellt werden und nicht auf das gesamte Asset
 [x] Alle Files formatieren
 [] History Push state für Route Context (History: pushState(), https://developer.mozilla.org/en-US/docs/Web/API/History/pushState)
+[] Validate Request soll zudem sicherstellen das alle required Elemente auf der aktuellen Grid Size sichtbar sind, ansonsten soll ein Fehler für den jeweiligen View geschmissen werden
