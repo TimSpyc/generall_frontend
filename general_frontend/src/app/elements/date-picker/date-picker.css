@@ -159,7 +159,7 @@
         --text-color: var(--spectrum-alias-text-color);
         --text-color-placeholder: var(--spectrum-global-color-gray-700);
         --text-color-invalid: var(--spectrum-global-color-red-600);
-        --highlight-background: var(--primary-color);
+        --highlight-background: black;
         --highlight-foreground: white;
         --highlight-background-invalid: var(--spectrum-global-color-static-red-600)
     }
@@ -255,14 +255,10 @@
     }
 }
 
-@layer rangecalendar {
-    .react-aria-RangeCalendar {
-        --highlight-background: var(--primary-color);
+@layer calendar {
+    .react-aria-Calendar {
+        --highlight-background: black;
         --highlight-foreground: white;
-        --button-background: var(--spectrum-global-color-gray-50);
-        --button-backgound-pressed: var(--spectrum-global-color-gray-100);
-        --button-border: var(--spectrum-global-color-gray-400);
-        --button-border-disabled: var(--spectrum-alias-border-color-disabled);
         --text-color: var(--spectrum-alias-text-color);
         --text-color-disabled: var(--spectrum-alias-text-color-disabled);
         --text-color-invalid: var(--spectrum-global-color-red-600);
@@ -274,76 +270,55 @@
         max-width: 100%
     }
 
-    .react-aria-RangeCalendar header {
+    .react-aria-Calendar header {
         align-items: center;
         margin: 0 4px .5rem;
         display: flex
     }
 
-    .react-aria-RangeCalendar header .react-aria-Heading {
+    .react-aria-Calendar header .react-aria-Heading {
         text-align: center;
         flex: 1;
         margin: 0;
         font-size: 1.375rem
     }
 
-    .react-aria-RangeCalendar .react-aria-Button {
+    .react-aria-Calendar .react-aria-Button {
         width: 2rem;
         height: 2rem;
         padding: 0
     }
 
-    .react-aria-RangeCalendar table {
-        border-collapse: collapse
-    }
-
-    .react-aria-RangeCalendar table td {
-        padding: 2px 0
-    }
-
-    .react-aria-RangeCalendar .react-aria-CalendarCell {
+    .react-aria-Calendar .react-aria-CalendarCell {
         text-align: center;
         cursor: default;
+        border: 2px solid var(--spectrum-alias-background-color-default);
         border-radius: 6px;
         outline: none;
-        width: 2.286rem;
-        line-height: 2.286rem
+        width: 2rem;
+        margin: -1px;
+        line-height: 2rem
     }
 
-    .react-aria-RangeCalendar .react-aria-CalendarCell[data-outside-month] {
+    .react-aria-Calendar .react-aria-CalendarCell[data-outside-month] {
         display: none
     }
 
-    .react-aria-RangeCalendar .react-aria-CalendarCell[data-pressed] {
+    .react-aria-Calendar .react-aria-CalendarCell[data-pressed] {
         background: var(--pressed-color)
     }
 
-    .react-aria-RangeCalendar .react-aria-CalendarCell[data-focus-visible] {
-        box-shadow: inset 0 0 0 2px var(--highlight-background)
+    .react-aria-Calendar .react-aria-CalendarCell[data-focus-visible] {
+        box-shadow: 0 0 0 2px var(--highlight-background)
     }
 
-    .react-aria-RangeCalendar .react-aria-CalendarCell[data-selected] {
+    .react-aria-Calendar .react-aria-CalendarCell[data-selected] {
         background: var(--highlight-background);
-        color: var(--highlight-foreground);
-        border-radius: 0
-    }
-
-    .react-aria-RangeCalendar .react-aria-CalendarCell[data-selected][data-focus-visible] {
-        box-shadow: inset 0 0 0 1px var(--highlight-background),inset 0 0 0 3px var(--highlight-foreground)
-    }
-
-    .react-aria-RangeCalendar .react-aria-CalendarCell[data-selection-start] {
-        border-start-start-radius: 6px;
-        border-end-start-radius: 6px
-    }
-
-    .react-aria-RangeCalendar .react-aria-CalendarCell[data-selection-end] {
-        border-start-end-radius: 6px;
-        border-end-end-radius: 6px
+        color: var(--highlight-foreground)
     }
 
     @media (forced-colors:active) {
-        .react-aria-RangeCalendar {
+        .react-aria-Calendar {
             forced-color-adjust: none;
             --highlight-background: Highlight;
             --highlight-foreground: HighlightText;
@@ -357,27 +332,44 @@
         }
     }
 
-    .react-aria-RangeCalendar .react-aria-CalendarCell[data-disabled] {
+    .react-aria-Calendar .react-aria-CalendarCell[data-disabled] {
         color: var(--text-color-disabled)
     }
 
-    .react-aria-RangeCalendar .react-aria-CalendarCell[data-unavailable] {
+    .react-aria-Calendar .react-aria-CalendarCell[data-unavailable] {
         color: var(--unavailable-color);
         text-decoration: line-through
     }
 
-    .react-aria-RangeCalendar .react-aria-CalendarCell[data-invalid] {
+    .react-aria-Calendar .react-aria-CalendarCell[data-invalid] {
         background: var(--invalid-color);
         color: var(--highlight-foreground)
     }
 
-    .react-aria-RangeCalendar [slot=errorMessage] {
+    .react-aria-Calendar [slot=errorMessage] {
         color: var(--text-color-invalid);
         font-size: 12px
     }
 
     .calendar-picker>.react-aria-Button {
         margin: 0 4px 8px
+    }
+
+    .week {
+        grid-template-areas: "heading heading heading""previous grid next";
+        place-items: center;
+        gap: 8px;
+        display: grid
+    }
+
+    .week .react-aria-Heading {
+        grid-area: heading;
+        margin: 0;
+        font-size: 1.2rem
+    }
+
+    .week .react-aria-CalendarCell[data-outside-month] {
+        display: block
     }
 }
 
@@ -412,25 +404,24 @@
     }
 }
 
-.react-aria-DateRangePicker {
+.react-aria-DatePicker {
     --field-border: var(--spectrum-global-color-gray-400);
     --field-background: var(--spectrum-global-color-gray-50);
     --text-color: var(--spectrum-alias-text-color);
     --text-color-placeholder: var(--spectrum-global-color-gray-700);
     --text-color-invalid: var(--spectrum-global-color-red-600);
-    --highlight-background: var(--primary-color);
+    --highlight-background: black;
     --highlight-foreground: white;
-    --highlight-background-invalid: var(--spectrum-global-color-static-red-600);
-    color: var(--text-color)
+    --highlight-background-invalid: var(--spectrum-global-color-static-red-600)
 }
 
-.react-aria-DateRangePicker .react-aria-Group {
+.react-aria-DatePicker .react-aria-Group {
     box-sizing: border-box;
-    border: 1px solid var(--field-border);
     background: var(--field-background);
     white-space: nowrap;
     border-radius: 6px;
     align-items: center;
+    width: -moz-fit-content;
     width: fit-content;
     min-width: 220px;
     max-width: 100%;
@@ -438,24 +429,10 @@
     padding: 0px;
     display: flex;
     position: relative;
-    overflow: auto
+    overflow: auto;
 }
 
-.react-aria-DateRangePicker .react-aria-Group[data-focus-within] {
-    border-color: var(--highlight-background);
-    box-shadow: 0 0 0 1px var(--highlight-background)
-}
-
-.react-aria-DateRangePicker [slot=start]+span {
-    padding: 0 4px
-}
-
-.react-aria-DateRangePicker [slot=end] {
-    flex: 1;
-    margin-right: 2rem
-}
-
-.react-aria-DateRangePicker .react-aria-Button {
+.react-aria-DatePicker .react-aria-Button {
     color: #fff;
     box-sizing: content-box;
     border: none;
@@ -472,32 +449,25 @@
     right: 0
 }
 
-.react-aria-DateRangePicker .react-aria-Button[data-focus-visible] {
+.react-aria-DatePicker .react-aria-Button[data-focus-visible] {
     box-shadow: 0 0 0 2px var(--primary-color)
 }
 
-.react-aria-DateRangePicker .react-aria-DateInput {
-    width: unset;
-    min-width: unset;
-    padding: unset;
-    border: unset;
-    box-shadow: unset
+.react-aria-DatePicker .react-aria-DateInput {
+    width: 100%;
+    padding: 0px
+}
+
+.react-aria-Calendar .react-aria-CalendarCell {
+    border-color: var(--page-background)
 }
 
 @media (forced-colors:active) {
-    .react-aria-DateRangePicker {
-        forced-color-adjust: none;
-        --field-border: ButtonBorder;
-        --field-background: Field;
-        --text-color: FieldText;
-        --text-color-placeholder: FieldText;
-        --text-color-invalid: LinkText;
-        --highlight-background: Highlight;
-        --highlight-foreground: HighlightText;
-        --highlight-background-invalid: LinkText
+    .react-aria-DatePicker {
+        --text-color-invalid: LinkText
     }
 
-    .react-aria-DateRangePicker .react-aria-Button {
+    .react-aria-DatePicker .react-aria-Button {
         forced-color-adjust: none;
         --focus-ring-color: Highlight;
         background: ButtonFace;
@@ -505,44 +475,30 @@
         border: 1px solid ButtonBorder
     }
 
-    .react-aria-DateRangePicker .react-aria-Button[data-focus-visible] {
+    .react-aria-DatePicker .react-aria-Button[data-focus-visible] {
         border-color: Highlight;
         box-shadow: 0 0 0 1px Highlight
     }
 
-    .react-aria-RangeCalendar {
-        forced-color-adjust: none;
-        --highlight-background: Highlight;
-        --highlight-foreground: HighlightText;
-        --button-border: ButtonBorder;
-        --button-border-disabled: GrayText;
-        --button-background: ButtonFace;
-        --text-color: ButtonText;
-        --text-color-disabled: GrayText;
-        --text-color-invalid: LinkText;
-        --unavailable-color: GrayText;
-        --invalid-color: LinkText;
-        --pressed-color: Canvas;
-        --spectrum-alias-background-color-default: Canvas
+    .react-aria-Calendar .react-aria-CalendarCell {
+        border-color: Canvas
     }
 }
 
-.react-aria-DateRangePicker[data-invalid] [slot=end]:after {
+.react-aria-DatePicker[data-invalid] .react-aria-DateInput:after {
     content: "🚫"/"";
     content: "🚫";
     alt: " ";
     text-align: end;
-    flex: 1;
-    margin-left: 1.5rem;
-    margin-right: -1.5rem
+    flex: 1
 }
 
-.react-aria-DateRangePicker .react-aria-FieldError {
+.react-aria-FieldError {
     color: var(--text-color-invalid);
     font-size: 12px
 }
 
-.react-aria-DateRangePicker [slot=description] {
+.react-aria-DatePicker [slot=description] {
     font-size: 12px
 }
 
@@ -573,6 +529,7 @@ fieldset {
     outline: none;
     width: 1.143rem;
     height: 1.143rem;
+    margin-left: -3.4rem;
     padding: 0;
     font-size: .857rem;
     line-height: .857rem
@@ -589,8 +546,4 @@ fieldset {
 
 .clear-button+.react-aria-Button {
     margin-left: 4px
-}
-
-.react-aria-Popover {
-  background-color: white;
 }

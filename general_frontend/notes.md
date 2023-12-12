@@ -50,12 +50,12 @@
 [] Asset spezifische Filter
 [-] Es soll möglich sein Mischseiten zu erstellen auch mit teilen aus der vorherigen Seite
     [] Mit aktuellem Asset versuchen
-[] So wenige Any Types wie möglich (TS)
-[] Websocket implementierung für Benutzer bearbeitet aktuell
+[x] Props der einzelnen Input Komponente muss klar definiert sein, nicht mit Props arbeiten
+[x] So wenige Any Types wie möglich (TS)
 [x] Assets müssen Seitenweise sortiert werden
 [x] Buttons müssen per View dargestellt werden und nicht auf das gesamte Asset
 [x] Alle Files formatieren
 [] History Push state für Route Context (History: pushState(), https://developer.mozilla.org/en-US/docs/Web/API/History/pushState)
 [] Validate Request soll zudem sicherstellen das alle required Elemente auf der aktuellen Grid Size sichtbar sind, ansonsten soll ein Fehler für den jeweiligen View geschmissen werden
-[] Props der einzelnen Input Komponente muss klar definiert sein, nicht mit Props arbeiten
+[] Websocket implementierung für Benutzer bearbeitet aktuell
 [] Wegklicken eines Elements ist aktuell noch nicht möglich mit Trackpad, überarbeiten

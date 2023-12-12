@@ -1,8 +1,8 @@
-import "./date-range-picker.css"
+import "./date-range-picker.css";
 
 import { useState, useEffect } from "react";
-import { useViewContext } from "../layout/view";
-import { useGridLayoutContext } from "../layout/grid-layout";
+import { useViewContext } from "../../layout/view";
+import { useGridLayoutContext } from "../../layout/grid-layout";
 import {
   Button,
   CalendarCell,
@@ -19,20 +19,14 @@ import {
 } from "react-aria-components";
 import { RangeValue } from "@react-types/shared";
 import { parseDate } from "@internationalized/date";
-import { validateElementLink, validateElementLinkKey } from "../helpers/validateElementLinks"
+import Tooltip from "../tooltip/tooltip";
+import {
+  validateElementLink,
+  validateElementLinkKey,
+} from "../../helpers/validateElementLinks";
+import { CustomDateRangePickerType } from "./date-range-picker-types";
 
-type CustomDateRangePickerType = {
-  name: string;
-  link: string;
-  linkKey: string;
-  label: string;
-  tabIndex?: number;
-  classNameInput?: string;
-  classNameInputWrapper?: string;
-  children?: JSX.Element;
-};
-
-type ChangeEventType = RangeValue<any> | null | undefined
+type ChangeEventType = RangeValue<any> | null | undefined;
 
 const CustomRangeDatePicker = ({
   link,
@@ -52,10 +46,10 @@ const CustomRangeDatePicker = ({
 
   validateElementLink(data, link);
 
-  const onChange = (event:ChangeEventType) => {
+  const onChange = (event: ChangeEventType) => {
     setValue(event);
 
-    if(event) {
+    if (event) {
       handleFormData([linkKey], {
         start: event.start.toDate(),
         end: event.end.toDate(),
@@ -108,10 +102,10 @@ const CustomRangeDatePicker = ({
         ${classNameInputWrapper} 
         ${isViewDraggable ? "pointer-events-none border-green-400" : ""} 
         ${error ? "pointer-events-none border-red-400 unselectable" : ""}
-        w-full h-full shadow-sm rounded-md border text-black p-0.5 px-1 skeleton`}
+        w-full h-full shadow-sm rounded-md border text-black p-0.5 px-1 skeleton overflow-hidden`}
     >
       {data[link].isLoading === false && data[link].data && (
-        <div className="flex flex-col gap-0.5 h-full w-full">
+        <div className="flex flex-col h-full w-full">
           <DateRangePicker
             onChange={onChange}
             value={value != undefined ? value : null}
@@ -119,7 +113,7 @@ const CustomRangeDatePicker = ({
             className={classNameInput}
           >
             <Group>
-              <div className="flex flex-row gap-1 items-center" tabIndex={tabIndex}>
+              <div className="flex flex-row items-center" tabIndex={tabIndex}>
                 <DateInput slot="start">
                   {(segment) => <DateSegment segment={segment} />}
                 </DateInput>
@@ -148,7 +142,10 @@ const CustomRangeDatePicker = ({
           {label && (
             <>
               <hr />
-              <Label className="text-[8px] text-black">{label}</Label>
+              <div className="inline-flex flex-row w-full gap-2 items-center justify-between">
+                <Label className="text-[8px] text-black">{label}</Label>
+                <Tooltip status="positive" message="test" />
+              </div>
             </>
           )}
         </div>

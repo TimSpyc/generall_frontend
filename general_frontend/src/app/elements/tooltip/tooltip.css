@@ -1,0 +1,30 @@
+.tooltip {
+    --spectrum-actionbutton-height: 11px;
+    --spectrum-actionbutton-min-width: 11px;
+    --spectrum-actionbutton-text-padding-x: 2px;
+    --spectrum-actionbutton-text-size: 8px;
+    --spectrum-high-contrast-button-text: #000;
+    display: inline-flex;
+    width: auto;
+    height: auto;
+}
+
+.error {
+    border-color: #EF4444; 
+    background-color: #FECACA;
+}
+
+.warning {
+    border-color: #FBBF24; 
+    background-color: #FEF3C7;
+}
+
+.info {
+    border-color: #60A5FA; 
+    background-color: #BFDBFE;
+}
+
+.success {
+    border-color: #10B981; 
+    background-color: #B2F5EA;
+}

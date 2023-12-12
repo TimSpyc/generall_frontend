@@ -8,8 +8,8 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { useViewContext } from "../layout/view";
-import { useGridLayoutContext } from "../layout/grid-layout";
+import { useViewContext } from "../../layout/view";
+import { useGridLayoutContext } from "../../layout/grid-layout";
 
 const CustomChart = (props: any): JSX.Element => {
   const {
@@ -81,7 +81,7 @@ const CustomChart = (props: any): JSX.Element => {
       <ResponsiveContainer
         width="100%"
         height="100%"
-        className={`w-full h-full max-w-full max-h-full border rounded-md shadow-md ${
+        className={`w-full h-full max-w-full max-h-full border rounded-md shadow-md overflow-hidden ${
           isViewDraggable ? "border-green-400" : ""
         }`}
       >

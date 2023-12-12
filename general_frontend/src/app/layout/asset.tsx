@@ -9,7 +9,7 @@ import { merge } from "lodash";
 import { AssetProps, AssetContextType } from "../types/asset-types";
 
 const Asset = (props: AssetProps): JSX.Element => {
-  // Throw an Error if not View with the default type is present
+  // Throw an Error if no view with the default type is present
   if (
     props.children.filter(
       (child: ReactElement) =>

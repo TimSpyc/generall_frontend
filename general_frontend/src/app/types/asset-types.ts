@@ -8,7 +8,7 @@ type AssetButton = {
 
 export type AssetProps = {
   children: JSX.Element[];
-  name: string;
+  name?: string;
   index?: number;
   buttons?: AssetButton[];
   defaultView?: string;

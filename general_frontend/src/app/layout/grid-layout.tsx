@@ -1,5 +1,3 @@
-"use client";
-
 import React, {
   createContext,
   useState,
@@ -131,6 +129,8 @@ const GridLayout = (props: GridLayoutProps): JSX.Element => {
       );
     }
   );
+
+  console.log(children)
 
   const updateLayout = (currentLayout: LayoutElementType[]) => {
     if (windowCurrentlyResizing === false) {

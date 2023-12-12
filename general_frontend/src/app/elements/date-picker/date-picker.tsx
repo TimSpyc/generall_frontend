@@ -1,8 +1,8 @@
 import "./date-picker.css";
 
 import { useState, useEffect } from "react";
-import { useViewContext } from "../layout/view";
-import { useGridLayoutContext } from "../layout/grid-layout";
+import { useViewContext } from "../../layout/view";
+import { useGridLayoutContext } from "../../layout/grid-layout";
 import {
   Button,
   Calendar,
@@ -16,24 +16,15 @@ import {
   Heading,
   Label,
   Popover,
-  DateValue
+  DateValue,
 } from "react-aria-components";
 import { parseDate, CalendarDate } from "@internationalized/date";
+import Tooltip from "../tooltip/tooltip";
 import {
   validateElementLink,
   validateElementLinkKey,
-} from "../helpers/validateElementLinks";
-
-type CustomDatePickerProps = {
-  name: string;
-  link: string;
-  linkKey: string;
-  label: string;
-  tabIndex?: number;
-  classNameInput?: string;
-  classNameInputWrapper?: string;
-  children?: JSX.Element;
-};
+} from "../../helpers/validateElementLinks";
+import { CustomDatePickerProps } from "./date-picker-types";
 
 const CustomDatePicker = ({
   link,
@@ -102,13 +93,10 @@ const CustomDatePicker = ({
       ${classNameInputWrapper} 
       ${isViewDraggable ? "pointer-events-none border-green-400" : ""} 
       ${error ? "pointer-events-none border-red-400 unselectable" : ""}
-      w-full h-full shadow-sm rounded-md border text-black p-0.5 px-1 skeleton`}
+      w-full h-full shadow-sm rounded-md border text-black p-0.5 px-1 skeleton overflow-hidden`}
     >
       {data[link].isLoading === false && data[link].data && (
-        <div
-          className="flex flex-col gap-0.5 h-full w-full"
-          tabIndex={tabIndex}
-        >
+        <div className="flex flex-col h-full w-full" tabIndex={tabIndex}>
           <DatePicker
             onChange={onChange}
             value={value != null ? value : null}
@@ -136,8 +124,15 @@ const CustomDatePicker = ({
               </Dialog>
             </Popover>
           </DatePicker>
-          <hr />
-          <Label className="text-[8px] text-black">{label}</Label>
+          {label && (
+            <>
+              <hr />
+              <div className="inline-flex flex-row w-full gap-2 items-center justify-between">
+                <Label className="text-[8px] text-black">{label}</Label>
+                <Tooltip status="positive" message="test" />
+              </div>
+            </>
+          )}
         </div>
       )}
       {data[link].error != undefined && (

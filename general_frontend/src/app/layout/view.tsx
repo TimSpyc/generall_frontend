@@ -4,6 +4,7 @@ import React, {
   useContext,
   cloneElement,
   ReactElement,
+  useEffect,
 } from "react";
 import useSWR from "swr";
 import { useAssetContext } from "./asset";
@@ -59,29 +60,8 @@ type LayoutElementType = {
 };
 
 const View = (props: ViewProps): JSX.Element => {
-  const removeUnusedChildren = (children: any) => {
-    // let existingChildren: any = [];
-
-    // React.Children.map(
-    //   props.children,
-    //   (element: JSX.Element, index: number) => {
-    //     existingChildren.push(element.props.name);
-    //   }
-    // );
-    // TODO: Nur für die aktuell ausgewählte View sonst werden in der jeweils anderen View auch alle gelöscht
-    // each(children, (view, viewKey) => {
-    //   each(view, (element, elementKey: any) => {
-    //     if (
-    //       existingChildren.indexOf(elementKey) === -1 &&
-    //       children[viewKey][elementKey]
-    //     ) {
-    //       delete children[viewKey][elementKey];
-    //     }
-    //   });
-    // });
-
-    return children;
-  };
+  const { currentLayout, isViewDraggable, isViewResizable, currentlyResizing } =
+    useGridLayoutContext();
 
   const {
     view,
@@ -91,8 +71,30 @@ const View = (props: ViewProps): JSX.Element => {
     setViewWithProps,
     handleActions,
   } = useAssetContext();
-  const { currentLayout, isViewDraggable, isViewResizable, currentlyResizing } =
-    useGridLayoutContext();
+
+  const removeUnusedChildren = (children: any) => {
+    let existingChildren: any = [];
+
+    React.Children.map(
+      props.children,
+      (element: JSX.Element, index: number) => {
+        existingChildren.push(element.props.name);
+      }
+    );
+
+    //TODO: Nur für die aktuell ausgewählte View sonst werden in der jeweils anderen View auch alle gelöscht
+    console.log(existingChildren, children[view]);
+    each(children[view], (element, elementKey: any) => {
+      if (
+        existingChildren.indexOf(elementKey) === -1 &&
+        children[view][elementKey]
+      ) {
+        delete children[view][elementKey];
+      }
+    });
+
+    return children;
+  };
 
   const parentLayout = currentLayout[assetName];
 

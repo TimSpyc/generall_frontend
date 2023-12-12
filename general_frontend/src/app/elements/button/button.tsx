@@ -1,17 +1,6 @@
-import { useAssetContext } from "../layout/asset";
-import { useGridLayoutContext } from "../layout/grid-layout";
-
-type CustomButtonProps = {
-  name: string;
-  action: string;
-  actionProps?: any;
-  autoFocus?: boolean;
-  type: "button" | "submit" | "reset" | undefined;
-  tabIndex?: number;
-  classNameInput?: string;
-  classNameInputWrapper?: string;
-  children: JSX.Element;
-};
+import { useAssetContext } from "../../layout/asset";
+import { useGridLayoutContext } from "../../layout/grid-layout";
+import { CustomButtonProps } from "./button-types";
 
 const CustomButton = ({
   action,
@@ -36,7 +25,7 @@ const CustomButton = ({
             ? "pointer-events-none border-green-400 unselectable"
             : "border-gray-400"
         } 
-				w-full h-full shadow-sm rounded-md border text-black skeleton`}
+				w-full h-full shadow-sm rounded-md border text-black skeleton overflow-hidden`}
     >
       <button
         onClick={(event) => handleActions(action, actionProps, event)}

@@ -1,22 +1,21 @@
-import "./date-picker.css"
+import "./date-picker.css";
 
 import { useState, useEffect } from "react";
-import { useViewContext } from "../layout/view";
-import { useGridLayoutContext } from "../layout/grid-layout";
-import { TimeField, Label, DateInput, DateSegment, TimeValue } from 'react-aria-components';
+import { useViewContext } from "../../layout/view";
+import { useGridLayoutContext } from "../../layout/grid-layout";
+import {
+  TimeField,
+  Label,
+  DateInput,
+  DateSegment,
+  TimeValue,
+} from "react-aria-components";
 import { Time, parseTime } from "@internationalized/date";
-import { validateElementLink, validateElementLinkKey } from "../helpers/validateElementLinks"
-
-type CustomTimeFieldProps = {
-  name: string;
-  link: string;
-  linkKey: string;
-  label: string;
-  tabIndex: number;
-  classNameInput: string;
-  classNameInputWrapper: string;
-  children: JSX.Element;
-};
+import {
+  validateElementLink,
+  validateElementLinkKey,
+} from "../../helpers/validateElementLinks";
+import { CustomTimeFieldProps } from "./time-field-types";
 
 const CustomTimeField = ({
   link,
@@ -47,10 +46,7 @@ const CustomTimeField = ({
       setError(true);
     }
 
-    if (
-      data[link].isLoading === true &&
-      data[link].error === undefined
-    ) {
+    if (data[link].isLoading === true && data[link].error === undefined) {
       setFinishedLoading(false);
       setError(false);
     }
@@ -84,7 +80,7 @@ const CustomTimeField = ({
       ${classNameInputWrapper} 
       ${isViewDraggable ? "pointer-events-none border-green-400" : ""} 
       ${error ? "pointer-events-none border-red-400 unselectable" : ""}
-      w-full h-full shadow-sm rounded-md border text-black p-0.5 px-1 skeleton`}
+      w-full h-full shadow-sm rounded-md border text-black p-0.5 px-1 skeleton overflow-hidden`}
     >
       {data[link]?.isLoading === false && data[link]?.data && (
         <div className="flex flex-col gap-0.5 h-full w-full">
@@ -94,7 +90,7 @@ const CustomTimeField = ({
             aria-label={label}
           >
             <DateInput>
-              {segment => <DateSegment segment={segment} />}
+              {(segment) => <DateSegment segment={segment} />}
             </DateInput>
           </TimeField>
           <hr />
