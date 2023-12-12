@@ -3,92 +3,104 @@ import "./date-picker.css"
 import { useState, useEffect } from "react";
 import { useViewContext } from "../layout/view";
 import { useGridLayoutContext } from "../layout/grid-layout";
-import { TimeField, Label, DateInput, DateSegment } from 'react-aria-components';
+import { TimeField, Label, DateInput, DateSegment, TimeValue } from 'react-aria-components';
 import { Time, parseTime } from "@internationalized/date";
 import { validateElementLink, validateElementLinkKey } from "../helpers/validateElementLinks"
 
-const CustomTimeField = (props: any) => {
+type CustomTimeFieldProps = {
+  link: string;
+  linkKey: string;
+  label: string;
+  tabIndex: number;
+  classNameInput: string;
+  classNameInputWrapper: string;
+  children: JSX.Element;
+};
+
+const CustomTimeField = ({
+  link,
+  linkKey,
+  label,
+  tabIndex,
+  classNameInput,
+  classNameInputWrapper,
+  children,
+}: CustomTimeFieldProps) => {
   const { data, handleFormData } = useViewContext();
   const { isViewDraggable } = useGridLayoutContext();
 
-  const [value, setValue] = useState<Time | string>("");
+  const [value, setValue] = useState<TimeValue | null | undefined>(null);
   const [finishedLoading, setFinishedLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  validateElementLink(data, props.link);
+  validateElementLink(data, link);
 
   // TODO: Update onChange
   const onChange = (event: any) => {
     setValue(event);
-    handleFormData([props.linkKey], event);
+    handleFormData([linkKey], event);
   };
 
   useEffect(() => {
-    if (data[props.link] === undefined) {
-      throw new Error(
-        `KnowledgeHub: api does not contain any link with name ${props.link}`
-      );
-    }
-
-    if (data[props.link].error != undefined) {
+    if (data[link].error != undefined) {
       setError(true);
     }
 
     if (
-      data[props.link].isLoading === true &&
-      data[props.link].error === undefined
+      data[link].isLoading === true &&
+      data[link].error === undefined
     ) {
       setFinishedLoading(false);
       setError(false);
     }
 
     if (
-      data[props.link].isLoading === false &&
+      data[link].isLoading === false &&
       finishedLoading === false &&
-      data[props.link].error === undefined &&
-      data[props.link].data
+      data[link].error === undefined &&
+      data[link].data
     ) {
-      validateElementLinkKey(data, props.link, props.linkKey);
+      validateElementLinkKey(data, link, linkKey);
 
       let time = undefined;
 
-      if (data[props.link].data[props.linkKey]) {
-        time = new Time(data[props.link].data[props.linkKey]);
+      if (data[link].data[linkKey]) {
+        time = new Time(data[link].data[linkKey]);
       } else {
         time = new Time();
       }
 
-      setValue(parseTime(`${time.toString()}`));
+      setValue(parseTime(time.toString()));
 
       setFinishedLoading(true);
       setError(false);
     }
-  }, [data]);
+  }, [data[link]]);
 
   return (
     <div
       className={`
-      ${props.classNameInputWrapper} 
+      ${classNameInputWrapper} 
       ${isViewDraggable ? "pointer-events-none border-green-400" : ""} 
       ${error ? "pointer-events-none border-red-400 unselectable" : ""}
       w-full h-full shadow-sm rounded-md border text-black p-0.5 px-1 skeleton`}
     >
-      {data[props.link]?.isLoading === false && data[props.link]?.data && (
+      {data[link]?.isLoading === false && data[link]?.data && (
         <div className="flex flex-col gap-0.5 h-full w-full">
           <TimeField
             onChange={onChange}
-            value={value != "" ? value : null}
-            aria-label={props.label}
+            value={value != null ? value : null}
+            aria-label={label}
           >
             <DateInput>
               {segment => <DateSegment segment={segment} />}
             </DateInput>
           </TimeField>
           <hr />
-          <Label className="text-[8px] text-black">{props.label}</Label>
+          <Label className="text-[8px] text-black">{label}</Label>
         </div>
       )}
-      {data[props.link]?.error != undefined && (
+      {data[link]?.error != undefined && (
         <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 text-red-400 text-sm">
           Error fetching Data
         </div>

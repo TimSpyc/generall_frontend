@@ -57,3 +57,5 @@
 [x] Alle Files formatieren
 [] History Push state für Route Context (History: pushState(), https://developer.mozilla.org/en-US/docs/Web/API/History/pushState)
 [] Validate Request soll zudem sicherstellen das alle required Elemente auf der aktuellen Grid Size sichtbar sind, ansonsten soll ein Fehler für den jeweiligen View geschmissen werden
+[] Props der einzelnen Input Komponente muss klar definiert sein, nicht mit Props arbeiten
+[] Wegklicken eines Elements ist aktuell noch nicht möglich mit Trackpad, überarbeiten

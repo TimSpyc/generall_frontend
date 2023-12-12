@@ -17,26 +17,31 @@ import {
   Popover,
   RangeCalendar,
 } from "react-aria-components";
+import { RangeValue } from "@react-types/shared";
 import { parseDate } from "@internationalized/date";
 import { validateElementLink, validateElementLinkKey } from "../helpers/validateElementLinks"
 
 type CustomDateRangePickerType = {
-  name: string,
-  link: string,
-  linkKey: string,
-  placeholder: string,
-  classNameInputWrapper?: string,
-  label: string,
-  tabIndex?: number,
-  actions: any,
-}
+  link: string;
+  linkKey: string;
+  label: string;
+  tabIndex: number;
+  classNameInput: string;
+  classNameInputWrapper: string;
+  children: JSX.Element;
+};
 
-type ChangeEventType = {
-  start?: string | CalendarDate,
-  end?: string | CalendarDate,
-}
+type ChangeEventType = RangeValue<any> | null | undefined
 
-const CustomRangeDatePicker = (props:CustomDateRangePickerType) => {
+const CustomRangeDatePicker = ({
+  link,
+  linkKey,
+  label,
+  tabIndex,
+  classNameInput,
+  classNameInputWrapper,
+  children,
+}: CustomDateRangePickerType) => {
   const { data, handleFormData } = useViewContext();
   const { isViewDraggable } = useGridLayoutContext();
 
@@ -44,44 +49,40 @@ const CustomRangeDatePicker = (props:CustomDateRangePickerType) => {
   const [finishedLoading, setFinishedLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  validateElementLink(data, props.link);
+  validateElementLink(data, link);
 
   const onChange = (event:ChangeEventType) => {
     setValue(event);
 
-    handleFormData([props.linkKey], {
-      start: event.start.toDate(),
-      end: event.end.toDate(),
-    });
+    if(event) {
+      handleFormData([linkKey], {
+        start: event.start.toDate(),
+        end: event.end.toDate(),
+      });
+    }
   };
 
   useEffect(() => {
-    if (data[props.link] === undefined) {
-      throw new Error(
-        `KnowledgeHub: api does not contain any link with name ${props.link}`
-      );
-    }
-
-    if (data[props.link].error != undefined) {
+    if (data[link].error != undefined) {
       setError(true);
     }
 
-    if (data[props.link].isLoading === true) {
+    if (data[link].isLoading === true) {
       setFinishedLoading(false);
       setError(false);
     }
 
     if (
-      data[props.link].isLoading === false &&
+      data[link].isLoading === false &&
       finishedLoading === false &&
-      data[props.link].data
+      data[link].data
     ) {
-      validateElementLinkKey(data, props.link, props.linkKey);
+      validateElementLinkKey(data, link, linkKey);
 
       let date = undefined;
 
-      if (data[props.link].data[props.linkKey]) {
-        date = new Date(data[props.link].data[props.linkKey]);
+      if (data[link].data[linkKey]) {
+        date = new Date(data[link].data[linkKey]);
       } else {
         date = new Date();
       }
@@ -98,30 +99,31 @@ const CustomRangeDatePicker = (props:CustomDateRangePickerType) => {
       setFinishedLoading(true);
       setError(false);
     }
-  }, [data]);
+  }, [data[link]]);
 
   return (
     <div
       className={`
-        ${props.classNameInputWrapper} 
+        ${classNameInputWrapper} 
         ${isViewDraggable ? "pointer-events-none border-green-400" : ""} 
         ${error ? "pointer-events-none border-red-400 unselectable" : ""}
         w-full h-full shadow-sm rounded-md border text-black p-0.5 px-1 skeleton`}
     >
-      {data[props.link]?.isLoading === false && data[props.link]?.data && (
+      {data[link].isLoading === false && data[link].data && (
         <div className="flex flex-col gap-0.5 h-full w-full">
           <DateRangePicker
             onChange={onChange}
             value={value != undefined ? value : null}
-            aria-label={props.label}
+            aria-label={label}
+            className={classNameInput}
           >
             <Group>
-              <div className="flex flex-row gap-1 items-center">
-                <DateInput slot="start" tabIndex={props.tabIndex}>
+              <div className="flex flex-row gap-1 items-center" tabIndex={tabIndex}>
+                <DateInput slot="start">
                   {(segment) => <DateSegment segment={segment} />}
                 </DateInput>
                 <span aria-hidden="true">–</span>
-                <DateInput slot="end" tabIndex={props.tabIndex}>
+                <DateInput slot="end">
                   {(segment) => <DateSegment segment={segment} />}
                 </DateInput>
               </div>
@@ -142,15 +144,15 @@ const CustomRangeDatePicker = (props:CustomDateRangePickerType) => {
               </Dialog>
             </Popover>
           </DateRangePicker>
-          {props.label && (
+          {label && (
             <>
               <hr />
-              <Label className="text-[8px] text-black">{props.label}</Label>
+              <Label className="text-[8px] text-black">{label}</Label>
             </>
           )}
         </div>
       )}
-      {data[props.link]?.error != undefined && (
+      {data[link].error != undefined && (
         <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/ text-red-400 text-sm">
           Error fetching Data
         </div>
