@@ -1,9 +1,6 @@
 "use client";
 import React from "react";
-
-import GridLayout from "./layout/grid-layout";
-import Asset from "./layout/asset";
-import View from "./layout/view";
+import dynamic from 'next/dynamic'
 
 import TextArea from "./elements/textarea";
 import Input from "./elements/input";
@@ -12,6 +9,10 @@ import DatePicker from "./elements/date-picker";
 import DateRangePicker from "./elements/date-range-picker";
 import Chart from "./elements/chart";
 import Checkbox from "./elements/checkbox";
+
+const GridLayout = dynamic(() => import("./layout/grid-layout"), {ssr: false});
+const Asset = dynamic(() => import("./layout/asset"), {ssr: false});
+const View = dynamic(() => import("./layout/view"), {ssr: false});
 
 const Home = () => {
   return (
@@ -69,10 +70,6 @@ const Home = () => {
               linkKey="userAgent"
               placeholder="User Agent"
               label="Label"
-              actions={{
-                edit: "edit",
-                filters: true,
-              }}
             />
             <Input
               name="user.id"
@@ -80,10 +77,6 @@ const Home = () => {
               linkKey="id"
               placeholder="User ID"
               label="Label"
-              actions={{
-                edit: "edit",
-                filters: true,
-              }}
             />
             <Input
               name="user.firstName"
@@ -91,10 +84,6 @@ const Home = () => {
               linkKey="firstName"
               placeholder="First Name"
               label="Label"
-              actions={{
-                edit: "edit",
-                filters: true,
-              }}
             />
             <Input
               name="user.lastName"
@@ -102,10 +91,6 @@ const Home = () => {
               linkKey="lastName"
               placeholder="Last Name"
               label="Label"
-              actions={{
-                edit: "edit.users",
-                filters: true,
-              }}
             />
             <Input
               name="user.university"
@@ -113,42 +98,27 @@ const Home = () => {
               linkKey="university"
               placeholder="University"
               label="Label"
-              actions={{
-                edit: "edit.users",
-                filters: true,
-              }}
             />
             <Checkbox
               name="user.test"
               link="user"
               linkKey="university"
-              placeholder="University"
               label="Custom Label"
             />
             <DatePicker
               name="user.birthDate"
               link="user"
               linkKey="birthDate"
-              placeholder="Birthdate"
               label="Birthdate"
-              actions={{
-                edit: "edit.users",
-                filters: true,
-              }}
             />
             <DateRangePicker
               name="user.birthDateRange"
               link="user"
               linkKey="birthDate"
-              placeholder="Birthdate"
               label="Birthdate"
-              actions={{
-                edit: "edit.users",
-                filters: true,
-              }}
             />
-            <Button name="submit.user" action="submit.user">
-              Submit
+            <Button name="submit.user" action="submit.user" type="button">
+              <span>Submit</span>
             </Button>
             <Button
               name="view.edit"
@@ -163,8 +133,9 @@ const Home = () => {
                   },
                 },
               }}
+              type="button"
             >
-              Change to Edit
+              <span>Change to Edit</span>
             </Button>
             <Chart name="chart.example.1" />
             <Chart name="chart.example.2" />
@@ -188,10 +159,6 @@ const Home = () => {
               linkKey="id"
               placeholder="User ID"
               label="User ID"
-              actions={{
-                edit: "edit",
-                filters: true,
-              }}
             />
             <Input
               name="user.firstName"
@@ -199,10 +166,6 @@ const Home = () => {
               linkKey="firstName"
               placeholder="First Name"
               label="Label"
-              actions={{
-                edit: "edit",
-                filters: true,
-              }}
             />
             <Input
               name="user.lastName"
@@ -210,10 +173,6 @@ const Home = () => {
               linkKey="lastName"
               placeholder="Last Name"
               label="Label"
-              actions={{
-                edit: "edit.users",
-                filters: true,
-              }}
             />
           </View>
           <View
@@ -233,10 +192,6 @@ const Home = () => {
               linkKey="id"
               placeholder="User ID"
               label="User ID"
-              actions={{
-                edit: "edit",
-                filters: true,
-              }}
             />
             <Input
               name="user.firstName"
@@ -244,10 +199,6 @@ const Home = () => {
               linkKey="firstName"
               placeholder="First Name"
               label="Label"
-              actions={{
-                edit: "edit",
-                filters: true,
-              }}
             />
             <Input
               name="user.lastName"
@@ -255,10 +206,6 @@ const Home = () => {
               linkKey="lastName"
               placeholder="Last Name"
               label="Label"
-              actions={{
-                edit: "edit.users",
-                filters: true,
-              }}
             />
           </View>
         </Asset>
@@ -282,10 +229,6 @@ const Home = () => {
               linkKey="id"
               placeholder="User ID"
               label="Label"
-              actions={{
-                edit: "edit",
-                filters: true,
-              }}
             />
             <Input
               name="user.firstName"
@@ -293,10 +236,6 @@ const Home = () => {
               linkKey="firstName"
               placeholder="First Name"
               label="Label"
-              actions={{
-                edit: "edit",
-                filters: true,
-              }}
             />
             <Input
               name="user.lastName"
@@ -304,10 +243,6 @@ const Home = () => {
               linkKey="lastName"
               placeholder="Last Name"
               label="Label"
-              actions={{
-                edit: "edit.users",
-                filters: true,
-              }}
             />
             <Input
               name="user.university"
@@ -315,35 +250,21 @@ const Home = () => {
               linkKey="university"
               placeholder="University"
               label="Label"
-              actions={{
-                edit: "edit.users",
-                filters: true,
-              }}
             />
             <DatePicker
               name="user.birthDate"
               link="user"
               linkKey="birthDate"
-              placeholder="Birthdate"
               label="Birthdate"
-              actions={{
-                edit: "edit.users",
-                filters: true,
-              }}
             />
             <DateRangePicker
               name="user.birthDateRange"
               link="user"
               linkKey="birthDate"
-              placeholder="Birthdate"
               label="Birthdate"
-              actions={{
-                edit: "edit.users",
-                filters: true,
-              }}
             />
-            <Button name="submit.user" action="submit.user" link="submit.user">
-              Submit
+            <Button name="submit.user" action="submit.user" type="button">
+              <span>Submit</span>
             </Button>
             <Button
               name="view.edit"
@@ -358,8 +279,9 @@ const Home = () => {
                   },
                 },
               }}
+              type="button"
             >
-              Change to Edit
+              <span>Change to edit</span>
             </Button>
             <Chart name="chart.example.1" />
             <Chart name="chart.example.2" />
@@ -383,10 +305,6 @@ const Home = () => {
               linkKey="id"
               placeholder="User ID"
               label="User ID"
-              actions={{
-                edit: "edit",
-                filters: true,
-              }}
             />
             <Input
               name="user.firstName"
@@ -394,10 +312,6 @@ const Home = () => {
               linkKey="firstName"
               placeholder="First Name"
               label="Label"
-              actions={{
-                edit: "edit",
-                filters: true,
-              }}
             />
             <Input
               name="user.lastName"
@@ -405,10 +319,6 @@ const Home = () => {
               linkKey="lastName"
               placeholder="Last Name"
               label="Label"
-              actions={{
-                edit: "edit.users",
-                filters: true,
-              }}
             />
           </View>
           <View
@@ -428,10 +338,6 @@ const Home = () => {
               linkKey="id"
               placeholder="User ID"
               label="User ID"
-              actions={{
-                edit: "edit",
-                filters: true,
-              }}
             />
             <Input
               name="user.firstName"
@@ -439,10 +345,6 @@ const Home = () => {
               linkKey="firstName"
               placeholder="First Name"
               label="Label"
-              actions={{
-                edit: "edit",
-                filters: true,
-              }}
             />
             <Input
               name="user.lastName"
@@ -450,10 +352,6 @@ const Home = () => {
               linkKey="lastName"
               placeholder="Last Name"
               label="Label"
-              actions={{
-                edit: "edit.users",
-                filters: true,
-              }}
             />
           </View>
         </Asset>

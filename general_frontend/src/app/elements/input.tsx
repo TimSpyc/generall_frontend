@@ -5,13 +5,15 @@ import { TextField, Label, Input } from "react-aria-components";
 import { validateElementLink, validateElementLinkKey } from "../helpers/validateElementLinks"
 
 type CustomInputProps = {
+  name: string;
+  placeholder: string;
   link: string;
   linkKey: string;
   label: string;
-  tabIndex: number;
-  classNameInput: string;
-  classNameInputWrapper: string;
-  children: JSX.Element;
+  tabIndex?: number;
+  classNameInput?: string;
+  classNameInputWrapper?: string;
+  children?: JSX.Element;
 };
 
 const CustomInput = ({

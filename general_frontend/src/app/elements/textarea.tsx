@@ -6,19 +6,22 @@ import { TextField, Label, TextArea } from "react-aria-components";
 import { validateElementLink, validateElementLinkKey } from "../helpers/validateElementLinks"
 
 type CustomTextareaProps = {
+  name: string;
+  placeholder: string;
   link: string;
   linkKey: string;
   label: string;
-  tabIndex: number;
-  classNameInput: string;
-  classNameInputWrapper: string;
-  children: JSX.Element;
+  tabIndex?: number;
+  classNameInput?: string;
+  classNameInputWrapper?: string;
+  children?: JSX.Element;
 };
 
 const CustomTextArea = ({
   link,
   linkKey,
   label,
+  placeholder,
   tabIndex,
   classNameInput,
   classNameInputWrapper,
@@ -80,6 +83,7 @@ const CustomTextArea = ({
             className={'h-full'}
             value={value}
             onChange={onChange}
+            placeholder={placeholder}
           />
           {label && (
             <div className="mt-[4px] pt-[1px]">

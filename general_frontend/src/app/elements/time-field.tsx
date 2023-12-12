@@ -8,6 +8,7 @@ import { Time, parseTime } from "@internationalized/date";
 import { validateElementLink, validateElementLinkKey } from "../helpers/validateElementLinks"
 
 type CustomTimeFieldProps = {
+  name: string;
   link: string;
   linkKey: string;
   label: string;

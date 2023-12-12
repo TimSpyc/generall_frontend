@@ -25,13 +25,14 @@ import {
 } from "../helpers/validateElementLinks";
 
 type CustomDatePickerProps = {
+  name: string;
   link: string;
   linkKey: string;
   label: string;
-  tabIndex: number;
-  classNameInput: string;
-  classNameInputWrapper: string;
-  children: JSX.Element;
+  tabIndex?: number;
+  classNameInput?: string;
+  classNameInputWrapper?: string;
+  children?: JSX.Element;
 };
 
 const CustomDatePicker = ({
