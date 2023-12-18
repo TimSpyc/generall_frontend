@@ -25,9 +25,10 @@ const Asset = (props: AssetProps): JSX.Element => {
     props.defaultView ? props.defaultView : "default"
   );
   const [externalProps, setExternalProps] = useState<any>({});
-  const [assetName, setAssetName] = useState<string>(props.name);
+  const [assetName, setAssetName] = useState<string | undefined>(props.name);
 
-  const setViewWithProps = (view: string, props: any) => {
+  const setViewWithProps = (view: string, props: any, event?:any) => {
+    console.log(event)
     setView(view);
     setExternalProps(props);
   };
@@ -43,16 +44,16 @@ const Asset = (props: AssetProps): JSX.Element => {
 
     switch (actionTrigger) {
       case "view":
-        setViewWithProps(actionDestination, actionProps);
+        setViewWithProps(actionDestination, actionProps, event);
         break;
       case "paginate":
-        console.log("paginate");
+        console.log("paginate", event);
         break;
       case "store":
-        console.log("store");
+        console.log("store", event);
         break;
       case "reload":
-        console.log("reload");
+        console.log("reload", event);
         break;
       default:
         setViewWithProps("default", {});

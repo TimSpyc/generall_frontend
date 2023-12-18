@@ -60,8 +60,7 @@ type LayoutElementType = {
 };
 
 const View = (props: ViewProps): JSX.Element => {
-  const { currentLayout, isViewDraggable, isViewResizable, currentlyResizing } =
-    useGridLayoutContext();
+  const { currentLayout, isViewDraggable, isViewResizable, currentlyResizing, windowCurrentlyResizing } = useGridLayoutContext();
 
   const {
     view,
@@ -82,8 +81,6 @@ const View = (props: ViewProps): JSX.Element => {
       }
     );
 
-    //TODO: Nur für die aktuell ausgewählte View sonst werden in der jeweils anderen View auch alle gelöscht
-    console.log(existingChildren, children[view]);
     each(children[view], (element, elementKey: any) => {
       if (
         existingChildren.indexOf(elementKey) === -1 &&
@@ -96,7 +93,9 @@ const View = (props: ViewProps): JSX.Element => {
     return children;
   };
 
-  const parentLayout = currentLayout[assetName];
+  let parentLayout = currentLayout[assetName];
+
+  console.log(`${parentLayout.w}x${parentLayout.h}`)
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [formData, setFormData] = useState({});
@@ -208,7 +207,7 @@ const View = (props: ViewProps): JSX.Element => {
 
   const updateLayout = (currentLayout: LayoutElementType[]) => {
     // required because otherwhise the grid receives wrong sizes!
-    if (currentlyResizing === false) {
+    if(windowCurrentlyResizing === false && currentlyResizing === false) {
       setChildrenSize((currentState: CurrentStateType[]) => {
         currentLayout.forEach((layoutElement: LayoutElementType) => {
           currentState[view][layoutElement.i][
@@ -346,7 +345,7 @@ const View = (props: ViewProps): JSX.Element => {
         <div className="relative bg-white shadow-md rounded-md w-full h-full max-w-full max-h-full">
           <ResponsiveGridLayout
             className="layout"
-            breakpoints={{ lg: 1301, md: 868, sm: 434 }}
+            breakpoints={{ lg: 1200, md: 800, sm: 600 }}
             cols={{ lg: 36, md: 24, sm: 12 }}
             rowHeight={50}
             isDraggable={isViewDraggable}

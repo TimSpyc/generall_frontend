@@ -88,8 +88,7 @@ const GridLayout = (props: GridLayoutProps): JSX.Element => {
   const [isViewDraggable, setIsViewDraggable] = useState<boolean>(false);
   const [isViewResizable, setIsViewResizeable] = useState<boolean>(false);
   const [currentlyResizing, setCurrentlyResizing] = useState<boolean>(false);
-  const [windowCurrentlyResizing, setWindowCurrentlyResizing] =
-    useState<boolean>(false);
+  const [windowCurrentlyResizing, setWindowCurrentlyResizing] = useState<boolean>(false);
 
   // recognize window resize for disabling setting the layout
   let timeout: NodeJS.Timeout;
@@ -98,7 +97,8 @@ const GridLayout = (props: GridLayoutProps): JSX.Element => {
     window.onresize = function () {
       setWindowCurrentlyResizing(true);
       clearTimeout(timeout);
-      timeout = setTimeout(() => setWindowCurrentlyResizing(false), 100);
+
+      timeout = setTimeout(() => setWindowCurrentlyResizing(false), 2000);
     };
   }
 
@@ -130,10 +130,9 @@ const GridLayout = (props: GridLayoutProps): JSX.Element => {
     }
   );
 
-  console.log(children)
-
   const updateLayout = (currentLayout: LayoutElementType[]) => {
-    if (windowCurrentlyResizing === false) {
+    // required because otherwhise the grid receives wrong sizes!
+    if(windowCurrentlyResizing === false && currentlyResizing === false) {
       setLayouts((currentState: any) => {
         currentLayout.forEach((layoutElement: LayoutElementType) => {
           currentState[currentBreakpoint][layoutElement.i] = {
@@ -151,12 +150,16 @@ const GridLayout = (props: GridLayoutProps): JSX.Element => {
     }
   };
 
+  const breakpointChange = (breakpoint:string) => {
+    setCurrentLayout(layouts[breakpoint]);
+    setCurrentBreakpoint(breakpoint);
+  }
+
   const updateGridEditable = (event: boolean) => {
     setIsDraggable(event ? true : false);
   };
 
   const toggleEdit = () => {
-    // resize should always be possible
     setIsViewDraggable(isDraggable);
     setIsViewResizeable(isDraggable);
     setIsDraggable(!isDraggable);
@@ -194,11 +197,12 @@ const GridLayout = (props: GridLayoutProps): JSX.Element => {
           isViewDraggable,
           isViewResizable,
           currentlyResizing,
+          windowCurrentlyResizing
         }}
       >
         <ResponsiveGridLayout
           className="layout"
-          breakpoints={{ lg: 1200, md: 800, sm: 600 }}
+          breakpoints={{ lg: 1284, md: 851, sm: 417 }}
           cols={{ lg: 3, md: 2, sm: 1 }}
           rowHeight={615}
           isDraggable={isDraggable}
@@ -207,7 +211,7 @@ const GridLayout = (props: GridLayoutProps): JSX.Element => {
           onResizeStop={() => setCurrentlyResizing(false)}
           margin={[0, 0]}
           measureBeforeMount={false}
-          onBreakpointChange={setCurrentBreakpoint}
+          onBreakpointChange={breakpointChange}
           onLayoutChange={updateLayout}
         >
           {children}

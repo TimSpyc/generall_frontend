@@ -59,3 +59,4 @@
 [] Validate Request soll zudem sicherstellen das alle required Elemente auf der aktuellen Grid Size sichtbar sind, ansonsten soll ein Fehler für den jeweiligen View geschmissen werden
 [] Websocket implementierung für Benutzer bearbeitet aktuell
 [] Wegklicken eines Elements ist aktuell noch nicht möglich mit Trackpad, überarbeiten
+[] Komplette Resize Logik nochmal anschauen, größe wird aus irgendeinem Grund bei Resize immernoch nicht richtig gesetzt. Warum!?
